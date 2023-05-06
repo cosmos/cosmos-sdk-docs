@@ -3,6 +3,8 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const customVersionPlugin = require('./custom-version-plugin');
+
 
 // const lastVersion = "v0.47";
 const lastVersion = "current";
@@ -106,18 +108,6 @@ const config = {
               position: "right",
               dropdownActiveClassDisabled: true,
               // versions not yet migrated to docusaurus
-              dropdownItemsAfter: [
-                {
-                  href: "https://docs.cosmos.network/v0.46/",
-                  label: "v0.46",
-                  target: "_self",
-                },
-                {
-                  href: "https://docs.cosmos.network/v0.45/",
-                  label: "v0.45",
-                  target: "_self",
-                },
-              ],
             },
           ],
         },
@@ -218,6 +208,7 @@ const config = {
         },
       };
     },
+    customVersionPlugin,
     [
       "@docusaurus/plugin-google-analytics",
       {
