@@ -18,6 +18,12 @@ function getAllFiles(dirPath, arrayOfFiles) {
   return arrayOfFiles;
 }
 
+// Helper function to check if a file should be excluded for a specific version
+function shouldExcludeFile(version, filePath, versionConfig) {
+  const excludedPaths = versionConfig[version]?.excludedPaths || [];
+  return excludedPaths.some((excludedPath) => filePath.startsWith(excludedPath));
+}
+
 module.exports = function (_context, _options) {
   return {
     name: 'custom-version-plugin',
@@ -26,6 +32,10 @@ module.exports = function (_context, _options) {
       // Read the versions.json file to get the list of versions
       const versionsJsonPath = path.join(_context.siteDir, 'versions.json');
       const versions = JSON.parse(fs.readFileSync(versionsJsonPath, 'utf8'));
+
+      // Read the version_config.json file
+      const versionConfigPath = path.join(_context.siteDir, 'version_config.json');
+      const versionConfig = JSON.parse(fs.readFileSync(versionConfigPath, 'utf8'));
 
       // Read all the files in the /docs folder
       const docsPath = path.join(_context.siteDir, 'docs');
@@ -41,6 +51,11 @@ module.exports = function (_context, _options) {
           for (const file of files) {
             const relativePath = path.relative(docsPath, file);
             const customFilePath = path.join(versionedDocsPath, relativePath);
+
+            // Check if the file should be excluded for this version
+            if (shouldExcludeFile(version, relativePath, versionConfig)) {
+              continue;
+            }
 
             // Check if the file exists in the version directory
             if (!fs.existsSync(customFilePath)) {
