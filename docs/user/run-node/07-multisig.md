@@ -22,7 +22,10 @@ Once you have a transaction with the necessary signatures, it can be broadcasted
 
 ## Step by step guide to multisig transactions
 
-Check the keys you have in `--keyring-backend test`.
+This tutorial will use the test keyring which will store the keys in the default home directory `~/.simapp` unless otherwise specified.
+Verify which keys are available in the test keyring by running `--keyring-backend test`.
+
+In order to specify a consistent keyring for the entirety of the tutorial, set the default keyring by running `simd config keyring-backend test`.
 
 ```shell
 simd keys list --keyring-backend test
@@ -35,20 +38,25 @@ simd keys add bob --keyring-backend test
 simd keys add recipient --keyring-backend test
 ```
 
+Alternatively the public keys comprising the multisig can be imported into the keyring.
+```shell
+simd keys add alice --pubkey <public key> --keyring backend test
+```
+
 Create the multisig account between bob and alice.
 ```shell 
 simd keys add alice-bob-multisig --multisig alice,bob --multisig-threshold 2 --keyring-backend test
 ```
 
-Before initiating any transaction, verify the balance of each account and note down the amount. This step is crucial to confirm that the transaction can be processed successfully.
+Before generating any transaction, verify the balance of each account and note the amount. This step is crucial to confirm that the transaction can be processed successfully.
 ```shell
 simd query bank balances $(simd keys show my_validator --keyring-backend test -a)
 simd query bank balances $(simd keys show alice-bob-multisig --keyring-backend test -a)
 ```
 
-Ensure that the alice-bob-multisig account has funds. In our case, the genesis account, my_validator, holds our funds. Therefore, we will transfer funds from the `my_validator` account to the `alice-bob-multisig` account.
+Ensure that the alice-bob-multisig account is funded with a sufficient balance to complete the transaction (gas included). In our case, the genesis account, my_validator, holds our funds. Therefore, we will transfer funds from the `my_validator` account to the `alice-bob-multisig` account.
 
-The below command adds funds to the multisig.
+Fund the multisig by sending it `stake` from the genesis account.
 ```shell
 simd tx bank send $(simd keys show my_validator --keyring-backend test -a) $(simd keys show alice-bob-multisig --keyring-backend test -a) "10000stake" --keyring-backend test
 ```
@@ -63,22 +71,22 @@ Initiate the transaction. This command will create a transaction from the multis
 simd tx bank send $(simd keys show alice-bob-multisig --keyring-backend test -a) $(simd keys show recipient --keyring-backend test -a) 1000stake --generate-only --chain-id my-test-chain --keyring-backend test > tx.json
 ```
 
-Alice signs the transaction using her key and refers to the multisig address. Execute the command below to accomplish this:
+Alice signs the transaction using their key and refers to the multisig address. Execute the command below to accomplish this:
 ```shell
-simd tx sign --from $(simd keys show alice --keyring-backend test -a) --multisig=cosmos1re6mg24kvzjzmwmly3dqrqzdkruxwvctw8wwds tx.json --sign-mode amino-json --chain-id my-test-chain --keyring-backend test > tx-signed-alice.json
+simd tx sign --from $(simd keys show alice --keyring-backend test -a) --multisig=cosmos1re6mg24kvzjzmwmly3dqrqzdkruxwvctw8wwds tx.json --chain-id my-test-chain --keyring-backend test > tx-signed-alice.json
 ```
 
 Let's repeat for Bob.
 ```shell 
-simd tx sign --from $(simd keys show bob --keyring-backend test -a) --multisig=cosmos1re6mg24kvzjzmwmly3dqrqzdkruxwvctw8wwds tx.json --sign-mode amino-json --chain-id my-test-chain --keyring-backend test > tx-signed-bob.json
+simd tx sign --from $(simd keys show bob --keyring-backend test -a) --multisig=cosmos1re6mg24kvzjzmwmly3dqrqzdkruxwvctw8wwds tx.json --chain-id my-test-chain --keyring-backend test > tx-signed-bob.json
 ```
 
 Execute a multisign transaction by using the `simd tx multisign` command. This command requires the names and signed transactions of all the participants in the multisig account. Here, Alice and Bob are the participants:
 ```shell
-simd tx multisign tx.json alice-bob-multisig tx-signed-alice.json tx-signed-bob.json  --chain-id my-test-chain --keyring-backend test > tx-signed.json
+simd tx multisign tx.json alice-bob-multisig tx-signed-alice.json tx-signed-bob.json --chain-id my-test-chain --keyring-backend test > tx-signed.json
 ```
 
-Once the multisign transaction is formed, it needs to be broadcasted to the network. This is done using the simd tx broadcast command:
+Once the multisigned transaction is generated, it needs to be broadcasted to the network. This is done using the simd tx broadcast command:
 ```shell
 simd tx broadcast tx-signed.json --chain-id my-test-chain --gas auto --fees 250stake --keyring-backend test
 ```
