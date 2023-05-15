@@ -33,8 +33,8 @@ module.exports = function (_context, _options) {
       const versionsJsonPath = path.join(_context.siteDir, 'versions.json');
       const versions = JSON.parse(fs.readFileSync(versionsJsonPath, 'utf8'));
 
-      // Read the version_config.json file
-      const versionConfigPath = path.join(_context.siteDir, 'version_config.json');
+      // Read the version config file
+      const versionConfigPath = path.join(_context.siteDir, 'versionConfig.json');
       const versionConfig = JSON.parse(fs.readFileSync(versionConfigPath, 'utf8'));
 
       // Read all the files in the /docs folder
@@ -52,19 +52,22 @@ module.exports = function (_context, _options) {
             const relativePath = path.relative(docsPath, file);
             const customFilePath = path.join(versionedDocsPath, relativePath);
 
-            // Check if the file should be excluded for this version
-            if (shouldExcludeFile(version, relativePath, versionConfig)) {
-              continue;
-            }
-
             // Check if the file exists in the version directory
-            if (!fs.existsSync(customFilePath)) {
-              // Create the directory if it doesn't exist
-              fs.mkdirSync(path.dirname(customFilePath), { recursive: true });
-
-              // If the file doesn't exist, copy it from the /docs folder
+            if (!fs.existsSync(customFilePath) && !shouldExcludeFile(version, relativePath, versionConfig)) {
+              // If the file doesn't exist and it's not excluded, copy it from the /docs folder
               fs.copyFileSync(file, customFilePath);
               console.log(`Copied file from /docs to version-${version}:`, relativePath);
+            }
+          }
+
+          // After copying all files, iterate over the versioned directory to remove excluded files
+          const versionedFiles = getAllFiles(versionedDocsPath);
+          for (const file of versionedFiles) {
+            const relativePath = path.relative(versionedDocsPath, file);
+
+            if (shouldExcludeFile(version, relativePath, versionConfig)) {
+              fs.unlinkSync(file);
+              console.log(`Removed excluded file from version-${version}:`, relativePath);
             }
           }
         }
