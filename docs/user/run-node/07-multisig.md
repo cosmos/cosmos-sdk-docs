@@ -10,7 +10,9 @@ Multisignature accounts are accounts that are generated from multiple public key
 
 A common use case for multisigs is to increase security of a signing account, and/or enable multiple parties to agree on and authorize a transaction.
 
-To create a multisig transaction, you first need to create a multisig public key. This is done by combining multiple public keys together into a single multisig key. This multisig key will then have an associated address, just like a normal account.
+The first step is to create a multisig signing key by using the public keys of all possible signers and the minimum threshold of addresses that are needed to sign any transaction from the account. The threshold can be the same amount as the total number of addresses comprising the multisig.
+
+Whatever machine is generating the multisig, it should at least have all of the public keys imported into the same keyring.
 
 When you want to create a multisig transaction, you would create the transaction as normal, but instead of signing it with a single account's private key, you would need to sign it with the private keys of the accounts that make up the multisig key.
 
