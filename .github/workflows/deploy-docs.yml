@@ -8,7 +8,6 @@ on:
       - main
     paths:
       - "docs/**"
-      - "x/**/*.md"
       - .github/workflows/deploy-docs.yml
 
 permissions:
