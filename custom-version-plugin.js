@@ -18,7 +18,6 @@ function getAllFiles(dirPath, arrayOfFiles) {
   return arrayOfFiles;
 }
 
-// Helper function to check if a file should be excluded for a specific version
 function shouldExcludeFile(version, filePath, versionConfig) {
   const excludedPaths = versionConfig[version]?.excludedPaths || [];
   return excludedPaths.some((excludedPath) => filePath.startsWith(excludedPath));
@@ -34,7 +33,7 @@ module.exports = function (_context, _options) {
       const versions = JSON.parse(fs.readFileSync(versionsJsonPath, 'utf8'));
 
       // Read the version config file
-      const versionConfigPath = path.join(_context.siteDir, 'versionConfig.json');
+      const versionConfigPath = path.join(_context.siteDir, 'version_config.json');
       const versionConfig = JSON.parse(fs.readFileSync(versionConfigPath, 'utf8'));
 
       // Read all the files in the /docs folder

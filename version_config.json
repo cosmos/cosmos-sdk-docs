@@ -1,8 +1,14 @@
 {
   "0.45": {
-    "excludedPaths": ["integrate/tooling"]
+    "excludedPaths": ["integrate/modules/slashing", "integrate/modules/nft", "integrate/modules/group", "integrate/modules/genutil",
+      "integrate/modules/consensus", "integrate/modules/circuit", "integrate/building-modules/autocli", "integrate/building-modules/depinject",
+      "integrate/building-modules/testing", "integrate/building-apps", "integrate/architecture/rfc", "integrate/specs"]
   },
   "0.46": {
-    "excludedPaths": []
+    "excludedPaths": ["integrate/modules/genutil", "integrate/modules/consensus", "integrate/modules/circuit", "integrate/architecture/rfc",
+      "integrate/specs", "integrate/tooling", "integrate/building-modules/depinject"]
+  },
+  "0.47": {
+    "excludedPaths": ["integrate/run-node/cosmovisor"]
   }
 }
