@@ -29,15 +29,15 @@ module.exports = function (_context, _options) {
 
     async loadContent() {
       // Read the versions.json file to get the list of versions
-      const versionsJsonPath = path.join(_context.siteDir, 'versions.json');
+      const versionsJsonPath = path.join(_context.siteDir, 'cosmos-sdk-docs', 'versions.json');
       const versions = JSON.parse(fs.readFileSync(versionsJsonPath, 'utf8'));
 
       // Read the version config file
-      const versionConfigPath = path.join(_context.siteDir, 'version_config.json');
+      const versionConfigPath = path.join(_context.siteDir, 'cosmos-sdk-docs', 'version_config.json');
       const versionConfig = JSON.parse(fs.readFileSync(versionConfigPath, 'utf8'));
 
       // Read all the files in the /docs folder
-      const docsPath = path.join(_context.siteDir, 'docs');
+      const docsPath = path.join(_context.siteDir, 'cosmos-sdk-docs', 'docs');
       const files = getAllFiles(docsPath);
 
       // Iterate through the list of versions
