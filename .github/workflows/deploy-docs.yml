@@ -31,14 +31,13 @@ jobs:
         with:
           node-version: "16.x"
 
-      # npm install npm should be removed when https://github.com/npm/cli/issues/4942 is fixed
       - name: Build 🔧
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
+        run: yarn install --frozen-lockfile
+        run: yarn build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages
-          folder: ~/output
+          folder: build
           single-commit: true
