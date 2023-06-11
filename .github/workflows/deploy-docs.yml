@@ -32,7 +32,10 @@ jobs:
           node-version: "16.x"
 
         shell: bash
+      - run: npm install
       - run: npm start
+
+
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.4.1
