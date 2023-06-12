@@ -31,8 +31,11 @@ jobs:
         with:
           node-version: "16.x"
 
-        shell: bash
-      - run: yarn build
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.4.1
