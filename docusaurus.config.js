@@ -3,6 +3,7 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const customVersionPlugin = require('./custom-version-plugin');
 
 // const lastVersion = "v0.47";
 const lastVersion = "current";
@@ -218,6 +219,7 @@ const config = {
         },
       };
     },
+    customVersionPlugin,
     [
       "@docusaurus/plugin-google-analytics",
       {
