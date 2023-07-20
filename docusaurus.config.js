@@ -3,7 +3,6 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
-const customVersionPlugin = require('./custom-version-plugin');
 
 // const lastVersion = "v0.47";
 const lastVersion = "current";
@@ -41,7 +40,6 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          lastVersion: lastVersion,
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -79,11 +77,6 @@ const config = {
               position: "left",
               label: "Integrate",
             },
-            // {
-            //   to: "/",
-            //   position: "left",
-            //   label: "Validate",
-            // },
             {
               to: "/user/run-node/keyring",
               position: "left",
@@ -219,7 +212,6 @@ const config = {
         },
       };
     },
-    customVersionPlugin,
     [
       "@docusaurus/plugin-google-analytics",
       {

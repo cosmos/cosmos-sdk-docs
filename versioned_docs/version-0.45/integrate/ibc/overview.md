@@ -50,7 +50,7 @@ In IBC, blockchains do not directly pass messages to each other over the network
 
 - The proof format that all implementations must produce and verify is defined in [ICS-23 implementation](https://github.com/confio/ics23).
 
-### Capabilities
+### [Capabilities](./ocap.md)
 
 IBC is intended to work in execution environments where modules do not necessarily trust each other. IBC must authenticate module actions on ports and channels so that only modules with the appropriate permissions can use the channels. This security is accomplished using [dynamic capabilities](../architecture/adr-003-dynamic-capability-store.md). Upon binding to a port or creating a channel for a module, IBC returns a dynamic capability that the module must claim to use that port or channel. This binding strategy prevents other modules from using that port or channel since those modules do not own the appropriate capability.
 
@@ -148,4 +148,4 @@ To learn more about IBC, check out the following specifications:
 
 ## Next {hide}
 
-Learn about how to [integrate](integration.md) IBC to your application {hide}
+Learn about how to [integrate](./integration.md) IBC to your application {hide}

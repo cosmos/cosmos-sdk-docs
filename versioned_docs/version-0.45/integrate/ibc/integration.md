@@ -165,7 +165,7 @@ func NewApp(...args) *App {
 
 ### Module Managers
 
-In order to use IBC, we need to add the new modules to the module `Manager` and to the `SimulationManager` in case your application supports [simulations](../building-modules/simulator).
+In order to use IBC, we need to add the new modules to the module `Manager` and to the `SimulationManager` in case your application supports [simulations](./../building-modules/simulator.md).
 
 ```go
 // app.go
@@ -249,4 +249,4 @@ different chains. If you want to have a broader view of the changes take a look 
 
 ## Next {hide}
 
-Learn about how to create [custom IBC modules](custom.md) for your application {hide}
+Learn about how to create [custom IBC modules](./custom.md) for your application {hide}
