@@ -40,7 +40,6 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          lastVersion: lastVersion,
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -78,11 +77,6 @@ const config = {
               position: "left",
               label: "Integrate",
             },
-            // {
-            //   to: "/",
-            //   position: "left",
-            //   label: "Validate",
-            // },
             {
               to: "/user/run-node/keyring",
               position: "left",

@@ -533,7 +533,7 @@ func (k Keeper) GetAllAccounts(ctx sdk.Context) ([]authtypes.BaseAccount, error)
 }
 
 func (k Keeper) IterateAccountsBetween(ctx sdk.Context, start, end uint64) ([]authtypes.BaseAccount, error) {
-	// The collections.Range API offers a lot of capabilities
+	// The collections.Range API offers a lot of capability
 	// like defining where the iteration starts or ends.
 	rng := new(collections.Range[uint64]).
 		StartInclusive(start).
