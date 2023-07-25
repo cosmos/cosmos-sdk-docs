@@ -32,7 +32,7 @@ vulnerability being patched on the live network.
 ## Decision
 
 The dCERT group is proposed to include an implementation of a `SpecializationGroup`
-as defined in [ADR 007](./adr-007-specialization-groups.md). This will include the
+as defined in [ADR 007](adr-007-specialization-groups.md). This will include the
 implementation of:
 
 * continuous voting
@@ -168,4 +168,4 @@ they should all be severely slashed.
 
 ## References
 
-  [Specialization Groups ADR](./adr-007-specialization-groups.md)
+  [Specialization Groups ADR](adr-007-specialization-groups.md)

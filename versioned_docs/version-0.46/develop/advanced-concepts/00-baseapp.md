@@ -4,8 +4,8 @@ This document describes `BaseApp`, the abstraction that implements the core func
 
 ## Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK application](../basics/app-anatomy.md) {prereq}
-* [Lifecycle of a Cosmos SDK transaction](../basics/tx-lifecycle.md) {prereq}
+* [Anatomy of a Cosmos SDK application](../high-level-concepts/app-anatomy.md) {prereq}
+* [Lifecycle of a Cosmos SDK transaction](../high-level-concepts/01-tx-lifecycle.md) {prereq}
 
 ## Introduction
 
@@ -69,8 +69,8 @@ First, the important parameters that are initialized during the bootstrapping of
 * [`AnteHandler`](#antehandler): This handler is used to handle signature verification, fee payment,
   and other pre-message execution checks when a transaction is received. It's executed during
   [`CheckTx/RecheckTx`](#checktx) and [`DeliverTx`](#delivertx).
-* [`InitChainer`](../basics/app-anatomy.md#initchainer),
-  [`BeginBlocker` and `EndBlocker`](../basics/app-anatomy.md#beginblocker-and-endblocker): These are
+* [`InitChainer`](../high-level-concepts/app-anatomy.md#initchainer),
+  [`BeginBlocker` and `EndBlocker`](../high-level-concepts/app-anatomy.md#beginblocker-and-endblocker): These are
   the functions executed when the application receives the `InitChain`, `BeginBlock` and `EndBlock`
   ABCI messages from the underlying Tendermint engine.
 
@@ -94,7 +94,7 @@ Finally, a few more important parameters:
   `minGasPrices` (e.g. if `minGasPrices == 1uatom,1photon`, the `gas-price` of the transaction must be
   greater than `1uatom` OR `1photon`).
 * `appVersion`: Version of the application. It is set in the
-  [application's constructor function](../basics/app-anatomy.md#constructor-function).
+  [application's constructor function](../high-level-concepts/app-anatomy.md#constructor-function).
 
 ## Constructor
 
@@ -191,13 +191,13 @@ When messages and queries are received by the application, they must be routed t
 
 The [default `msgServiceRouter` included in `BaseApp`](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/baseapp/msg_service_router.go) is stateless. However, some applications may want to make use of more stateful routing mechanisms such as allowing governance to disable certain routes or point them to new modules for upgrade purposes. For this reason, the `sdk.Context` is also passed into each [route handler inside `msgServiceRouter`](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/baseapp/msg_service_router.go#L31-L32). For a stateless router that doesn't want to make use of this, you can just ignore the `ctx`.
 
-The application's `msgServiceRouter` is initialized with all the routes using the application's [module manager](../building-modules/module-manager.md#manager) (via the `RegisterServices` method), which itself is initialized with all the application's modules in the application's [constructor](../basics/app-anatomy.md#constructor-function).
+The application's `msgServiceRouter` is initialized with all the routes using the application's [module manager](../building-modules/module-manager.md#manager) (via the `RegisterServices` method), which itself is initialized with all the application's modules in the application's [constructor](../high-level-concepts/app-anatomy.md#constructor-function).
 
 ### gRPC Query Router
 
 Similar to `sdk.Msg`s, [`queries`](../building-modules/messages-and-queries.md#queries) need to be routed to the appropriate module's [`Query` service](../building-modules/query-services.md). To do so, `BaseApp` holds a `grpcQueryRouter`, which maps modules' fully-qualified service methods (`string`, defined in their Protobuf `Query` gRPC) to their `QueryServer` implementation. The `grpcQueryRouter` is called during the initial stages of query processing, which can be either by directly sending a gRPC query to the gRPC endpoint, or via the [`Query` ABCI message](#query) on the Tendermint RPC endpoint.
 
-Just like the `msgServiceRouter`, the `grpcQueryRouter` is initialized with all the query routes using the application's [module manager](../building-modules/module-manager.md) (via the `RegisterServices` method), which itself is initialized with all the application's modules in the application's [constructor](../basics/app-anatomy.md#app-constructor).
+Just like the `msgServiceRouter`, the `grpcQueryRouter` is initialized with all the query routes using the application's [module manager](../building-modules/module-manager.md) (via the `RegisterServices` method), which itself is initialized with all the application's modules in the application's [constructor](../high-level-concepts/app-anatomy.md#app-constructor).
 
 ## Main ABCI Messages
 
@@ -229,16 +229,16 @@ to do the following checks:
 2. Perform _stateless_ checks by calling `ValidateBasic()` on each of the `sdk.Msg`s. This is done
    first, as _stateless_ checks are less computationally expensive than _stateful_ checks. If
    `ValidateBasic()` fail, `CheckTx` returns before running _stateful_ checks, which saves resources.
-3. Perform non-module related _stateful_ checks on the [account](../basics/accounts.md). This step is mainly about checking
+3. Perform non-module related _stateful_ checks on the [account](../high-level-concepts/accounts.md). This step is mainly about checking
    that the `sdk.Msg` signatures are valid, that enough fees are provided and that the sending account
-   has enough funds to pay for said fees. Note that no precise [`gas`](../basics/gas-fees.md) counting occurs here,
-   as `sdk.Msg`s are not processed. Usually, the [`AnteHandler`](../basics/gas-fees.md#antehandler) will check that the `gas` provided
+   has enough funds to pay for said fees. Note that no precise [`gas`](../high-level-concepts/gas-fees.md) counting occurs here,
+   as `sdk.Msg`s are not processed. Usually, the [`AnteHandler`](../high-level-concepts/gas-fees.md#antehandler) will check that the `gas` provided
    with the transaction is superior to a minimum reference gas amount based on the raw transaction size,
    in order to avoid spam with transactions that provide 0 gas.
 
 `CheckTx` does **not** process `sdk.Msg`s -  they only need to be processed when the canonical state need to be updated, which happens during `DeliverTx`.
 
-Steps 2. and 3. are performed by the [`AnteHandler`](../basics/gas-fees.md#antehandler) in the [`RunTx()`](#runtx-antehandler-and-runmsgs)
+Steps 2. and 3. are performed by the [`AnteHandler`](../high-level-concepts/gas-fees.md#antehandler) in the [`RunTx()`](#runtx-antehandler-and-runmsgs)
 function, which `CheckTx()` calls with the `runTxModeCheck` mode. During each step of `CheckTx()`, a
 special [volatile state](#state-updates) called `checkState` is updated. This state is used to keep
 track of the temporary changes triggered by the `CheckTx()` calls of each transaction without modifying
@@ -306,7 +306,7 @@ At any point, if `GasConsumed > GasWanted`, the function returns with `Code != 0
 
 `RunTx` is called from `CheckTx`/`DeliverTx` to handle the transaction, with `runTxModeCheck` or `runTxModeDeliver` as parameter to differentiate between the two modes of execution. Note that when `RunTx` receives a transaction, it has already been decoded.
 
-The first thing `RunTx` does upon being called is to retrieve the `context`'s `CacheMultiStore` by calling the `getContextForTx()` function with the appropriate mode (either `runTxModeCheck` or `runTxModeDeliver`). This `CacheMultiStore` is a branch of the main store, with cache functionality (for query requests), instantiated during `BeginBlock` for `DeliverTx` and during the `Commit` of the previous block for `CheckTx`. After that, two `defer func()` are called for [`gas`](../basics/gas-fees.md) management. They are executed when `runTx` returns and make sure `gas` is actually consumed, and will throw errors, if any.
+The first thing `RunTx` does upon being called is to retrieve the `context`'s `CacheMultiStore` by calling the `getContextForTx()` function with the appropriate mode (either `runTxModeCheck` or `runTxModeDeliver`). This `CacheMultiStore` is a branch of the main store, with cache functionality (for query requests), instantiated during `BeginBlock` for `DeliverTx` and during the `Commit` of the previous block for `CheckTx`. After that, two `defer func()` are called for [`gas`](../high-level-concepts/gas-fees.md) management. They are executed when `runTx` returns and make sure `gas` is actually consumed, and will throw errors, if any.
 
 After that, `RunTx()` calls `ValidateBasic()` on each `sdk.Msg`in the `Tx`, which runs preliminary _stateless_ validity checks. If any `sdk.Msg` fails to pass `ValidateBasic()`, `RunTx()` returns with an error.
 
@@ -330,9 +330,9 @@ The `AnteHandler` is theoretically optional, but still a very important componen
 * Perform preliminary _stateful_ validity checks like ensuring signatures are valid or that the sender has enough funds to pay for fees.
 * Play a role in the incentivisation of stakeholders via the collection of transaction fees.
 
-`BaseApp` holds an `anteHandler` as parameter that is initialized in the [application's constructor](../basics/app-anatomy.md#application-constructor). The most widely used `anteHandler` is the [`auth` module](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/x/auth/ante/ante.go).
+`BaseApp` holds an `anteHandler` as parameter that is initialized in the [application's constructor](../high-level-concepts/app-anatomy.md#application-constructor). The most widely used `anteHandler` is the [`auth` module](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/x/auth/ante/ante.go).
 
-Click [here](../basics/gas-fees.md#antehandler) for more on the `anteHandler`.
+Click [here](../high-level-concepts/gas-fees.md#antehandler) for more on the `anteHandler`.
 
 ### RunMsgs
 
@@ -359,9 +359,9 @@ The [`InitChain` ABCI message](https://docs.tendermint.com/master/spec/abci/abci
 
 * [Consensus Parameters](https://docs.tendermint.com/master/spec/abci/apps.html#consensus-parameters) via `setConsensusParams`.
 * [`checkState` and `deliverState`](#state-updates) via `setCheckState` and `setDeliverState`.
-* The [block gas meter](../basics/gas-fees.md#block-gas-meter), with infinite gas to process genesis transactions.
+* The [block gas meter](../high-level-concepts/gas-fees.md#block-gas-meter), with infinite gas to process genesis transactions.
 
-Finally, the `InitChain(req abci.RequestInitChain)` method of `BaseApp` calls the [`initChainer()`](../basics/app-anatomy.md#initchainer) of the application in order to initialize the main state of the application from the `genesis file` and, if defined, call the [`InitGenesis`](../building-modules/genesis.md#initgenesis) function of each of the application's modules.
+Finally, the `InitChain(req abci.RequestInitChain)` method of `BaseApp` calls the [`initChainer()`](../high-level-concepts/app-anatomy.md#initchainer) of the application in order to initialize the main state of the application from the `genesis file` and, if defined, call the [`InitGenesis`](../building-modules/genesis.md#initgenesis) function of each of the application's modules.
 
 ### BeginBlock
 
@@ -369,14 +369,14 @@ The [`BeginBlock` ABCI message](https://docs.tendermint.com/master/spec/abci/abc
 
 * Initialize [`deliverState`](#state-updates) with the latest header using the `req abci.RequestBeginBlock` passed as parameter via the `setDeliverState` function.
   +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/baseapp/baseapp.go#L386-L396
-  This function also resets the [main gas meter](../basics/gas-fees.md#main-gas-meter).
-* Initialize the [block gas meter](../basics/gas-fees.md#block-gas-meter) with the `maxGas` limit. The `gas` consumed within the block cannot go above `maxGas`. This parameter is defined in the application's consensus parameters.
-* Run the application's [`beginBlocker()`](../basics/app-anatomy.md#beginblocker-and-endblock), which mainly runs the [`BeginBlocker()`](../building-modules/beginblock-endblock.md#beginblock) method of each of the application's modules.
+  This function also resets the [main gas meter](../high-level-concepts/gas-fees.md#main-gas-meter).
+* Initialize the [block gas meter](../high-level-concepts/gas-fees.md#block-gas-meter) with the `maxGas` limit. The `gas` consumed within the block cannot go above `maxGas`. This parameter is defined in the application's consensus parameters.
+* Run the application's [`beginBlocker()`](../high-level-concepts/app-anatomy.md#beginblocker-and-endblock), which mainly runs the [`BeginBlocker()`](../building-modules/beginblock-endblock.md#beginblock) method of each of the application's modules.
 * Set the [`VoteInfos`](https://docs.tendermint.com/master/spec/abci/abci.html#voteinfo) of the application, i.e. the list of validators whose _precommit_ for the previous block was included by the proposer of the current block. This information is carried into the [`Context`](./03-context.md) so that it can be used during `DeliverTx` and `EndBlock`.
 
 ### EndBlock
 
-The [`EndBlock` ABCI message](https://docs.tendermint.com/master/spec/abci/abci.html#endblock) is sent from the underlying Tendermint engine after [`DeliverTx`](#delivertx) as been run for each transaction in the block. It allows developers to have logic be executed at the end of each block. In the Cosmos SDK, the bulk `EndBlock(req abci.RequestEndBlock)` method is to run the application's [`EndBlocker()`](../basics/app-anatomy.md#beginblocker-and-endblock), which mainly runs the [`EndBlocker()`](../building-modules/beginblock-endblock.md#beginblock) method of each of the application's modules.
+The [`EndBlock` ABCI message](https://docs.tendermint.com/master/spec/abci/abci.html#endblock) is sent from the underlying Tendermint engine after [`DeliverTx`](#delivertx) as been run for each transaction in the block. It allows developers to have logic be executed at the end of each block. In the Cosmos SDK, the bulk `EndBlock(req abci.RequestEndBlock)` method is to run the application's [`EndBlocker()`](../high-level-concepts/app-anatomy.md#beginblocker-and-endblock), which mainly runs the [`EndBlocker()`](../building-modules/beginblock-endblock.md#beginblock) method of each of the application's modules.
 
 ### Commit
 

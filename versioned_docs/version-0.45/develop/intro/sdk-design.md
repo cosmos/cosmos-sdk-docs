@@ -4,7 +4,7 @@ order: 4
 
 # Main Components of the Cosmos SDK
 
-The Cosmos SDK is a framework that facilitates the development of secure state-machines on top of Tendermint. At its core, the SDK is a boilerplate implementation of the [ABCI](./sdk-app-architecture.md#abci) in Golang. It comes with a [`multistore`](../core/store.md#multistore) to persist data and a [`router`](../core/baseapp.md#routing) to handle transactions.
+The Cosmos SDK is a framework that facilitates the development of secure state-machines on top of Tendermint. At its core, the SDK is a boilerplate implementation of the [ABCI](./sdk-app-architecture.md#abci) in Golang. It comes with a [`multistore`](../01-tx-lifecycle.md04-store.md#multistore) to persist data and a [`router`](../../develop/advanced-concepts/00-baseapp.md#routing) to handle transactions.
 
 Here is a simplified view of how transactions are handled by an application built on top of the Cosmos SDK when transferred from Tendermint via `DeliverTx`:
 
@@ -15,19 +15,19 @@ Here is a simplified view of how transactions are handled by an application buil
 
 ## `baseapp`
 
-`baseapp` is the boilerplate implementation of a Cosmos SDK application. It comes with an implementation of the ABCI to handle the connection with the underlying consensus engine. Typically, a Cosmos SDK application extends `baseapp` by embedding it in [`app.go`](../basics/app-anatomy.md#core-application-file). See an example of this from the SDK application tutorial:
+`baseapp` is the boilerplate implementation of a Cosmos SDK application. It comes with an implementation of the ABCI to handle the connection with the underlying consensus engine. Typically, a Cosmos SDK application extends `baseapp` by embedding it in [`app.go`](../high-level-concepts/app-anatomy.md#core-application-file). See an example of this from the SDK application tutorial:
 
 +++ https://github.com/cosmos/sdk-tutorials/blob/c6754a1e313eb1ed973c5c91dcc606f2fd288811/app.go#L72-L92
 
 The goal of `baseapp` is to provide a secure interface between the store and the extensible state machine while defining as little about the state machine as possible (staying true to the ABCI).
 
-For more on `baseapp`, please click [here](../core/baseapp.md).
+For more on `baseapp`, please click [here](../../develop/advanced-concepts/00-baseapp.md).
 
 ## Multistore
 
-The Cosmos SDK provides a [`multistore`](../core/store.md#multistore) for persisting state. The multistore allows developers to declare any number of [`KVStores`](../core/store.md#base-layer-kvstores). These `KVStores` only accept the `[]byte` type as value and therefore any custom structure needs to be marshalled using [a codec](../core/encoding.md) before being stored.
+The Cosmos SDK provides a [`multistore`](../01-tx-lifecycle.md04-store.md#multistore) for persisting state. The multistore allows developers to declare any number of [`KVStores`](../01-tx-lifecycle.md04-store.md#base-layer-kvstores). These `KVStores` only accept the `[]byte` type as value and therefore any custom structure needs to be marshalled using [a codec](../core/05-encoding.md) before being stored.
 
-The multistore abstraction is used to divide the state in distinct compartments, each managed by its own module. For more on the multistore, click [here](../core/store.md#multistore)
+The multistore abstraction is used to divide the state in distinct compartments, each managed by its own module. For more on the multistore, click [here](../core/04-store.md#multistore)
 
 ## Modules
 
@@ -92,4 +92,4 @@ In addition to the already existing modules in `x/`, that anyone can use in thei
 
 ## Next {hide}
 
-Learn more about the [anatomy of an SDK application](../basics/app-anatomy.md) {hide}
+Learn more about the [anatomy of an SDK application](../high-level-concepts/app-anatomy.md) {hide}

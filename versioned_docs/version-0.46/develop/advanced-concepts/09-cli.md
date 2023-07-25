@@ -4,7 +4,7 @@ order: 8
 
 # Command-Line Interface
 
-This document describes how command-line interface (CLI) works on a high-level, for an [**application**](../basics/app-anatomy.md). A separate document for implementing a CLI for a Cosmos SDK [**module**](../building-modules/intro.md) can be found [here](../building-modules/module-interfaces.md#cli). {synopsis}
+This document describes how command-line interface (CLI) works on a high-level, for an [**application**](../high-level-concepts/app-anatomy.md). A separate document for implementing a CLI for a Cosmos SDK [**module**](../building-modules/intro.md) can be found [here](../building-modules/module-interfaces.md#cli). {synopsis}
 
 ## Command-Line Interface
 
@@ -27,7 +27,7 @@ The first four strings specify the command:
 
 The next two strings are arguments: the `from_address` the user wishes to send from, the `to_address` of the recipient, and the `amount` they want to send. Finally, the last few strings of the command are optional flags to indicate how much the user is willing to pay in fees (calculated using the amount of gas used to execute the transaction and the gas prices provided by the user).
 
-The CLI interacts with a [node](../core/node.md) to handle this command. The interface itself is defined in a `main.go` file.
+The CLI interacts with a [node](../advanced-concepts/03-node.md) to handle this command. The interface itself is defined in a `main.go` file.
 
 ### Building the CLI
 
@@ -35,7 +35,7 @@ The `main.go` file needs to have a `main()` function that creates a root command
 
 * **setting configurations** by reading in configuration files (e.g. the Cosmos SDK config file).
 * **adding any flags** to it, such as `--chain-id`.
-* **instantiating the `codec`** by calling the application's `MakeCodec()` function (called `MakeTestEncodingConfig` in `simapp`). The [`codec`](../core/encoding.md) is used to encode and decode data structures for the application - stores can only persist `[]byte`s so the developer must define a serialization format for their data structures or use the default, Protobuf.
+* **instantiating the `codec`** by calling the application's `MakeCodec()` function (called `MakeTestEncodingConfig` in `simapp`). The [`codec`](../advanced-concepts/05-encoding.md) is used to encode and decode data structures for the application - stores can only persist `[]byte`s so the developer must define a serialization format for their data structures or use the default, Protobuf.
 * **adding subcommand** for all the possible user interactions, including [transaction commands](#transaction-commands) and [query commands](#query-commands).
 
 The `main()` function finally creates an executor and [execute](https://pkg.go.dev/github.com/spf13/cobra#Command.Execute) the root command. See an example of `main()` function from the `simapp` application:
@@ -52,7 +52,7 @@ Every application CLI first constructs a root command, then adds functionality b
 
 The root command (called `rootCmd`) is what the user first types into the command line to indicate which application they wish to interact with. The string used to invoke the command (the "Use" field) is typically the name of the application suffixed with `-d`, e.g. `simd` or `gaiad`. The root command typically includes the following commands to support basic functionality in the application.
 
-* **Status** command from the Cosmos SDK rpc client tools, which prints information about the status of the connected [`Node`](../core/node.md). The Status of a node includes `NodeInfo`,`SyncInfo` and `ValidatorInfo`.
+* **Status** command from the Cosmos SDK rpc client tools, which prints information about the status of the connected [`Node`](../advanced-concepts/03-node.md). The Status of a node includes `NodeInfo`,`SyncInfo` and `ValidatorInfo`.
 * **Keys** [commands](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/client/keys) from the Cosmos SDK client tools, which includes a collection of subcommands for using the key functions in the Cosmos SDK crypto tools, including adding a new key and saving it to the keyring, listing all public keys stored in the keyring, and deleting a key. For example, users can type `simd keys add <name>` to add a new key and save an encrypted copy to the keyring, using the flag `--recover` to recover a private key from a seed phrase or the flag `--multisig` to group multiple keys together to create a multisig key. For full details on the `add` key command, see the code [here](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/client/keys/add.go). For more details about usage of `--keyring-backend` for storage of key credentials look at the [keyring docs](../run-node/keyring.md).
 * **Server** commands from the Cosmos SDK server package. These commands are responsible for providing the mechanisms necessary to start an ABCI Tendermint application and provides the CLI framework (based on [cobra](github.com/spf13/cobra)) necessary to fully bootstrap an application. The package exposes two core functions: `StartCmd` and `ExportCmd` which creates commands to start the application and export state respectively. Click [here](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/server) to learn more.
 * [**Transaction**](#transaction-commands) commands.

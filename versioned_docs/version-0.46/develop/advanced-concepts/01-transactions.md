@@ -8,13 +8,13 @@ order: 2
 
 ## Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](../basics/app-anatomy.md) {prereq}
+* [Anatomy of a Cosmos SDK Application](../high-level-concepts/app-anatomy.md) {prereq}
 
 ## Transactions
 
 Transactions are comprised of metadata held in [contexts](./03-context.md) and [`sdk.Msg`s](../building-modules/messages-and-queries.md) that trigger state changes within a module through the module's Protobuf [`Msg` service](../building-modules/msg-services.md).
 
-When users want to interact with an application and make state changes (e.g. sending coins), they create transactions. Each of a transaction's `sdk.Msg` must be signed using the private key associated with the appropriate account(s), before the transaction is broadcasted to the network. A transaction must then be included in a block, validated, and approved by the network through the consensus process. To read more about the lifecycle of a transaction, click [here](../basics/tx-lifecycle.md).
+When users want to interact with an application and make state changes (e.g. sending coins), they create transactions. Each of a transaction's `sdk.Msg` must be signed using the private key associated with the appropriate account(s), before the transaction is broadcasted to the network. A transaction must then be included in a block, validated, and approved by the network through the consensus process. To read more about the lifecycle of a transaction, click [here](../high-level-concepts/01-tx-lifecycle.md).
 
 ## Type Definition
 
@@ -25,7 +25,7 @@ Transaction objects are Cosmos SDK types that implement the `Tx` interface
 It contains the following methods:
 
 * **GetMsgs:** unwraps the transaction and returns a list of contained `sdk.Msg`s - one transaction may have one or multiple messages, which are defined by module developers.
-* **ValidateBasic:** lightweight, [_stateless_](../basics/tx-lifecycle.md#types-of-checks) checks used by ABCI messages [`CheckTx`](./00-baseapp.md#checktx) and [`DeliverTx`](./00-baseapp.md#delivertx) to make sure transactions are not invalid. For example, the [`auth`](https://github.com/cosmos/cosmos-sdk/tree/main/x/auth) module's `ValidateBasic` function checks that its transactions are signed by the correct number of signers and that the fees do not exceed what the user's maximum. Note that this function is to be distinct from `sdk.Msg` [`ValidateBasic`](../basics/tx-lifecycle.md#ValidateBasic) methods, which perform basic validity checks on messages only. When [`runTx`](./00-baseapp.md#runtx) is checking a transaction created from the [`auth`](https://github.com/cosmos/cosmos-sdk/tree/main/x/auth/spec) module, it first runs `ValidateBasic` on each message, then runs the `auth` module AnteHandler which calls `ValidateBasic` for the transaction itself.
+* **ValidateBasic:** lightweight, [_stateless_](../high-level-concepts/01-tx-lifecycle.md#types-of-checks) checks used by ABCI messages [`CheckTx`](./00-baseapp.md#checktx) and [`DeliverTx`](./00-baseapp.md#delivertx) to make sure transactions are not invalid. For example, the [`auth`](https://github.com/cosmos/cosmos-sdk/tree/main/x/auth) module's `ValidateBasic` function checks that its transactions are signed by the correct number of signers and that the fees do not exceed what the user's maximum. Note that this function is to be distinct from `sdk.Msg` [`ValidateBasic`](../high-level-concepts/01-tx-lifecycle.md#ValidateBasic) methods, which perform basic validity checks on messages only. When [`runTx`](./00-baseapp.md#runtx) is checking a transaction created from the [`auth`](https://github.com/cosmos/cosmos-sdk/tree/main/x/auth/spec) module, it first runs `ValidateBasic` on each message, then runs the `auth` module AnteHandler which calls `ValidateBasic` for the transaction itself.
 
 As a developer, you should rarely manipulate `Tx` directly, as `Tx` is really an intermediate type used for transaction generation. Instead, developers should prefer the `TxBuilder` interface, which you can learn more about [below](#transaction-generation).
 
@@ -142,7 +142,7 @@ Once the transaction bytes are generated, there are currently three ways of broa
 
 #### CLI
 
-Application developers create entry points to the application by creating a [command-line interface](../core/cli.md), [gRPC and/or REST interface](../core/grpc_rest.md), typically found in the application's `./cmd` folder. These interfaces allow users to interact with the application through command-line.
+Application developers create entry points to the application by creating a [command-line interface](../advanced-concepts/06-cli.md), [gRPC and/or REST interface](../advanced-concepts/08-grpc_rest.md), typically found in the application's `./cmd` folder. These interfaces allow users to interact with the application through command-line.
 
 For the [command-line interface](../building-modules/module-interfaces.md#cli), module developers create subcommands to add as children to the application top-level transaction command `TxCmd`. CLI commands actually bundle all the steps of transaction processing into one simple command: creating messages, generating transactions and broadcasting. For concrete examples, see the [Interacting with a Node](../run-node/interact-node.md) section. An example transaction made using CLI looks like:
 

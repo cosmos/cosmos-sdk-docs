@@ -8,7 +8,7 @@ order: 9
 
 ## Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK application](../basics/app-anatomy.md) {prereq}
+* [Anatomy of a Cosmos SDK application](../high-level-concepts/app-anatomy.md) {prereq}
 * [Tendermint Documentation on Events](https://docs.tendermint.com/master/spec/abci/abci.html#events) {prereq}
 
 ## Typed Events
@@ -124,7 +124,7 @@ Subscribing to this Event would be done like so:
 }
 ```
 
-where `ownerAddress` is an address following the [`AccAddress`](../basics/accounts.md#addresses) format.
+where `ownerAddress` is an address following the [`AccAddress`](../high-level-concepts/accounts.md#addresses) format.
 
 ## Events (Deprecated)
 
@@ -132,7 +132,7 @@ Previously, the Cosmos SDK supported emitting Events that were defined in `types
 
 This is why this methods as been deprecated, and replaced by _[Typed Events](#typed-events).
 
-To learn more about the previous way of defining events, please refer to the [previous SDK documentation](https://docs.cosmos.network/v0.45/core/events.html#events-2).
+To learn more about the previous way of defining events, please refer to the [previous SDK documentation](https://docs.cosmos.network/v0.45events.html#events-2).
 
 ## Next {hide}
 
