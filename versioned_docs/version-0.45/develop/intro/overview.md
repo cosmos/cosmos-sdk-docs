@@ -1,7 +1,3 @@
-<!--
-order: 1
--->
-
 # High-level Overview
 
 ## What is the SDK?

@@ -1,7 +1,3 @@
-<!--
-order: 7
--->
-
 # Running a Testnet
 
 The `simd testnet` subcommand makes it easy to initialize and start a simulated test network for testing purposes. {synopsis}

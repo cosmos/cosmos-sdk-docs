@@ -1,7 +1,3 @@
-<!--
-order: 2
--->
-
 # Running a Node
 
 Now that the application is ready and the keyring populated, it's time to see how to run the blockchain node. In this section, the application we are running is called [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/main/simapp), and its corresponding CLI binary `simd`. {synopsis}

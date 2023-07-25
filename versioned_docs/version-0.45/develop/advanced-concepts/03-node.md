@@ -1,14 +1,10 @@
-<!--
-order: 4
--->
-
-# Node Client (Daemon)
+=# Node Client (Daemon)
 
 The main endpoint of an SDK application is the daemon client, otherwise known as the full-node client. The full-node runs the state-machine, starting from a genesis file. It connects to peers running the same client in order to receive and relay transactions, block proposals and signatures. The full-node is constituted of the application, defined with the Cosmos SDK, and of a consensus engine connected to the application via the ABCI. {synopsis}
 
 ## Pre-requisite Readings
 
-- [Anatomy of an SDK application](../high-level-concepts/app-anatomy.md) {prereq}
+- [Anatomy of an SDK application](../high-level-concepts/overview-app.md) {prereq}
 
 ## `main` function
 
@@ -17,7 +13,7 @@ The full-node client of any SDK application is built by running a `main` functio
 In general, developers will implement the `main.go` function with the following structure:
 
 - First, an [`appCodec`](./05-encoding.md) is instantiated for the application.
-- Then, the `config` is retrieved and config parameters are set. This mainly involves setting the Bech32 prefixes for [addresses](../high-level-concepts/accounts.md#addresses).
+- Then, the `config` is retrieved and config parameters are set. This mainly involves setting the Bech32 prefixes for [addresses](../high-level-concepts/03-accounts.md#addresses).
   +++ https://github.com/cosmos/cosmos-sdk/blob/v0.40.0-rc3/types/config.go#L13-L24
 - Using [cobra](https://github.com/spf13/cobra), the root command of the full-node client is created. After that, all the custom commands of the application are added using the `AddCommand()` method of `rootCmd`.
 - Add default server commands to `rootCmd` using the `server.AddCommands()` method. These commands are separated from the ones added above since they are standard and defined at SDK level. They should be shared by all SDK-based applications. They include the most important command: the [`start` command](#start-command).
@@ -51,7 +47,7 @@ With the `db`, the `start` command creates a new instance of the application usi
 Note that an `appCreator` is a function that fulfills the `AppCreator` signature:
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.40.0-rc3/server/types/app.go#L48-L50
 
-In practice, the [constructor of the application](../high-level-concepts/app-anatomy.md#constructor-function) is passed as the `appCreator`.
+In practice, the [constructor of the application](../high-level-concepts/overview-app.md#constructor-function) is passed as the `appCreator`.
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.40.0-rc3/simapp/simd/cmd/root.go#L170-L215
 

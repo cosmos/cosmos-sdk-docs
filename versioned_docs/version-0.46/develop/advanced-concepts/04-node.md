@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Node Client (Daemon)
 
 The main endpoint of a Cosmos SDK application is the daemon client, otherwise known as the full-node client. The full-node runs the state-machine, starting from a genesis file. It connects to peers running the same client in order to receive and relay transactions, block proposals and signatures. The full-node is constituted of the application, defined with the Cosmos SDK, and of a consensus engine connected to the application via the ABCI. {synopsis}
@@ -17,7 +13,7 @@ The full-node client of any Cosmos SDK application is built by running a `main` 
 In general, developers will implement the `main.go` function with the following structure:
 
 * First, an [`encodingCodec`](./07-encoding.md) is instantiated for the application.
-* Then, the `config` is retrieved and config parameters are set. This mainly involves setting the Bech32 prefixes for [addresses](../high-level-concepts/accounts.md#addresses).
+* Then, the `config` is retrieved and config parameters are set. This mainly involves setting the Bech32 prefixes for [addresses](../high-level-concepts/03-accounts.md#addresses).
   +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/types/config.go#L14-L29
 * Using [cobra](https://github.com/spf13/cobra), the root command of the full-node client is created. After that, all the custom commands of the application are added using the `AddCommand()` method of `rootCmd`.
 * Add default server commands to `rootCmd` using the `server.AddCommands()` method. These commands are separated from the ones added above since they are standard and defined at Cosmos SDK level. They should be shared by all Cosmos SDK-based applications. They include the most important command: the [`start` command](#start-command).

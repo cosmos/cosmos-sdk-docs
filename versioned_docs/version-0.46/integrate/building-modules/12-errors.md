@@ -1,7 +1,3 @@
-<!--
-order: 13
--->
-
 # Errors
 
 This document outlines the recommended usage and APIs for error handling in Cosmos SDK modules. {synopsis}

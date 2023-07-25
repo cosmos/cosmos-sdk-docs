@@ -1,14 +1,10 @@
-<!--
-order: 13
--->
-
 # Upgrading Modules
 
-[In-Place Store Migrations](../advanced-concepts/upgrade.md) allow your modules to upgrade to new versions that include breaking changes. This document outlines how to build modules to take advantage of this functionality. {synopsis}
+[In-Place Store Migrations](../advanced-concepts/13-upgrade.md) allow your modules to upgrade to new versions that include breaking changes. This document outlines how to build modules to take advantage of this functionality. {synopsis}
 
 ## Prerequisite Readings
 
-* [In-Place Store Migration](../advanced-concepts/upgrade.md) {prereq}
+* [In-Place Store Migration](../advanced-concepts/13-upgrade.md) {prereq}
 
 ## Consensus Version
 

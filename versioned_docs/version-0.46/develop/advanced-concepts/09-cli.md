@@ -1,10 +1,6 @@
-<!--
-order: 8
--->
-
 # Command-Line Interface
 
-This document describes how command-line interface (CLI) works on a high-level, for an [**application**](../high-level-concepts/app-anatomy.md). A separate document for implementing a CLI for a Cosmos SDK [**module**](../building-modules/intro.md) can be found [here](../building-modules/module-interfaces.md#cli). {synopsis}
+This document describes how command-line interface (CLI) works on a high-level, for an [**application**](../high-level-concepts/app-anatomy.md). A separate document for implementing a CLI for a Cosmos SDK [**module**](../building-modules/intro.md) can be found [here](../building-modules/09-module-interfaces.md#cli). {synopsis}
 
 ## Command-Line Interface
 
@@ -76,7 +72,7 @@ The root-level `status` and `keys` subcommands are common across most applicatio
 
 ### Transaction Commands
 
-[Transactions](./01-transactions.md) are objects wrapping [`Msg`s](../building-modules/messages-and-queries.md#messages) that trigger state changes. To enable the creation of transactions using the CLI interface, a function `txCommand` is generally added to the `rootCmd`:
+[Transactions](./01-transactions.md) are objects wrapping [`Msg`s](../building-modules/02-messages-and-queries.md#messages) that trigger state changes. To enable the creation of transactions using the CLI interface, a function `txCommand` is generally added to the `rootCmd`:
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/simapp/simd/cmd/root.go#L175-L181
 
@@ -84,7 +80,7 @@ This `txCommand` function adds all the transaction available to end-users for th
 
 * **Sign command** from the [`auth`](../../x/auth/spec/README.md) module that signs messages in a transaction. To enable multisig, add the `auth` module's `MultiSign` command. Since every transaction requires some sort of signature in order to be valid, the signing command is necessary for every application.
 * **Broadcast command** from the Cosmos SDK client tools, to broadcast transactions.
-* **All [module transaction commands](../building-modules/module-interfaces.md#transaction-commands)** the application is dependent on, retrieved by using the [basic module manager's](../building-modules/module-manager.md#basic-manager) `AddTxCommands()` function.
+* **All [module transaction commands](../building-modules/09-module-interfaces.md#transaction-commands)** the application is dependent on, retrieved by using the [basic module manager's](../building-modules/01-module-manager.md#basic-manager) `AddTxCommands()` function.
 
 Here is an example of a `txCommand` aggregating these subcommands from the `simapp` application:
 
@@ -92,7 +88,7 @@ Here is an example of a `txCommand` aggregating these subcommands from the `sima
 
 ### Query Commands
 
-[**Queries**](../building-modules/messages-and-queries.md#queries) are objects that allow users to retrieve information about the application's state. To enable the creation of queries using the CLI interface, a function `queryCommand` is generally added to the `rootCmd`:
+[**Queries**](../building-modules/02-messages-and-queries.md#queries) are objects that allow users to retrieve information about the application's state. To enable the creation of queries using the CLI interface, a function `queryCommand` is generally added to the `rootCmd`:
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/simapp/simd/cmd/root.go#L175-L181
 
@@ -102,7 +98,7 @@ This `queryCommand` function adds all the queries available to end-users for the
 * **Account command** from the `auth` module, which displays the state (e.g. account balance) of an account given an address.
 * **Validator command** from the Cosmos SDK rpc client tools, which displays the validator set of a given height.
 * **Block command** from the Cosmos SDK rpc client tools, which displays the block data for a given height.
-* **All [module query commands](../building-modules/module-interfaces.md#query-commands)** the application is dependent on, retrieved by using the [basic module manager's](../building-modules/module-manager.md#basic-manager) `AddQueryCommands()` function.
+* **All [module query commands](../building-modules/09-module-interfaces.md#query-commands)** the application is dependent on, retrieved by using the [basic module manager's](../building-modules/01-module-manager.md#basic-manager) `AddQueryCommands()` function.
 
 Here is an example of a `queryCommand` aggregating subcommands from the `simapp` application:
 
@@ -114,7 +110,7 @@ Flags are used to modify commands; developers can include them in a `flags.go` f
 
 A _persistent_ flag (as opposed to a _local_ flag) added to a command transcends all of its children: subcommands will inherit the configured values for these flags. Additionally, all flags have default values when they are added to commands; some toggle an option off but others are empty values that the user needs to override to create valid commands. A flag can be explicitly marked as _required_ so that an error is automatically thrown if the user does not provide a value, but it is also acceptable to handle unexpected missing flags differently.
 
-Flags are added to commands directly (generally in the [module's CLI file](../building-modules/module-interfaces.md#flags) where module commands are defined) and no flag except for the `rootCmd` persistent flags has to be added at application level. It is common to add a _persistent_ flag for `--chain-id`, the unique identifier of the blockchain the application pertains to, to the root command. Adding this flag can be done in the `main()` function. Adding this flag makes sense as the chain ID should not be changing across commands in this application CLI. Here is an example from the `simapp` application:
+Flags are added to commands directly (generally in the [module's CLI file](../building-modules/09-module-interfaces.md#flags) where module commands are defined) and no flag except for the `rootCmd` persistent flags has to be added at application level. It is common to add a _persistent_ flag for `--chain-id`, the unique identifier of the blockchain the application pertains to, to the root command. Adding this flag can be done in the `main()` function. Adding this flag makes sense as the chain ID should not be changing across commands in this application CLI. Here is an example from the `simapp` application:
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/simapp/simd/cmd/root.go#L210-L210
 

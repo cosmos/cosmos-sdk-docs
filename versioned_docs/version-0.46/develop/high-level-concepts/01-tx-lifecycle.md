@@ -1,7 +1,3 @@
-<!--
-order: 2
--->
-
 # Transaction Lifecycle
 
 This document describes the lifecycle of a transaction from creation to committed state changes. Transaction definition is described in a [different doc](../advanced-concepts/01-transactions.md). The transaction will be referred to as `Tx`. {synopsis}
@@ -22,7 +18,7 @@ One of the main application interfaces is the command-line interface. The transa
 
 This command will automatically **create** the transaction, **sign** it using the account's private key, and **broadcast** it to the specified peer node.
 
-There are several required and optional flags for transaction creation. The `--from` flag specifies which [account](./accounts.md) the transaction is originating from. For example, if the transaction is sending coins, the funds will be drawn from the specified `from` address.
+There are several required and optional flags for transaction creation. The `--from` flag specifies which [account](./03-accounts.md) the transaction is originating from. For example, if the transaction is sending coins, the funds will be drawn from the specified `from` address.
 
 #### Gas and Fees
 
@@ -94,7 +90,7 @@ Other validation operations must be performed when [handling a message](../build
 
 Example, if the message is to send coins from one address to another, `ValidateBasic` likely checks for non-empty addresses and a non-negative coin amount, but does not require knowledge of state such as the account balance of an address.
 
-See also [Msg Service Validation](../building-modules/msg-services.md#Validation).
+See also [Msg Service Validation](../building-modules/03-msg-services.md#Validation).
 
 ### AnteHandler
 
@@ -210,8 +206,8 @@ Instead of using their `checkState`, full-nodes use `deliverState`:
 * **`MsgServiceRouter`:** While `CheckTx` would have exited, `DeliverTx` continues to run
   [`runMsgs`](../../develop/advanced-concepts/00-baseapp.md#runtx-antehandler-runmsgs-posthandler) to fully execute each `Msg` within the transaction.
   Since the transaction may have messages from different modules, `BaseApp` needs to know which module
-  to find the appropriate handler. This is achieved using `BaseApp`'s `MsgServiceRouter` so that it can be processed by the module's Protobuf [`Msg` service](../building-modules/msg-services.md).
-  For `LegacyMsg` routing, the `Route` function is called via the [module manager](../building-modules/module-manager.md) to retrieve the route name and find the legacy [`Handler`](../building-modules/msg-services.md#handler-type) within the module.
+  to find the appropriate handler. This is achieved using `BaseApp`'s `MsgServiceRouter` so that it can be processed by the module's Protobuf [`Msg` service](../building-modules/03-msg-services.md).
+  For `LegacyMsg` routing, the `Route` function is called via the [module manager](../building-modules/01-module-manager.md) to retrieve the route name and find the legacy [`Handler`](../building-modules/03-msg-services.md#handler-type) within the module.
   
 * **`Msg` service:** Protobuf `Msg` service is responsible for executing each message in the `Tx` and causes state transitions to persist in `deliverTxState`.
 
@@ -254,4 +250,4 @@ in `[]byte` form, is stored in a block and appended to the blockchain.
 
 ## Next {hide}
 
-Learn about [accounts](./accounts.md) {hide}
+Learn about [accounts](./03-accounts.md) {hide}

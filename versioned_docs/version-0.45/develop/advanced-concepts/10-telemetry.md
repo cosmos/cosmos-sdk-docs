@@ -1,7 +1,3 @@
-<!--
-order: 10
--->
-
 # Telemetry
 
 Gather relevant insights about your application and modules with custom metrics and telemetry. {synopsis}
@@ -142,4 +138,4 @@ The following examples expose too much cardinality and may not even prove to be 
 
 ## Next {hide}
 
-Learn about the [object-capability](./ocap.md) model {hide}
+Learn about the [object-capability](./09-ocap.md) model {hide}

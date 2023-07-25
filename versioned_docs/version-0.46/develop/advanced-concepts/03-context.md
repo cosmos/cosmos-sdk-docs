@@ -1,7 +1,3 @@
-<!--
-order: 3
--->
-
 # Context
 
 The `context` is a data structure intended to be passed from function to function that carries information about the current state of the application. It provides access to a branched storage (a safe branch of the entire state) as well as useful objects and information like `gasMeter`, `block height`, `consensus parameters` and more. {synopsis}

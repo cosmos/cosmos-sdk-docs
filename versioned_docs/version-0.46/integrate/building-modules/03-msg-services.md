@@ -1,15 +1,11 @@
-<!--
-order: 4
--->
-
 # `Msg` Services
 
-A Protobuf `Msg` service processes [messages](./messages-and-queries.md#messages). Protobuf `Msg` services are specific to the module in which they are defined, and only process messages defined within the said module. They are called from `BaseApp` during [`DeliverTx`](../../develop/advanced-concepts/00-baseapp.md#delivertx). {synopsis}
+A Protobuf `Msg` service processes [messages](./02-messages-and-queries.md#messages). Protobuf `Msg` services are specific to the module in which they are defined, and only process messages defined within the said module. They are called from `BaseApp` during [`DeliverTx`](../../develop/advanced-concepts/00-baseapp.md#delivertx). {synopsis}
 
 ## Pre-requisite Readings
 
-* [Module Manager](./module-manager.md) {prereq}
-* [Messages and Queries](./messages-and-queries.md) {prereq}
+* [Module Manager](./01-module-manager.md) {prereq}
+* [Messages and Queries](./02-messages-and-queries.md) {prereq}
 
 ## Implementation of a module `Msg` service
 
@@ -50,7 +46,7 @@ ValidateMsgA(msg MsgA, now Time, gm GasMeter) error {
 
 ### State Transition
 
-After the validation is successful, the `msgServer` method uses the [`keeper`](./keeper.md) functions to access the state and perform a state transition.
+After the validation is successful, the `msgServer` method uses the [`keeper`](./06-keeper.md) functions to access the state and perform a state transition.
 
 ### Events 
 
@@ -89,7 +85,7 @@ This diagram shows a typical structure of a Protobuf `Msg` service, and how the 
 
 ## Telemetry
 
-New [telemetry metrics](../advanced-concepts/telemetry.md) can be created from `msgServer` methods when handling messages.
+New [telemetry metrics](../advanced-concepts/11-telemetry.md) can be created from `msgServer` methods when handling messages.
 
 This is an example from the `x/auth/vesting` module:
 
@@ -97,4 +93,4 @@ This is an example from the `x/auth/vesting` module:
 
 ## Next {hide}
 
-Learn about [query services](./query-services.md) {hide}
+Learn about [query services](./04-query-services.md) {hide}

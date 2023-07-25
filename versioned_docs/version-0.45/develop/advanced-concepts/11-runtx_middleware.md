@@ -1,7 +1,3 @@
-<!--
-order: 12
--->
-
 # RunTx recovery middleware
 
 `BaseApp.runTx()` function handles Golang panics that might occur during transactions execution, for example, keeper has faced an invalid state and paniced.

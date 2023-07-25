@@ -1,14 +1,10 @@
-<!--
-order: 3
--->
-
 # Context
 
 The `context` is a data structure intended to be passed from function to function that carries information about the current state of the application. It provides an access to a branched storage (a safe branch of the entire state) as well as useful objects and information like `gasMeter`, `block height`, `consensus parameters` and more. {synopsis}
 
 ## Pre-requisites Readings
 
-- [Anatomy of an SDK Application](../high-level-concepts/app-anatomy.md) {prereq}
+- [Anatomy of an SDK Application](../high-level-concepts/overview-app.md) {prereq}
 - [Lifecycle of a Transaction](../high-level-concepts/01-tx-lifecycle.md) {prereq}
 
 ## Context Definition

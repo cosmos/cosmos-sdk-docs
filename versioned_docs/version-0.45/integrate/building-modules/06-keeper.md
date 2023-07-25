@@ -1,7 +1,3 @@
-<!--
-order: 7
--->
-
 # Keepers
 
 `Keeper`s refer to a Cosmos SDK abstraction whose role is to manage access to the subset of the state defined by various modules. `Keeper`s are module-specific, i.e. the subset of state defined by a module can only be accessed by a `keeper` defined in said module. If a module needs to access the subset of state defined by another module, a reference to the second module's internal `keeper` needs to be passed to the first one. This is done in `app.go` during the instantiation of module keepers. {synopsis}
@@ -14,7 +10,7 @@ order: 7
 
 The Cosmos SDK is a framework that makes it easy for developers to build complex decentralised applications from scratch, mainly by composing modules together. As the ecosystem of open source modules for the Cosmos SDK expands, it will become increasingly likely that some of these modules contain vulnerabilities, as a result of the negligence or malice of their developer.
 
-The Cosmos SDK adopts an [object-capabilities-based approach](../core/ocap.md) to help developers better protect their application from unwanted inter-module interactions, and `keeper`s are at the core of this approach. A `keeper` can be thought of quite literally as the gatekeeper of a module's store(s). Each store (typically an [`IAVL` Store](../core/04-store.md#iavl-store)) defined within a module comes with a `storeKey`, which grants unlimited access to it. The module's `keeper` holds this `storeKey` (which should otherwise remain unexposed), and defines [methods](#implementing-methods) for reading and writing to the store(s).
+The Cosmos SDK adopts an [object-capabilities-based approach](../advanced-concepts/ocap.md) to help developers better protect their application from unwanted inter-module interactions, and `keeper`s are at the core of this approach. A `keeper` can be thought of quite literally as the gatekeeper of a module's store(s). Each store (typically an [`IAVL` Store](../advanced-concepts/04-store.md#iavl-store)) defined within a module comes with a `storeKey`, which grants unlimited access to it. The module's `keeper` holds this `storeKey` (which should otherwise remain unexposed), and defines [methods](#implementing-methods) for reading and writing to the store(s).
 
 The core idea behind the object-capabilities approach is to only reveal what is necessary to get the work done. In practice, this means that instead of handling permissions of modules through access-control lists, module `keeper`s are passed a reference to the specific instance of the other modules' `keeper`s that they need to access (this is done in the [application's constructor function](../high-level-concepts/app-anatomy.md#constructor-function)). As a consequence, a module can only interact with the subset of state defined in another module via the methods exposed by the instance of the other module's `keeper`. This is a great way for developers to control the interactions that their own module can have with modules developed by external developers.
 
@@ -39,14 +35,14 @@ For example, here is the type definition of the `keeper` from the `staking` modu
 Let us go through the different parameters:
 
 - An expected `keeper` is a `keeper` external to a module that is required by the internal `keeper` of said module. External `keeper`s are listed in the internal `keeper`'s type definition as interfaces. These interfaces are themselves defined in an `expected_keepers.go` file in the root of the module's folder. In this context, interfaces are used to reduce the number of dependencies, as well as to facilitate the maintenance of the module itself.
-- `storeKey`s grant access to the store(s) of the [multistore](../core/04-store.md) managed by the module. They should always remain unexposed to external modules.
-- `cdc` is the [codec](../core/05-encoding.md) used to marshall and unmarshall structs to/from `[]byte`. The `cdc` can be any of `codec.BinaryCodec`, `codec.JSONCodec` or `codec.Codec` based on your requirements. It can be either a proto or amino codec as long as they implement these interfaces.
+- `storeKey`s grant access to the store(s) of the [multistore](../advanced-concepts/04-store.md) managed by the module. They should always remain unexposed to external modules.
+- `cdc` is the [codec](../advanced-concepts/05-encoding.md) used to marshall and unmarshall structs to/from `[]byte`. The `cdc` can be any of `codec.BinaryCodec`, `codec.JSONCodec` or `codec.Codec` based on your requirements. It can be either a proto or amino codec as long as they implement these interfaces.
 
 Of course, it is possible to define different types of internal `keeper`s for the same module (e.g. a read-only `keeper`). Each type of `keeper` comes with its own constructor function, which is called from the [application's constructor function](../high-level-concepts/app-anatomy.md). This is where `keeper`s are instantiated, and where developers make sure to pass correct instances of modules' `keeper`s to other modules that require them.
 
 ## Implementing Methods
 
-`Keeper`s primarily expose getter and setter methods for the store(s) managed by their module. These methods should remain as simple as possible and strictly be limited to getting or setting the requested value, as validity checks should have already been performed via the `ValidateBasic()` method of the [`message`](./messages-and-queries.md#messages) and the [`Msg` server](./msg-services.md) when `keeper`s' methods are called.
+`Keeper`s primarily expose getter and setter methods for the store(s) managed by their module. These methods should remain as simple as possible and strictly be limited to getting or setting the requested value, as validity checks should have already been performed via the `ValidateBasic()` method of the [`message`](./02-messages-and-queries.md#messages) and the [`Msg` server](./03-msg-services.md) when `keeper`s' methods are called.
 
 Typically, a *getter* method will have the following signature
 
@@ -82,4 +78,4 @@ This is an example from the `auth` module to iterate accounts:
 
 ## Next {hide}
 
-Learn about [invariants](./invariants.md) {hide}
+Learn about [invariants](./07-invariants.md) {hide}

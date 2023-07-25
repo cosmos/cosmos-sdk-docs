@@ -1,7 +1,3 @@
-<!--
-order: 7
--->
-
 # Keepers
 
 `Keeper`s refer to a Cosmos SDK abstraction whose role is to manage access to the subset of the state defined by various modules. `Keeper`s are module-specific, i.e. the subset of state defined by a module can only be accessed by a `keeper` defined in said module. If a module needs to access the subset of state defined by another module, a reference to the second module's internal `keeper` needs to be passed to the first one. This is done in `app.go` during the instantiation of module keepers. {synopsis}
@@ -46,7 +42,7 @@ Of course, it is possible to define different types of internal `keeper`s for th
 
 ## Implementing Methods
 
-`Keeper`s primarily expose getter and setter methods for the store(s) managed by their module. These methods should remain as simple as possible and strictly be limited to getting or setting the requested value, as validity checks should have already been performed via the `ValidateBasic()` method of the [`message`](./messages-and-queries.md#messages) and the [`Msg` server](./msg-services.md) when `keeper`s' methods are called.
+`Keeper`s primarily expose getter and setter methods for the store(s) managed by their module. These methods should remain as simple as possible and strictly be limited to getting or setting the requested value, as validity checks should have already been performed via the `ValidateBasic()` method of the [`message`](./02-messages-and-queries.md#messages) and the [`Msg` server](./03-msg-services.md) when `keeper`s' methods are called.
 
 Typically, a *getter* method will have the following signature
 
@@ -82,4 +78,4 @@ This is an example from the `auth` module to iterate accounts:
 
 ## Next {hide}
 
-Learn about [invariants](./invariants.md) {hide}
+Learn about [invariants](./07-invariants.md) {hide}

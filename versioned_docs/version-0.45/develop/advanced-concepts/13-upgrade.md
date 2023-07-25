@@ -1,7 +1,3 @@
-<!--
-order: 15
--->
-
 # In-Place Store Migrations
 
 ::: warning
@@ -14,7 +10,7 @@ The Cosmos SDK uses two methods to perform upgrades.
 
 - Exporting the entire application state to a JSON file using the `export` CLI command, making changes, and then starting a new binary with the changed JSON file as the genesis file. See [Chain Upgrade Guide to v0.42](/v0.42/migrations/chain-upgrade-guide-040.html).
 
-- Version v0.44 and later can perform upgrades in place to significantly decrease the upgrade time for chains with a larger state. Use the [Module Upgrade Guide](../building-modules/upgrade.md) to set up your application modules to take advantage of in-place upgrades.
+- Version v0.44 and later can perform upgrades in place to significantly decrease the upgrade time for chains with a larger state. Use the [Module Upgrade Guide](../building-modules/13-upgrade.md) to set up your application modules to take advantage of in-place upgrades.
 
 This document provides steps to use the In-Place Store Migrations upgrade method.
 
@@ -61,7 +57,7 @@ app.UpgradeKeeper.SetUpgradeHandler("my-plan", func(ctx sdk.Context, plan upgrad
 })
 ```
 
-To learn more about configuring migration scripts for your modules, see the [Module Upgrade Guide](../building-modules/upgrade.md).
+To learn more about configuring migration scripts for your modules, see the [Module Upgrade Guide](../building-modules/13-upgrade.md).
 
 ### Order Of Migrations
 

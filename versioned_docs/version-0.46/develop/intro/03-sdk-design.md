@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Main Components of the Cosmos SDK
 
 The Cosmos SDK is a framework that facilitates the development of secure state-machines on top of Tendermint. At its core, the Cosmos SDK is a boilerplate implementation of the [ABCI](./sdk-app-architecture.md#abci) in Golang. It comes with a [`multistore`](../advanced-concepts/04-store.md#multistore) to persist data and a [`router`](../advanced-concepts/00-baseapp.md#routing) to handle transactions.

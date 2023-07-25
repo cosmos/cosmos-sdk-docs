@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Main Components of the Cosmos SDK
 
 The Cosmos SDK is a framework that facilitates the development of secure state-machines on top of Tendermint. At its core, the SDK is a boilerplate implementation of the [ABCI](./sdk-app-architecture.md#abci) in Golang. It comes with a [`multistore`](../01-tx-lifecycle.md04-store.md#multistore) to persist data and a [`router`](../../develop/advanced-concepts/00-baseapp.md#routing) to handle transactions.
@@ -25,9 +21,9 @@ For more on `baseapp`, please click [here](../../develop/advanced-concepts/00-ba
 
 ## Multistore
 
-The Cosmos SDK provides a [`multistore`](../01-tx-lifecycle.md04-store.md#multistore) for persisting state. The multistore allows developers to declare any number of [`KVStores`](../01-tx-lifecycle.md04-store.md#base-layer-kvstores). These `KVStores` only accept the `[]byte` type as value and therefore any custom structure needs to be marshalled using [a codec](../core/05-encoding.md) before being stored.
+The Cosmos SDK provides a [`multistore`](../01-tx-lifecycle.md04-store.md#multistore) for persisting state. The multistore allows developers to declare any number of [`KVStores`](../01-tx-lifecycle.md04-store.md#base-layer-kvstores). These `KVStores` only accept the `[]byte` type as value and therefore any custom structure needs to be marshalled using [a codec](../advanced-concepts/05-encoding.md) before being stored.
 
-The multistore abstraction is used to divide the state in distinct compartments, each managed by its own module. For more on the multistore, click [here](../core/04-store.md#multistore)
+The multistore abstraction is used to divide the state in distinct compartments, each managed by its own module. For more on the multistore, click [here](../advanced-concepts/04-store.md#multistore)
 
 ## Modules
 
@@ -80,7 +76,7 @@ Here is a simplified view of how a transaction is processed by the application o
                                        v
 ```
 
-Each module can be seen as a little state-machine. Developers need to define the subset of the state handled by the module, as well as custom message types that modify the state (*Note:* `messages` are extracted from `transactions` by `baseapp`). In general, each module declares its own `KVStore` in the `multistore` to persist the subset of the state it defines. Most developers will need to access other 3rd party modules when building their own modules. Given that the Cosmos-SDK is an open framework, some of the modules may be malicious, which means there is a need for security principles to reason about inter-module interactions. These principles are based on [object-capabilities](../core/ocap.md). In practice, this means that instead of having each module keep an access control list for other modules, each module implements special objects called `keepers` that can be passed to other modules to grant a pre-defined set of capabilities.
+Each module can be seen as a little state-machine. Developers need to define the subset of the state handled by the module, as well as custom message types that modify the state (*Note:* `messages` are extracted from `transactions` by `baseapp`). In general, each module declares its own `KVStore` in the `multistore` to persist the subset of the state it defines. Most developers will need to access other 3rd party modules when building their own modules. Given that the Cosmos-SDK is an open framework, some of the modules may be malicious, which means there is a need for security principles to reason about inter-module interactions. These principles are based on [object-capabilities](../advanced-concepts/ocap.md). In practice, this means that instead of having each module keep an access control list for other modules, each module implements special objects called `keepers` that can be passed to other modules to grant a pre-defined set of capabilities.
 
 SDK modules are defined in the `x/` folder of the SDK. Some core modules include:
 

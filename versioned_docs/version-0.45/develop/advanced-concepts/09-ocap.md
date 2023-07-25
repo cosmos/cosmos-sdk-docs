@@ -1,7 +1,3 @@
-<!--
-order: 11
--->
-
 # Object-Capability Model
 
 ## Intro
@@ -76,4 +72,4 @@ The following diagram shows the current dependencies between keepers.
 
 ## Next {hide}
 
-Learn about the [`runTx` middleware](./runtx_middleware.md) {hide}
+Learn about the [`runTx` middleware](./12-runtx_middleware.md) {hide}

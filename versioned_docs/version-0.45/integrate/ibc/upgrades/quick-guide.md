@@ -1,7 +1,3 @@
-<!--
-order: 1
--->
-
 # How to Upgrade IBC Chains and their Clients
 
 Learn how to upgrade your chain and counterparty clients. {synopsis}

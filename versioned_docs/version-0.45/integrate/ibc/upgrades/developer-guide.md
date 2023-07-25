@@ -1,7 +1,3 @@
-<!--
-order: 2
--->
-
 # IBC Client Developer Guide to Upgrades
 
 Learn how to implement upgrade functionality for your custom IBC client. {synopsis}

@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Generating, Signing and Broadcasting Transactions
 
 This document describes how to generate an (unsigned) transaction, signing it (with one or multiple keys), and broadcasting it to the network. {synopsis}

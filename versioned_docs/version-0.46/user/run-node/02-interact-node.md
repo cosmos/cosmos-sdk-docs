@@ -1,7 +1,3 @@
-<!--
-order: 3
--->
-
 # Interacting with the Node
 
 There are multiple ways to interact with a node: using the CLI, using gRPC or using the REST endpoints. {synopsis}

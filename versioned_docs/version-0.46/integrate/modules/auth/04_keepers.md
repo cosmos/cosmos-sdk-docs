@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Keepers
 
 The auth module only exposes one keeper, the account keeper, which can be used to read and write accounts.

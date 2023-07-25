@@ -1,7 +1,3 @@
-<!--
-order: 7
--->
-
 # gRPC, REST, and Tendermint Endpoints
 
 This document presents an overview of all the endpoints a node exposes: gRPC, REST as well as some other endpoints. {synopsis}
@@ -34,11 +30,11 @@ Please see [issue #8392](https://github.com/cosmos/cosmos-sdk/issues/8392) for m
 
 Cosmos SDK v0.40 introduced Protobuf as the main [encoding](./encoding) library, and this brings a wide range of Protobuf-based tools that can be plugged into the SDK. One such tool is [gRPC](https://grpc.io), a modern open source high performance RPC framework that has decent client support in several languages.
 
-Each module exposes a [Protobuf `Query` service](../building-modules/messages-and-queries.md#queries) that defines state queries. The `Query` services and a transaction service used to broadcast transactions are hooked up to the gRPC server via the following function inside the application:
+Each module exposes a [Protobuf `Query` service](../building-modules/02-messages-and-queries.md#queries) that defines state queries. The `Query` services and a transaction service used to broadcast transactions are hooked up to the gRPC server via the following function inside the application:
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.43.0-rc0/server/types/app.go#L39-L41
 
-Note: It is not possible to expose any [Protobuf `Msg` service](../building-modules/messages-and-queries.md#messages) endpoints via gRPC. Transactions must be generated and signed using the CLI or programatically before they can be broadcasted using gRPC. See [Generating, Signing, and Broadcasting Transactions](../run-node/txs.html) for more information.
+Note: It is not possible to expose any [Protobuf `Msg` service](../building-modules/02-messages-and-queries.md#messages) endpoints via gRPC. Transactions must be generated and signed using the CLI or programatically before they can be broadcasted using gRPC. See [Generating, Signing, and Broadcasting Transactions](../run-node/txs.html) for more information.
 
 The `grpc.Server` is a concrete gRPC server, which spawns and serves all gRPC query requests and a broadcast transaction request. This server can be configured inside `~/.simapp/config/app.toml`:
 
@@ -51,7 +47,7 @@ The `grpc.Server` is a concrete gRPC server, which spawns and serves all gRPC qu
 
 Once the gRPC server is started, you can send requests to it using a gRPC client. Some examples are given in our [Interact with the Node](../run-node/interact-node.md#using-grpc) tutorial.
 
-An overview of all available gRPC endpoints shipped with the Cosmos SDK is [Protobuf documention](./proto-docs.md).
+An overview of all available gRPC endpoints shipped with the Cosmos SDK is [Protobuf documention](./14-proto-docs.md).
 
 ## REST Server
 

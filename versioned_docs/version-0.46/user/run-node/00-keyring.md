@@ -1,7 +1,3 @@
-<!--
-order: 1
--->
-
 # Setting up the keyring
 
 This document describes how to configure and use the keyring and its various backends for an [**application**](../high-level-concepts/app-anatomy.md). {synopsis}

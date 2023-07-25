@@ -1,7 +1,3 @@
-<!--
-order: 3
--->
-
 # Query Lifecycle
 
 This document describes the lifecycle of a query in a Cosmos SDK application, from the user interface to application stores and back. {synopsis}
@@ -12,7 +8,7 @@ This document describes the lifecycle of a query in a Cosmos SDK application, fr
 
 ## Query Creation
 
-A [**query**](../building-modules/messages-and-queries.md#queries) is a request for information made by end-users of applications through an interface and processed by a full-node. Users can query information about the network, the application itself, and application state directly from the application's stores or modules. Note that queries are different from [transactions](../advanced-concepts/01-transactions.md) (view the lifecycle [here](./01-tx-lifecycle.md)), particularly in that they do not require consensus to be processed (as they do not trigger state-transitions); they can be fully handled by one full-node.
+A [**query**](../building-modules/02-messages-and-queries.md#queries) is a request for information made by end-users of applications through an interface and processed by a full-node. Users can query information about the network, the application itself, and application state directly from the application's stores or modules. Note that queries are different from [transactions](../advanced-concepts/01-transactions.md) (view the lifecycle [here](./01-tx-lifecycle.md)), particularly in that they do not require consensus to be processed (as they do not trigger state-transitions); they can be fully handled by one full-node.
 
 For the purpose of explaining the query lifecycle, let's say `MyQuery` is requesting a list of delegations made by a certain delegator address in the application called `simapp`. As to be expected, the [`staking`](../../x/staking/spec/README.md) module handles this query. But first, there are a few ways `MyQuery` can be created by users.
 
@@ -71,7 +67,7 @@ The first thing that is created in the execution of a CLI command is a `client.C
 * **Codec**: The [encoder/decoder](../advanced-concepts/05-encoding.md) used by the application, used to marshal the parameters and query before making the Tendermint RPC request and unmarshal the returned response into a JSON object. The default codec used by the CLI is Protobuf.
 * **Account Decoder**: The account decoder from the [`auth`](../../x/auth/spec/README.md) module, which translates `[]byte`s into accounts.
 * **RPC Client**: The Tendermint RPC Client, or node, to which the request will be relayed to.
-* **Keyring**: A [Key Manager](../high-level-concepts/accounts.md#keyring) used to sign transactions and handle other operations with keys.
+* **Keyring**: A [Key Manager](../high-level-concepts/03-accounts.md#keyring) used to sign transactions and handle other operations with keys.
 * **Output Writer**: A [Writer](https://pkg.go.dev/io/#Writer) used to output the response.
 * **Configurations**: The flags configured by the user for this command, including `--height`, specifying the height of the blockchain to query and `--indent`, which indicates to add an indent to the JSON response.
 
@@ -87,7 +83,7 @@ At this point in the lifecycle, the user has created a CLI command with all of t
 
 #### Encoding
 
-In our case (querying an address's delegations), `MyQuery` contains an [address](./accounts.md#addresses) `delegatorAddress` as its only argument. However, the request can only contain `[]byte`s, as it will be relayed to a consensus engine (e.g. Tendermint Core) of a full-node that has no inherent knowledge of the application types. Thus, the `codec` of `client.Context` is used to marshal the address.
+In our case (querying an address's delegations), `MyQuery` contains an [address](./03-accounts.md#addresses) `delegatorAddress` as its only argument. However, the request can only contain `[]byte`s, as it will be relayed to a consensus engine (e.g. Tendermint Core) of a full-node that has no inherent knowledge of the application types. Thus, the `codec` of `client.Context` is used to marshal the address.
 
 Here is what the code looks like for the CLI command:
 
@@ -115,9 +111,9 @@ Read more about ABCI Clients and Tendermint RPC in the [Tendermint documentation
 
 When a query is received by the full-node after it has been relayed from the underlying consensus engine, it is now being handled within an environment that understands application-specific types and has a copy of the state. [`baseapp`](../../develop/advanced-concepts/00-baseapp.md) implements the ABCI [`Query()`](../../develop/advanced-concepts/00-baseapp.md#query) function and handles gRPC queries. The query route is parsed, and it matches the fully-qualified service method name of an existing service method (most likely in one of the modules), then `baseapp` will relay the request to the relevant module.
 
-Apart from gRPC routes, `baseapp` also handles four different types of queries: `app`, `store`, `p2p`, and `custom`. The first three types (`app`, `store`, `p2p`) are purely application-level and thus directly handled by `baseapp` or the stores, but the `custom` query type requires `baseapp` to route the query to a module's [legacy queriers](../building-modules/query-services.md#legacy-queriers). To learn more about these queries, please refer to [this guide](../advanced-concepts/08-grpc_rest.md#tendermint-rpc).
+Apart from gRPC routes, `baseapp` also handles four different types of queries: `app`, `store`, `p2p`, and `custom`. The first three types (`app`, `store`, `p2p`) are purely application-level and thus directly handled by `baseapp` or the stores, but the `custom` query type requires `baseapp` to route the query to a module's [legacy queriers](../building-modules/04-query-services.md#legacy-queriers). To learn more about these queries, please refer to [this guide](../advanced-concepts/08-grpc_rest.md#tendermint-rpc).
 
-Since `MyQuery` has a Protobuf fully-qualified service method name from the `staking` module (recall `/cosmos.staking.v1beta1.Query/Delegations`), `baseapp` first parses the path, then uses its own internal `GRPCQueryRouter` to retrieve the corresponding gRPC handler, and routes the query to the module. The gRPC handler is responsible for recognizing this query, retrieving the appropriate values from the application's stores, and returning a response. Read more about query services [here](../building-modules/query-services.md).
+Since `MyQuery` has a Protobuf fully-qualified service method name from the `staking` module (recall `/cosmos.staking.v1beta1.Query/Delegations`), `baseapp` first parses the path, then uses its own internal `GRPCQueryRouter` to retrieve the corresponding gRPC handler, and routes the query to the module. The gRPC handler is responsible for recognizing this query, retrieving the appropriate values from the application's stores, and returning a response. Read more about query services [here](../building-modules/04-query-services.md).
 
 Once a result is received from the querier, `baseapp` begins the process of returning a response to the user.
 
@@ -135,4 +131,4 @@ And that's a wrap! The result of the query is outputted to the console by the CL
 
 ## Next {hide}
 
-Read more about [accounts](./accounts.md). {hide}
+Read more about [accounts](./03-accounts.md). {hide}

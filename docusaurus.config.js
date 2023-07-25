@@ -73,7 +73,7 @@ const config = {
               label: "Develop",
             },
             {
-              to: "/integrate/building-apps/app-go",
+              to: "/integrate/building-modules/intro",
               position: "left",
               label: "Integrate",
             },

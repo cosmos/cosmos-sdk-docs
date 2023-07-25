@@ -1,15 +1,11 @@
-<!--
-order: 4
--->
-
 # `Msg` Services
 
-A Protobuf `Msg` service processes [messages](./messages-and-queries.md#messages). Protobuf `Msg` services are specific to the module in which they are defined, and only process messages defined within the said module. They are called from `BaseApp` during [`DeliverTx`](../../develop/advanced-concepts/00-baseapp.md#delivertx). {synopsis}
+A Protobuf `Msg` service processes [messages](./02-messages-and-queries.md#messages). Protobuf `Msg` services are specific to the module in which they are defined, and only process messages defined within the said module. They are called from `BaseApp` during [`DeliverTx`](../../develop/advanced-concepts/00-baseapp.md#delivertx). {synopsis}
 
 ## Pre-requisite Readings
 
-- [Module Manager](./module-manager.md) {prereq}
-- [Messages and Queries](./messages-and-queries.md) {prereq}
+- [Module Manager](./01-module-manager.md) {prereq}
+- [Messages and Queries](./02-messages-and-queries.md) {prereq}
 
 ## Implementation of a module `Msg` service
 
@@ -50,11 +46,11 @@ ValidateMsgA(msg MsgA, now Time, gm GasMeter) error {
 
 ### State Transition
 
-After the validation is successful, the `msgServer` method uses the [`keeper`](./keeper.md) functions to access the state and perform a state transition.
+After the validation is successful, the `msgServer` method uses the [`keeper`](./06-keeper.md) functions to access the state and perform a state transition.
 
 ### Events 
 
-Before returning, `msgServer` methods generally emit one or more [events](../core/07-events.md) by using the `EventManager` held in the `ctx`. Use the new `EmitTypedEvent` function that uses protobuf-based event types:
+Before returning, `msgServer` methods generally emit one or more [events](../advanced-concepts/07-events.md) by using the `EventManager` held in the `ctx`. Use the new `EmitTypedEvent` function that uses protobuf-based event types:
 
 ```
 ctx.EventManager().EmitTypedEvent(
@@ -73,7 +69,7 @@ ctx.EventManager().EmitEvent(
 )
 ```
 
-These events are relayed back to the underlying consensus engine and can be used by service providers to implement services around the application. Click [here](../core/07-events.md) to learn more about events.
+These events are relayed back to the underlying consensus engine and can be used by service providers to implement services around the application. Click [here](../advanced-concepts/07-events.md) to learn more about events.
 
 The invoked `msgServer` method returns a `proto.Message` response and an `error`. These return values are then wrapped into an `*sdk.Result` or an `error` using `sdk.WrapServiceResult(ctx sdk.Context, res proto.Message, err error)`:
 
@@ -99,11 +95,11 @@ Here is the typical structure of a `handler` function:
 
 Let us break it down:
 
-- The [`LegacyMsg`](./messages-and-queries.md#messages) is the actual object being processed.
-- The [`Context`](../core/02-context.md) contains all the necessary information needed to process the `msg`, as well as a branch of the latest state. If the `msg` is successfully processed, the branched version of the state contained in the `ctx` will be written to the main state (branch).
-- The `*Result` returned to `BaseApp` contains (among other things) information on the execution of the `handler` and [events](../core/07-events.md).
+- The [`LegacyMsg`](./02-messages-and-queries.md#messages) is the actual object being processed.
+- The [`Context`](../advanced-concepts/02-context.md) contains all the necessary information needed to process the `msg`, as well as a branch of the latest state. If the `msg` is successfully processed, the branched version of the state contained in the `ctx` will be written to the main state (branch).
+- The `*Result` returned to `BaseApp` contains (among other things) information on the execution of the `handler` and [events](../advanced-concepts/07-events.md).
 
-Module `handler`s are typically implemented in a `./handler.go` file inside the module's folder. The [module manager](./module-manager.md) is used to add the module's `handler`s to the
+Module `handler`s are typically implemented in a `./handler.go` file inside the module's folder. The [module manager](./01-module-manager.md) is used to add the module's `handler`s to the
 [application's `router`](../../develop/advanced-concepts/00-baseapp.md#message-routing) via the `Route()` method. Typically,
 the manager's `Route()` method simply constructs a Route that calls a `NewHandler()` method defined in `handler.go`.
 
@@ -123,7 +119,7 @@ In this regard, `handler`s functions need to be implemented for each module `Leg
 
 ## Telemetry
 
-New [telemetry metrics](../core/telemetry.md) can be created from `msgServer` methods when handling messages.
+New [telemetry metrics](../advanced-concepts/11-telemetry.md) can be created from `msgServer` methods when handling messages.
 
 This is an example from the `x/auth/vesting` module:
 
@@ -131,4 +127,4 @@ This is an example from the `x/auth/vesting` module:
 
 ## Next {hide}
 
-Learn about [query services](./query-services.md) {hide}
+Learn about [query services](./04-query-services.md) {hide}

@@ -1,15 +1,11 @@
-<!--
-order: 5
--->
-
 # Query Services
 
-A Protobuf Query service processes [`queries`](./messages-and-queries.md#queries). Query services are specific to the module in which they are defined, and only process `queries` defined within said module. They are called from `BaseApp`'s [`Query` method](../../develop/advanced-concepts/00-baseapp.md#query). {synopsis}
+A Protobuf Query service processes [`queries`](./02-messages-and-queries.md#queries). Query services are specific to the module in which they are defined, and only process `queries` defined within said module. They are called from `BaseApp`'s [`Query` method](../../develop/advanced-concepts/00-baseapp.md#query). {synopsis}
 
 ## Pre-requisite Readings
 
-- [Module Manager](./module-manager.md) {prereq}
-- [Messages and Queries](./messages-and-queries.md) {prereq}
+- [Module Manager](./01-module-manager.md) {prereq}
+- [Messages and Queries](./02-messages-and-queries.md) {prereq}
 
 ## `Querier` type
 
@@ -19,10 +15,10 @@ The `querier` type defined in the Cosmos SDK will be deprecated in favor of [gRP
 
 Let us break it down:
 
-- The `path` is an array of `string`s that contains the type of the query, and that can also contain `query` arguments. See [`queries`](./messages-and-queries.md#queries) for more information.
+- The `path` is an array of `string`s that contains the type of the query, and that can also contain `query` arguments. See [`queries`](./02-messages-and-queries.md#queries) for more information.
 - The `req` itself is primarily used to retrieve arguments if they are too large to fit in the `path`. This is done using the `Data` field of `req`.
-- The [`Context`](../core/02-context.md) contains all the necessary information needed to process the `query`, as well as a branch of the latest state. It is primarily used by the [`keeper`](./keeper.md) to access the state.
-- The result `res` returned to `BaseApp`, marshalled using the application's [`codec`](../core/05-encoding.md).
+- The [`Context`](../advanced-concepts/02-context.md) contains all the necessary information needed to process the `query`, as well as a branch of the latest state. It is primarily used by the [`keeper`](./06-keeper.md) to access the state.
+- The result `res` returned to `BaseApp`, marshalled using the application's [`codec`](../advanced-concepts/05-encoding.md).
 
 ## Implementation of a module query service
 
@@ -47,7 +43,7 @@ Here's an example implementation for the bank module:
 
 ### Legacy Queriers
 
-Module legacy `querier`s are typically implemented in a `./keeper/querier.go` file inside the module's folder. The [module manager](./module-manager.md) is used to add the module's `querier`s to the [application's `queryRouter`](../../develop/advanced-concepts/00-baseapp.md#query-routing) via the `NewQuerier()` method. Typically, the manager's `NewQuerier()` method simply calls a `NewQuerier()` method defined in `keeper/querier.go`, which looks like the following:
+Module legacy `querier`s are typically implemented in a `./keeper/querier.go` file inside the module's folder. The [module manager](./01-module-manager.md) is used to add the module's `querier`s to the [application's `queryRouter`](../../develop/advanced-concepts/00-baseapp.md#query-routing) via the `NewQuerier()` method. Typically, the manager's `NewQuerier()` method simply calls a `NewQuerier()` method defined in `keeper/querier.go`, which looks like the following:
 
 ```go
 func NewQuerier(keeper Keeper) sdk.Querier {
@@ -68,7 +64,7 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 
 This simple switch returns a `querier` function specific to the type of the received `query`. At this point of the [query lifecycle](../high-level-concepts/query-lifecycle.md), the first element of the `path` (`path[0]`) contains the type of the query. The following elements are either empty or contain arguments needed to process the query.
 
-The `querier` functions themselves are pretty straighforward. They generally fetch a value or values from the state using the [`keeper`](./keeper.md). Then, they marshall the value(s) using the [`codec`](../core/05-encoding.md) and return the `[]byte` obtained as result.
+The `querier` functions themselves are pretty straighforward. They generally fetch a value or values from the state using the [`keeper`](./06-keeper.md). Then, they marshall the value(s) using the [`codec`](../advanced-concepts/05-encoding.md) and return the `[]byte` obtained as result.
 
 For a deeper look at `querier`s, see this [example implementation of a `querier` function](https://github.com/cosmos/cosmos-sdk/blob/7f59723d889b69ca19966167f0b3a7fec7a39e53/x/gov/keeper/querier.go) from the bank module.
 

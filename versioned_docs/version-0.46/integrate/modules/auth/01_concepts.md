@@ -1,7 +1,3 @@
-<!--
-order: 1
--->
-
 # Concepts
 
 **Note:** The auth module is different from the [authz module](../modules/authz/).

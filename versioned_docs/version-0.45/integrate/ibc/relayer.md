@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Relayer
 
 ## Prerequisites Readings

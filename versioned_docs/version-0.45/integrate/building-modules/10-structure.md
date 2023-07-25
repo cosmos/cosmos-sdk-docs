@@ -1,7 +1,3 @@
-<!--
-order: 12
--->
-
 # Recommended Folder Structure
 
 This document outlines the recommended structure of Cosmos SDK modules. These ideas are meant to be applied as suggestions. Application developers are encouraged to improve upon and contribute to module structure and development design. {synopsis}
@@ -96,4 +92,4 @@ x/{module_name}
 
 ## Next {hide}
 
-Learn about [Errors](./errors.md) {hide}
+Learn about [Errors](./12-errors.md) {hide}

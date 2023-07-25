@@ -1,14 +1,10 @@
-<!--
-order: 6
--->
-
 # Encoding
 
 While encoding in the SDK used to be mainly handled by `go-amino` codec, the SDK is moving towards using `gogoprotobuf` for both state and client-side encoding. {synopsis}
 
 ## Pre-requisite Readings
 
-- [Anatomy of an SDK application](../high-level-concepts/app-anatomy.md) {prereq}
+- [Anatomy of an SDK application](../high-level-concepts/overview-app.md) {prereq}
 
 ## Encoding
 
@@ -103,7 +99,7 @@ See [ADR-020](../architecture/adr-020-protobuf-transaction-encoding.md) for deta
 
 ### Interface Encoding and Usage of `Any`
 
-The Protobuf DSL is strongly typed, which can make inserting variable-typed fields difficult. Imagine we want to create a `Profile` protobuf message that serves as a wrapper over [an account](../high-level-concepts/accounts.md):
+The Protobuf DSL is strongly typed, which can make inserting variable-typed fields difficult. Imagine we want to create a `Profile` protobuf message that serves as a wrapper over [an account](../high-level-concepts/03-accounts.md):
 
 ```proto
 message Profile {
@@ -213,9 +209,9 @@ A real-life example of encoding the pubkey as `Any` inside the Validator struct 
 Protobuf types can be defined to encode:
 
 - state
-- [`Msg`s](../building-modules/messages-and-queries.md#messages)
-- [Query services](../building-modules/query-services.md)
-- [genesis](../building-modules/genesis.md)
+- [`Msg`s](../building-modules/02-messages-and-queries.md#messages)
+- [Query services](../building-modules/04-query-services.md)
+- [genesis](../building-modules/08-genesis.md)
 
 **Naming and conventions**
 
