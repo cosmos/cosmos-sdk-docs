@@ -12,7 +12,7 @@ An invariant is a property of the application that should always be true. In the
 
 ### Pre-requisite Readings
 
-* [Keepers](./06-keeper.md)
+* [Keepers](06-keeper.md)
 
 :::
 
@@ -57,7 +57,7 @@ func AllInvariants(k Keeper) sdk.Invariant {
 }
 ```
 
-Finally, module developers need to implement the `RegisterInvariants` method as part of the [`AppModule` interface](./01-module-manager.md#appmodule). Indeed, the `RegisterInvariants` method of the module, implemented in the `module/module.go` file, typically only defers the call to a `RegisterInvariants` method implemented in the `keeper/invariants.go` file. The `RegisterInvariants` method registers a route for each `Invariant` function in the [`InvariantRegistry`](#invariant-registry):
+Finally, module developers need to implement the `RegisterInvariants` method as part of the [`AppModule` interface](01-module-manager.md#appmodule). Indeed, the `RegisterInvariants` method of the module, implemented in the `module/module.go` file, typically only defers the call to a `RegisterInvariants` method implemented in the `keeper/invariants.go` file. The `RegisterInvariants` method registers a route for each `Invariant` function in the [`InvariantRegistry`](#invariant-registry):
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/x/staking/keeper/invariants.go#L12-L22
@@ -81,9 +81,9 @@ Typically, this interface is implemented in the `keeper` of a specific module. T
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/x/crisis/keeper/keeper.go#L57-L61
 ```
 
-The `InvariantRegistry` is therefore typically instantiated by instantiating the `keeper` of the `crisis` module in the [application's constructor function](../basics/00-app-anatomy.md#constructor-function).
+The `InvariantRegistry` is therefore typically instantiated by instantiating the `keeper` of the `crisis` module in the [application's constructor function](../../develop/high-level-concepts/00-overview-app.md#constructor-function).
 
-`Invariant`s can be checked manually via [`message`s](./02-messages-and-queries.md), but most often they are checked automatically at the end of each block. Here is an example from the `crisis` module:
+`Invariant`s can be checked manually via [`message`s](02-messages-and-queries.md), but most often they are checked automatically at the end of each block. Here is an example from the `crisis` module:
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/x/crisis/abci.go#L12-L21

@@ -58,4 +58,4 @@ Implementation of this ADR will require changes to the Cosmos SDK. It will not r
 
 ## References
 
-* [ICS 2: "Consensus state introspection"](https://github.com/cosmos/ibc/tree/master/spec/core/ics-002-client-semantics#consensus-state-introspection)
+* [ICS 2: "Consensus state introspection"](https://github.com/cosmos/ibc/tree/master/spec/01-tx-lifecycle.mdics-002-client-semantics#consensus-state-introspection)

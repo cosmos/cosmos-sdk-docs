@@ -12,8 +12,8 @@ Now that the application is ready and the keyring populated, it's time to see ho
 
 ### Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](../basics/00-app-anatomy.md)
-* [Setting up the keyring](./00-keyring.md)
+* [Anatomy of a Cosmos SDK Application](../../develop/high-level-concepts/00-overview-app.md)
+* [Setting up the keyring](00-keyring.md)
 
 :::
 
@@ -74,7 +74,7 @@ A commonly used tool for this is [nginx](https://nginx.org).
 
 ## Adding Genesis Accounts
 
-Before starting the chain, you need to populate the state with at least one account. To do so, first [create a new account in the keyring](./00-keyring.md#adding-keys-to-the-keyring) named `my_validator` under the `test` keyring backend (feel free to choose another name and another backend).
+Before starting the chain, you need to populate the state with at least one account. To do so, first [create a new account in the keyring](00-keyring.md#adding-keys-to-the-keyring) named `my_validator` under the `test` keyring backend (feel free to choose another name and another backend).
 
 Now that you have created a local account, go ahead and grant it some `stake` tokens in your chain's genesis file. Doing so will also make sure your chain is aware of this account's existence:
 
@@ -82,9 +82,9 @@ Now that you have created a local account, go ahead and grant it some `stake` to
 simd genesis add-genesis-account $MY_VALIDATOR_ADDRESS 100000000000stake
 ```
 
-Recall that `$MY_VALIDATOR_ADDRESS` is a variable that holds the address of the `my_validator` key in the [keyring](./00-keyring.md#adding-keys-to-the-keyring). Also note that the tokens in the Cosmos SDK have the `{amount}{denom}` format: `amount` is is a 18-digit-precision decimal number, and `denom` is the unique token identifier with its denomination key (e.g. `atom` or `uatom`). Here, we are granting `stake` tokens, as `stake` is the token identifier used for staking in [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/main/simapp). For your own chain with its own staking denom, that token identifier should be used instead.
+Recall that `$MY_VALIDATOR_ADDRESS` is a variable that holds the address of the `my_validator` key in the [keyring](00-keyring.md#adding-keys-to-the-keyring). Also note that the tokens in the Cosmos SDK have the `{amount}{denom}` format: `amount` is is a 18-digit-precision decimal number, and `denom` is the unique token identifier with its denomination key (e.g. `atom` or `uatom`). Here, we are granting `stake` tokens, as `stake` is the token identifier used for staking in [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/main/simapp). For your own chain with its own staking denom, that token identifier should be used instead.
 
-Now that your account has some tokens, you need to add a validator to your chain. Validators are special full-nodes that participate in the consensus process (implemented in the [underlying consensus engine](../intro/02-sdk-app-architecture.md#cometbft)) in order to add new blocks to the chain. Any account can declare its intention to become a validator operator, but only those with sufficient delegation get to enter the active set (for example, only the top 125 validator candidates with the most delegation get to be validators in the Cosmos Hub). For this guide, you will add your local node (created via the `init` command above) as a validator of your chain. Validators can be declared before a chain is first started via a special transaction included in the genesis file called a `gentx`:
+Now that your account has some tokens, you need to add a validator to your chain. Validators are special full-nodes that participate in the consensus process (implemented in the [underlying consensus engine](../../develop/intro/02-sdk-app-architecture.md#cometbft)) in order to add new blocks to the chain. Any account can declare its intention to become a validator operator, but only those with sufficient delegation get to enter the active set (for example, only the top 125 validator candidates with the most delegation get to be validators in the Cosmos Hub). For this guide, you will add your local node (created via the `init` command above) as a validator of your chain. Validators can be declared before a chain is first started via a special transaction included in the genesis file called a `gentx`:
 
 ```bash
 # Create a gentx.
@@ -149,44 +149,3 @@ In config.toml:
 ```toml
 log_level: "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*error"
 ```
-
-## State Sync
-
-State sync is the act in which a node syncs the latest or close to the latest state of a blockchain. This is useful for users who don't want to sync all the blocks in history. Read more in [CometBFT documentation](https://docs.cometbft.com/v0.37/core/state-sync).
-
-State sync works thanks to snapshots. Read how the SDK handles snapshots [here](https://github.com/cosmos/cosmos-sdk/blob/825245d/store/snapshots/README.md).
-
-### Local State Sync
-
-Local state sync work similar to normal state sync except that it works off a local snapshot of state instead of one provided via the p2p network. The steps to start local state sync are similar to normal state sync with a few different designs. 
-
-1. As mentioned in https://docs.cometbft.com/v0.37/core/state-sync, one must set a height and hash in the config.toml along with a few rpc servers (the afromentioned link has instructions on how to do this). 
-2. Run `<appd snapshot restore <height> <format>` to restore a local snapshot (note: first load it from a file with the *load* command). 
-3. Bootsrapping Comet state in order to start the node after the snapshot has been ingested. This can be done with the bootstrap command `<app> comet bootstrap-state`
-
-### Snapshots Commands
-
-The Cosmos SDK provides commands for managing snapshots.
-These commands can be added in an app with the following snippet in `cmd/<app>/root.go`:
-
-```go
-import (
-  "github.com/cosmos/cosmos-sdk/client/snapshot"
-)
-
-func initRootCmd(/* ... */) {
-  // ...
-  rootCmd.AddCommand(
-    snapshot.Cmd(appCreator),
-  )
-}
-```
-
-Then following commands are available at `<appd> snapshots [command]`:
-
-* **list**: list local snapshots
-* **load**: Load a snapshot archive file into snapshot store
-* **restore**: Restore app state from local snapshot
-* **export**:  Export app state to snapshot store
-* **dump**: Dump the snapshot as portable archive format
-* **delete**: Delete a local snapshot

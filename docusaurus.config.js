@@ -73,7 +73,7 @@ const config = {
               label: "Develop",
             },
             {
-              to: "/integrate/building-apps/app-go",
+              to: "/integrate/building-modules/intro",
               position: "left",
               label: "Integrate",
             },
@@ -99,19 +99,6 @@ const config = {
               type: "docsVersionDropdown",
               position: "right",
               dropdownActiveClassDisabled: true,
-              // versions not yet migrated to docusaurus
-              dropdownItemsAfter: [
-                {
-                  href: "https://docs.cosmos.network/v0.46/",
-                  label: "v0.46",
-                  target: "_self",
-                },
-                {
-                  href: "https://docs.cosmos.network/v0.45/",
-                  label: "v0.45",
-                  target: "_self",
-                },
-              ],
             },
           ],
         },

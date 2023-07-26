@@ -1,7 +1,3 @@
-<!--
-order: 6
--->
-
 # Parameters
 
 The auth module contains the following parameters:

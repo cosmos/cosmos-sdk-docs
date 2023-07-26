@@ -1,7 +1,3 @@
-<!--
-order: 5
--->
-
 # Governance Proposals
 
 In uncommon situations, a highly valued client may become frozen due to uncontrollable

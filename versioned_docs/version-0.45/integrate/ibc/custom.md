@@ -1,7 +1,3 @@
-<!--
-order: 3
--->
-
 # Customization
 
 Learn how to configure your application to use IBC and send data packets to other chains. {synopsis}

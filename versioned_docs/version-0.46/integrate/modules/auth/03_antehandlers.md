@@ -1,7 +1,3 @@
-<!--
-order: 3
--->
-
 # AnteHandlers
 
 The `x/auth` module presently has no transaction handlers of its own, but does expose the special `AnteHandler`, used for performing basic validity checks on a transaction, such that it could be thrown out of the mempool.

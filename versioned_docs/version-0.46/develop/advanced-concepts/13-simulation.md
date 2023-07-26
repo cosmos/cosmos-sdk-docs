@@ -1,7 +1,3 @@
-<!--
-order: 13
--->
-
 # Cosmos Blockchain Simulator
 
 The Cosmos SDK offers a full fledged simulation framework to fuzz test every
