@@ -1,7 +1,3 @@
-<!--
-order: 11
--->
-
 # Object-Capability Model
 
 ## Intro

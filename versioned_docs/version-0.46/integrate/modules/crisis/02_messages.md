@@ -1,7 +1,3 @@
-<!--
-order: 2
--->
-
 # Messages
 
 In this section we describe the processing of the crisis messages and the

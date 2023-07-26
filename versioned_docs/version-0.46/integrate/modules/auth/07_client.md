@@ -1,7 +1,3 @@
-<!--
-order: 7
--->
-
 # Client
 
 # Auth

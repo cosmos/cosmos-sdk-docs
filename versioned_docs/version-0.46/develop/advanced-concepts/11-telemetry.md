@@ -1,7 +1,3 @@
-<!--
-order: 10
--->
-
 # Telemetry
 
 Gather relevant insights about your application and modules with custom metrics and telemetry. {synopsis}

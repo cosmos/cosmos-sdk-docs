@@ -1,7 +1,3 @@
-<!--
-order: 3
--->
-
 # Events
 
 The crisis module emits the following events:

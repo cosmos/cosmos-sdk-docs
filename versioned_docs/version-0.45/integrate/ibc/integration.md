@@ -1,7 +1,3 @@
-<!--
-order: 2
--->
-
 # Integration
 
 Learn how to integrate IBC to your application and send data packets to other chains. {synopsis}

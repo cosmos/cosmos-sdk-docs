@@ -1,14 +1,10 @@
-<!--
-order: 9
--->
-
 # Events
 
 `Event`s are objects that contain information about the execution of the application. They are mainly used by service providers like block explorers and wallet to track the execution of various messages and index transactions. {synopsis}
 
 ## Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK application](../basics/app-anatomy.md) {prereq}
+* [Anatomy of a Cosmos SDK application](../high-level-concepts/app-anatomy.md) {prereq}
 * [Tendermint Documentation on Events](https://docs.tendermint.com/master/spec/abci/abci.html#events) {prereq}
 
 ## Typed Events
@@ -29,7 +25,7 @@ To parse the attribute values as strings, make sure to add `'` (single quotes) a
 
 _Typed Events_ are Protobuf-defined [messages](../architecture/adr-032-typed-events.md) used by the Cosmos SDK
 for emitting and querying Events. They are defined in a `event.proto` file, on a **per-module basis**.
-They are triggered from the module's Protobuf [`Msg` service](../building-modules/msg-services.md)
+They are triggered from the module's Protobuf [`Msg` service](../building-modules/03-msg-services.md)
 by using the [`EventManager`](#eventmanager), where they are read as `proto.Message`.
 
 In addition, each module documents its Events under `spec/xx_events.md`.
@@ -48,8 +44,8 @@ The following examples show how to query Events using the Cosmos SDK.
 | Event                                            | Description                                                                                                                                              |
 | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `tx.height=23`                                   | Query all transactions at height 23                                                                                                                      |
-| `message.action='/cosmos.bank.v1beta1.Msg/Send'` | Query all transactions containing a x/bank `Send` [Service `Msg`](../building-modules/msg-services.md). Note the `'`s around the value.                  |
-| `message.action='send'`                          | Query all transactions containing a x/bank `Send` [legacy `Msg`](../building-modules/msg-services.md#legacy-amino-msgs). Note the `'`s around the value. |
+| `message.action='/cosmos.bank.v1beta1.Msg/Send'` | Query all transactions containing a x/bank `Send` [Service `Msg`](../building-modules/03-msg-services.md). Note the `'`s around the value.                  |
+| `message.action='send'`                          | Query all transactions containing a x/bank `Send` [legacy `Msg`](../building-modules/03-msg-services.md#legacy-amino-msgs). Note the `'`s around the value. |
 | `message.module='bank'`                          | Query all transactions containing messages from the x/bank module. Note the `'`s around the value.                                                       |
 | `create_validator.validator='cosmosval1...'`     | x/staking-specific Event, see [x/staking SPEC](../../../cosmos-sdk/x/staking/spec/07_events.md).                                                         |
 
@@ -82,7 +78,7 @@ func NewHandler(keeper Keeper) sdk.Handler {
         switch msg := msg.(type) {
 ```
 
-See the [`Msg` services](../building-modules/msg-services.md) concept doc for a more detailed
+See the [`Msg` services](../building-modules/03-msg-services.md) concept doc for a more detailed
 view on how to typically implement Events and use the `EventManager` in modules.
 
 ## Subscribing to Events
@@ -124,7 +120,7 @@ Subscribing to this Event would be done like so:
 }
 ```
 
-where `ownerAddress` is an address following the [`AccAddress`](../basics/accounts.md#addresses) format.
+where `ownerAddress` is an address following the [`AccAddress`](../high-level-concepts/03-accounts.md#addresses) format.
 
 ## Events (Deprecated)
 
@@ -132,7 +128,7 @@ Previously, the Cosmos SDK supported emitting Events that were defined in `types
 
 This is why this methods as been deprecated, and replaced by _[Typed Events](#typed-events).
 
-To learn more about the previous way of defining events, please refer to the [previous SDK documentation](https://docs.cosmos.network/v0.45/core/events.html#events-2).
+To learn more about the previous way of defining events, please refer to the [previous SDK documentation](https://docs.cosmos.network/v0.45events.html#events-2).
 
 ## Next {hide}
 

@@ -1,7 +1,3 @@
-<!--
-order: 4
--->
-
 # Parameters
 
 The crisis module contains the following parameters:

@@ -22,13 +22,13 @@ which contains almost 100 lines of imports and is otherwise over 600 lines of mo
 generally copied to each new project. (Not to mention the additional boilerplate which gets copied in `simapp/simd`.)
 
 The large amount of boilerplate needed to bootstrap an app has made it hard to release independently versioned go
-modules for Cosmos SDK modules as described in [ADR 053: Go Module Refactoring](./adr-053-go-module-refactoring.md).
+modules for Cosmos SDK modules as described in [ADR 053: Go Module Refactoring](adr-053-go-module-refactoring.md).
 
 In addition to being very verbose and repetitive, `app.go` also exposes a large surface area for breaking changes
 as most modules instantiate themselves with positional parameters which forces breaking changes anytime a new parameter
 (even an optional one) is needed.
 
-Several attempts were made to improve the current situation including [ADR 033: Internal-Module Communication](./adr-033-protobuf-inter-module-comm.md)
+Several attempts were made to improve the current situation including [ADR 033: Internal-Module Communication](adr-033-protobuf-inter-module-comm.md)
 and [a proof-of-concept of a new SDK](https://github.com/allinbits/cosmos-sdk-poc). The discussions around these
 designs led to the current solution described here.
 
@@ -215,6 +215,9 @@ can help us figure out issues with missing dependencies in an app config if the 
 In cases where required modules are not loaded at runtime, it may be possible to guide users to the correct module if
 through a global Cosmos SDK module registry.
 
+The `*appmodule.Handler` type referenced above is a replacement for the legacy `AppModule` framework, and
+described in [ADR 063: Core Module API](./adr-063-core-module-api.md).
+
 ### New `app.go`
 
 With this setup, `app.go` might now look something like this:
@@ -242,8 +245,10 @@ func main() {
 ### Application to existing SDK modules
 
 So far we have described a system which is largely agnostic to the specifics of the SDK such as store keys, `AppModule`,
-`BaseApp`, etc. A second app wiring ADR will be created which outlines the details of how this app wiring system will
-be applied to the existing SDK in a way that:
+`BaseApp`, etc. Improvements to these parts of the framework that integrate with the general app wiring framework
+defined here are described in [ADR 061: Core Module API](./adr-063-core-module-api.md).
+
+### Registration of Inter-Module Hooks
 
 ### Registration of Inter-Module Hooks
 
@@ -252,6 +257,7 @@ when certain events happen.
 
 With the app wiring framework, these hooks interfaces can be defined as a `OnePerModuleType`s and then the module
 which consumes these hooks can collect these hooks as a map of module name to hook type (ex. `map[string]FooHooks`). Ex:
+
 ```go
 func init() {
     appmodule.Register(
@@ -275,6 +281,7 @@ in its config object.
 
 An alternative way for registering hooks via reflection was considered where all keeper types are inspected to see if
 they implement the hook interface by the modules exposing hooks. This has the downsides of:
+
 * needing to expose all the keepers of all modules to the module providing hooks,
 * not allowing for encapsulating hooks on a different type which doesn't expose all keeper methods,
 * harder to know statically which module expose hooks or are checking for them.
@@ -286,6 +293,7 @@ With the approach proposed here, hooks registration will be obviously observable
 
 The `depinject` framework will optionally allow the app configuration and dependency injection wiring to be code
 generated. This will allow:
+
 * dependency injection wiring to be inspected as regular go code just like the existing `app.go`,
 * dependency injection to be opt-in with manual wiring 100% still possible.
 
@@ -329,3 +337,4 @@ light of code generation. It may be better to do this type registration with a D
 * https://github.com/google/wire
 * https://pkg.go.dev/github.com/cosmos/cosmos-sdk/container
 * https://github.com/cosmos/cosmos-sdk/pull/11802
+* [ADR 063](./adr-063-core-module-api.md)

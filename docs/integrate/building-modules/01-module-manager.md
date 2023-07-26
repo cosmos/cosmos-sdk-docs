@@ -12,7 +12,7 @@ Cosmos SDK modules need to implement the [`AppModule` interfaces](#application-m
 
 ### Pre-requisite Readings
 
-* [Introduction to Cosmos SDK Modules](01-intro.md)
+* [Introduction to Cosmos SDK Modules](00-intro.md)
 
 :::
 

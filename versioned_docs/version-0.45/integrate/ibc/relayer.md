@@ -1,13 +1,9 @@
-<!--
-order: 4
--->
-
 # Relayer
 
 ## Prerequisites Readings
 
 - [IBC Overview](./overview.md) {prereq}
-- [Events](https://github.com/cosmos/cosmos-sdk/blob/master/docs/core/events.md) {prereq}
+- [Events](https://github.com/cosmos/cosmos-sdk/blob/master/docs/core/07-events.md) {prereq}
 
 ## Events
 

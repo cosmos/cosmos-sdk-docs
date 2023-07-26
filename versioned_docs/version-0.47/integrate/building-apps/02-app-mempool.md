@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+dislayed_sidebar: integrateSidebar
 ---
 
 # Application mempool
@@ -17,7 +18,7 @@ Notably it introduces the `PrepareProposal` and `ProcessProposal` steps of ABCI+
 
 ### Pre-requisite Readings
 
-* [BaseApp](../core/00-baseapp.md)
+* [BaseApp](../../develop/advanced-concepts/00-baseapp.md)
 
 :::
 
@@ -43,15 +44,14 @@ all transactions, it can provide greater control over transaction ordering.
 Allowing the application to handle ordering enables the application to define how
 it would like the block constructed. 
 
-The Cosmos SDK defines the `DefaultProposalHandler` type, which provides applications with
-`PrepareProposal` and `ProcessProposal` handlers.
+Currently, there is a default `PrepareProposal` implementation provided by the application.
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/baseapp/baseapp.go#L868-L916
 ```
 
 This default implementation can be overridden by the application developer in
-favor of a custom implementation in [`app.go`](./01-app-go-v2.md):
+favor of a custom implementation in [`app.go`](01-app-go-v2.md):
 
 ```go
 prepareOpt := func(app *baseapp.BaseApp) {
@@ -81,7 +81,7 @@ Here is the implementation of the default implementation:
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/baseapp/baseapp.go#L927-L942
 ```
 
-Like `PrepareProposal` this implementation is the default and can be modified by the application developer in [`app.go`](./01-app-go-v2.md):
+Like `PrepareProposal` this implementation is the default and can be modified by the application developer in [`app.go`](01-app-go-v2.md):
 
 ```go
 processOpt := func(app *baseapp.BaseApp) {
@@ -103,7 +103,7 @@ Namely, the SDK provides the following mempools:
 * [Sender Nonce Mempool](#sender-nonce-mempool)
 * [Priority Nonce Mempool](#priority-nonce-mempool)
 
-The default SDK is a [No-op Mempool](#no-op-mempool), but it can be replaced by the application developer in [`app.go`](./01-app-go-v2.md):
+The default SDK is a [No-op Mempool](#no-op-mempool), but it can be replaced by the application developer in [`app.go`](01-app-go-v2.md):
 
 ```go
 nonceMempool := mempool.NewSenderNonceMempool()
@@ -116,9 +116,6 @@ baseAppOptions = append(baseAppOptions, mempoolOpt)
 A no-op mempool is a mempool where transactions are completely discarded and ignored when BaseApp interacts with the mempool.
 When this mempool is used, it assumed that an application will rely on CometBFT's transaction ordering defined in `RequestPrepareProposal`,
 which is FIFO-ordered by default.
-
-> Note: If a NoOp mempool is used, PrepareProposal and ProcessProposal both should be aware of this as
-> PrepareProposal could include transactions that could fail verification in ProcessProposal.
 
 ### Sender Nonce Mempool
 

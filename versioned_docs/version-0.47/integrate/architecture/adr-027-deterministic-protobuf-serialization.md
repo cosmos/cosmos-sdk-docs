@@ -27,7 +27,7 @@ other cases as well.
 
 For signature verification in Cosmos SDK, the signer and verifier need to agree on
 the same serialization of a `SignDoc` as defined in
-[ADR-020](./adr-020-protobuf-transaction-encoding.md) without transmitting the
+[ADR-020](adr-020-protobuf-transaction-encoding.md) without transmitting the
 serialization.
 
 Currently, for block signatures we are using a workaround: we create a new [TxRaw](https://github.com/cosmos/cosmos-sdk/blob/9e85e81e0e8140067dd893421290c191529c148c/proto/cosmos/tx/v1beta1/tx.proto#L30)

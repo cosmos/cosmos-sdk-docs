@@ -12,7 +12,7 @@ sidebar_position: 1
 
 ### Pre-requisite Readings
 
-* [Introduction to Cosmos SDK Modules](01-intro.md)
+* [Introduction to Cosmos SDK Modules](00-intro.md)
 
 :::
 
