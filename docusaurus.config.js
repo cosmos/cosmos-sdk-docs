@@ -396,24 +396,629 @@ const config = {
             to: "/main/integrate/modules",
           },
           {
-            from: ["/main/spec/circuit-breaker"],
+            from: ["/main/architecture"],
+            to: "/main/integrate/architecture",
+          },
+          {
+            from: ["/main/architecture/adr-002-docs-structure"],
+            to: "/main/integrate/architecture/adr-002-docs-structure",
+          },
+          {
+            from: ["/main/architecture/adr-003-dynamic-capability-store"],
+            to: "/main/integrate/architecture/adr-003-dynamic-capability-store",
+          },
+          {
+            from: ["/main/architecture/adr-004-split-denomination-keys"],
+            to: "/main/integrate/architecture/adr-004-split-denomination-keys",
+          },
+          {
+            from: ["/main/architecture/adr-006-secret-store-replacement"],
+            to: "/main/integrate/architecture/adr-006-secret-store-replacement",
+          },
+          {
+            from: ["/main/architecture/adr-007-specialization-groups"],
+            to: "/main/integrate/architecture/adr-007-specialization-groups",
+          },
+          {
+            from: ["/main/architecture/adr-008-dCERT-group"],
+            to: "/main/integrate/architecture/adr-008-dCERT-group",
+          },
+          {
+            from: ["/main/architecture/adr-009-evidence-module"],
+            to: "/main/integrate/architecture/adr-009-evidence-module",
+          },
+          {
+            from: ["/main/architecture/adr-010-modular-antehandler"],
+            to: "/main/integrate/architecture/adr-010-modular-antehandler",
+          },
+          {
+            from: ["/main/architecture/adr-011-generalize-genesis-accounts"],
+            to: "/main/integrate/architecture/adr-011-generalize-genesis-accounts",
+          },
+          {
+            from: ["/main/architecture/adr-012-state-accessors"],
+            to: "/main/integrate/architecture/adr-012-state-accessors",
+          },
+          {
+            from: ["/main/architecture/adr-013-metrics"],
+            to: "/main/integrate/architecture/adr-013-metrics",
+          },
+          {
+            from: ["/main/architecture/adr-014-proportional-slashing"],
+            to: "/main/integrate/architecture/adr-014-proportional-slashing",
+          },
+          {
+            from: ["/main/architecture/adr-016-validator-consensus-key-rotation"],
+            to: "/main/integrate/architecture/adr-016-validator-consensus-key-rotation",
+          },
+          {
+            from: ["/main/architecture/adr-017-historical-header-module"],
+            to: "/main/integrate/architecture/adr-017-historical-header-module",
+          },
+          {
+            from: ["/main/architecture/adr-018-extendable-voting-period"],
+            to: "/main/integrate/architecture/adr-018-extendable-voting-period",
+          },
+          {
+            from: ["/main/architecture/adr-019-protobuf-state-encoding"],
+            to: "/main/integrate/architecture/adr-019-protobuf-state-encoding",
+          },
+          {
+            from: ["/main/architecture/adr-020-protobuf-transaction-encoding"],
+            to: "/main/integrate/architecture/adr-020-protobuf-transaction-encoding",
+          },
+          {
+            from: ["/main/architecture/adr-021-protobuf-query-encoding"],
+            to: "/main/integrate/architecture/adr-021-protobuf-query-encoding",
+          },
+          {
+            from: ["/main/architecture/adr-022-custom-panic-handling"],
+            to: "/main/integrate/architecture/adr-022-custom-panic-handling",
+          },
+          {
+            from: ["/main/architecture/adr-023-protobuf-naming"],
+            to: "/main/integrate/architecture/adr-023-protobuf-naming",
+          },
+          {
+            from: ["/main/architecture/adr-024-coin-metadata"],
+            to: "/main/integrate/architecture/adr-024-coin-metadata",
+          },
+          {
+            from: ["/main/architecture/adr-027-deterministic-protobuf-serialization"],
+            to: "/main/integrate/architecture/adr-027-deterministic-protobuf-serialization",
+          },
+          {
+            from: ["/main/architecture/adr-009-evidence-module"],
+            to: "/main/integrate/architecture/adr-009-evidence-module",
+          },
+          {
+            from: ["/main/architecture/adr-029-fee-grant-module"],
+            to: "/main/integrate/architecture/adr-029-fee-grant-module",
+          },
+          {
+            from: ["/main/architecture/adr-030-authz-module"],
+            to: "/main/integrate/architecture/adr-030-authz-module",
+          },
+          {
+            from: ["/main/architecture/adr-031-msg-service"],
+            to: "/main/integrate/architecture/adr-031-msg-service",
+          },
+          {
+            from: ["/main/architecture/adr-032-typed-events"],
+            to: "/main/integrate/architecture/adr-032-typed-events",
+          },
+          {
+            from: ["/main/architecture/adr-033-protobuf-inter-module-comm"],
+            to: "/main/integrate/architecture/adr-033-protobuf-inter-module-comm",
+          },
+          {
+            from: ["/main/architecture/adr-034-account-rekeying"],
+            to: "/main/integrate/architecture/adr-034-account-rekeying",
+          },
+          {
+            from: ["/main/architecture/adr-035-rosetta-api-support"],
+            to: "/main/integrate/architecture/adr-035-rosetta-api-support",
+          },
+          {
+            from: ["/main/architecture/adr-036-arbitrary-signature"],
+            to: "/main/integrate/architecture/adr-036-arbitrary-signature",
+          },
+          {
+            from: ["/main/architecture/adr-037-gov-split-vote"],
+            to: "/main/integrate/architecture/adr-037-gov-split-vote",
+          },
+          {
+            from: ["/main/architecture/adr-038-state-listening"],
+            to: "/main/integrate/architecture/adr-038-state-listening",
+          },
+          {
+            from: ["/main/architecture/adr-039-epoched-staking"],
+            to: "/main/integrate/architecture/adr-039-epoched-staking",
+          },
+          {
+            from: ["/main/architecture/adr-040-storage-and-smt-state-commitments"],
+            to: "/main/integrate/architecture/adr-040-storage-and-smt-state-commitments",
+          },
+          {
+            from: ["/main/architecture/adr-041-in-place-store-migrations"],
+            to: "/main/integrate/architecture/adr-041-in-place-store-migrations",
+          },
+          {
+            from: ["/main/architecture/adr-042-group-module"],
+            to: "/main/integrate/architecture/adr-042-group-module",
+          },
+          {
+            from: ["/main/architecture/adr-043-nft-module"],
+            to: "/main/integrate/architecture/adr-043-nft-module",
+          },
+          {
+            from: ["/main/architecture/adr-044-protobuf-updates-guidelines"],
+            to: "/main/integrate/architecture/adr-044-protobuf-updates-guidelines",
+          },
+          {
+            from: ["/main/architecture/adr-045-check-delivertx-middlewares"],
+            to: "/main/integrate/architecture/adr-045-check-delivertx-middlewares",
+          },
+          {
+            from: ["/main/architecture/adr-046-module-params"],
+            to: "/main/integrate/architecture/adr-046-module-params",
+          },
+          {
+            from: ["/main/architecture/adr-047-extend-upgrade-plan"],
+            to: "/main/integrate/architecture/adr-047-extend-upgrade-plan",
+          },
+          {
+            from: ["/main/architecture/adr-048-consensus-fees"],
+            to: "/main/integrate/architecture/adr-048-consensus-fees",
+          },
+          {
+            from: ["/main/architecture/adr-049-state-sync-hooks"],
+            to: "/main/integrate/architecture/adr-049-state-sync-hooks",
+          },
+          {
+            from: ["/main/architecture/adr-050-sign-mode-textual"],
+            to: "/main/integrate/architecture/adr-050-sign-mode-textual",
+          },
+          {
+            from: ["/main/architecture/adr-050-sign-mode-textual-annex1"],
+            to: "/main/integrate/architecture/adr-050-sign-mode-textual-annex1",
+          },
+          {
+            from: ["/main/architecture/adr-053-go-module-refactoring"],
+            to: "/main/integrate/architecture/adr-053-go-module-refactoring",
+          },
+          {
+            from: ["/main/architecture/adr-054-semver-compatible-modules"],
+            to: "/main/integrate/architecture/adr-054-semver-compatible-modules",
+          },
+          {
+            from: ["/main/architecture/adr-055-orm"],
+            to: "/main/integrate/architecture/adr-055-orm",
+          },
+          {
+            from: ["/main/architecture/adr-057-app-wiring"],
+            to: "/main/integrate/architecture/adr-057-app-wiring",
+          },
+          {
+            from: ["/main/architecture/adr-058-auto-generated-cli"],
+            to: "/main/integrate/architecture/adr-058-auto-generated-cli",
+          },
+          {
+            from: ["/main/architecture/adr-059-test-scopes"],
+            to: "/main/integrate/architecture/adr-059-test-scopes",
+          },
+          {
+            from: ["/main/architecture/adr-060-abci-1.0"],
+            to: "/main/integrate/architecture/adr-060-abci-1.0",
+          },
+          {
+            from: ["/main/architecture/adr-061-liquid-staking"],
+            to: "/main/integrate/architecture/adr-061-liquid-staking",
+          },
+          {
+            from: ["/main/architecture/adr-062-collections-state-layer"],
+            to: "/main/integrate/architecture/adr-062-collections-state-layer",
+          },
+          {
+            from: ["/main/architecture/adr-063-core-module-api"],
+            to: "/main/integrate/architecture/adr-063-core-module-api",
+          },
+          {
+            from: ["/main/architecture/adr-064-abci-2.0"],
+            to: "/main/integrate/architecture/adr-064-abci-2.0",
+          },
+          {
+            from: ["/main/architecture/adr-065-store-v2"],
+            to: "/main/integrate/architecture/adr-065-store-v2",
+          },
+          {
+            from: ["/main/architecture/adr-067-simulator-v2"],
+            to: "/main/integrate/architecture/adr-067-simulator-v2",
+          },
+          {
+            from: ["/main/architecture/PROCESS"],
+            to: "/main/integrate/architecture/PROCESS",
+          },
+          {
+            from: ["/main/basics/accounts"],
+            to: "/main/develop/high-level-concepts/accounts",
+          },
+          {
+            from: ["/main/basics/app-anatomy"],
+            to: "/main/develop/high-level-concepts/accounts",
+          },
+          {
+            from: ["/main/basics/gas-fees"],
+            to: "/main/develop/high-level-concepts/gas-fees",
+          },
+          {
+            from: ["/main/basics/query-lifecycle"],
+            to: "/main/develop/high-level-concepts/query-lifecycle",
+          },
+          {
+            from: ["/main/basics/tx-lifecycle"],
+            to: "/main/develop/building-apps/tx-lifecycle",
+          },
+          {
+            from: ["/main/building-apps/app-go"],
+            to: "/main/develop/building-apps/app-go",
+          },
+          {
+            from: ["/main/building-apps/app-go-v2"],
+            to: "/main/integrate/building-apps/app-go-v2",
+          },
+          {
+            from: ["/main/building-apps/mempool"],
+            to: "/main/integrate/building-apps/mempool",
+          },
+          {
+            from: ["/main/building-apps/app-upgrade"],
+            to: "/main/integrate/building-apps/app-upgrade",
+          },
+          {
+            from: ["/main/building-apps/vote-extensions"],
+            to: "/main/integrate/building-apps/vote-extensions",
+          },
+          {
+            from: ["/main/building-apps/building-modules/autocli"],
+            to: "/main/integrate/building-apps/vote-extensions",
+          },
+          {
+            from: ["/main/building-apps/building-modules/beginblock-endblock"],
+            to: "/main/integrate/building-modules/beginblock-endblock",
+          },
+          {
+            from: ["/main/building-modules/depinject"],
+            to: "/main/integrate/building-modules/depinject",
+          },
+          {
+            from: ["/main/building-modules/errors"],
+            to: "/main/integrate/building-modules/errors",
+          },
+          {
+            from: ["/main/building-modules/genesis"],
+            to: "/main/integrate/building-modules/genesis",
+          },
+          {
+            from: ["/main/building-modules/intro"],
+            to: "/main/integrate/building-modules/intro",
+          },
+          {
+            from: ["/main/building-modules/invariants"],
+            to: "/main/integrate/building-modules/invariants",
+          },
+          {
+            from: ["/main/building-modules/keeper"],
+            to: "/main/integrate/building-modules/keeper",
+          },
+          {
+            from: ["/main/building-modules/messages-and-queries"],
+            to: "/main/integrate/building-modules/messages-and-queries",
+          },
+          {
+            from: ["/main/building-modules/module-interface"],
+            to: "/main/integrate/building-modules/module-interfaces",
+          },
+          {
+            from: ["/main/building-modules/module-interface"],
+            to: "/main/integrate/building-modules/module-interfaces",
+          },
+          {
+            from: ["/main/building-modules/module-manager"],
+            to: "/main/integrate/building-modules/module-manager",
+          },
+          {
+            from: ["/main/building-modules/msg-services"],
+            to: "/main/integrate/building-modules/msg-services",
+          },
+          {
+            from: ["/main/building-modules/query-services"],
+            to: "/main/integrate/building-modules/query-services",
+          },
+          {
+            from: ["/main/building-modules/simulator"],
+            to: "/main/integrate/building-modules/simulator",
+          },
+          {
+            from: ["/main/building-modules/testing"],
+            to: "/main/integrate/building-modules/testing",
+          },
+          {
+            from: ["/main/building-modules/upgrade"],
+            to: "/main/integrate/building-modules/upgrade",
+          },
+          {
+            from: ["/main/core/baseapp"],
+            to: "/main/develop/advanced-concepts/baseapp",
+          },
+          {
+            from: ["/main/core/cli"],
+            to: "/main/develop/advanced-concepts/cli",
+          },
+          {
+            from: ["/main/core/config"],
+            to: "/main/develop/advanced-concepts/config",
+          },
+          {
+            from: ["/main/core/context"],
+            to: "/main/develop/advanced-concepts/context",
+          },
+          {
+            from: ["/main/core/encoding"],
+            to: "/main/develop/advanced-concepts/encoding",
+          },
+          {
+            from: ["/main/core/events"],
+            to: "/main/develop/advanced-concepts/events",
+          },
+          {
+            from: ["/main/core/grpc_rest"],
+            to: "/main/develop/advanced-concepts/grpc_rest",
+          },
+          {
+            from: ["/main/core/node"],
+            to: "/main/develop/advanced-concepts/node",
+          },
+          {
+            from: ["/main/core/ocap"],
+            to: "/main/develop/advanced-concepts/ocap",
+          },
+          {
+            from: ["/main/core/proto-docs"],
+            to: "/main/develop/advanced-concepts/proto-docs",
+          },
+          {
+            from: ["/main/core/runtx_middleware"],
+            to: "/main/develop/advanced-concepts/runtx_middleware",
+          },
+          {
+            from: ["/main/core/simulation"],
+            to: "/main/develop/advanced-concepts/simulation",
+          },
+          {
+            from: ["/main/core/store"],
+            to: "/main/develop/advanced-concepts/store",
+          },
+          {
+            from: ["/main/core/telemetry"],
+            to: "/main/develop/advanced-concepts/telemetry",
+          },
+          {
+            from: ["/main/core/tips"],
+            to: "/main/develop/advanced-concepts/tips",
+          },
+          {
+            from: ["/main/core/transactions"],
+            to: "/main/develop/advanced-concepts/transactions",
+          },
+          {
+            from: ["/main/core/upgrade"],
+            to: "/main/develop/advanced-concepts/upgrade",
+          },
+          {
+            from: ["/main/intro/overview"],
+            to: "/main/develop/intro/what-is-sdk",
+          },
+          {
+            from: ["/main/intro/sdk-app-architecture"],
+            to: "/main/develop/intro/sdk-app-architecture",
+          },
+          {
+            from: ["/main/intro/sdk-design"],
+            to: "/main/develop/intro/sdk-design",
+          },
+          {
+            from: ["/main/intro/why-app-specific"],
+            to: "/main/develop/intro/why-app-specific",
+          },
+          {
+            from: ["/main/intro/why-app-specific"],
+            to: "/main/develop/intro/why-app-specific",
+          },
+          {
+            from: ["/main/migrations/intro"],
+            to: "/main/integrate/intro",
+          },
+          {
+            from: ["/main/migrations/upgrading"],
+            to: "/main/integrate/migrations/upgrading",
+          },
+          {
+            from: ["/main/modules"],
+            to: "/main/integrate/modules",
+          },
+
+          {
+            from: ["/main/modules/auth/tx"],
+            to: "/main/develop/auth/tx",
+          },
+          {
+            from: ["/main/modules/authz"],
+            to: "/main/integrate/modules/authz",
+          },
+          {
+            from: ["/main/modules/circuit"],
             to: "/main/integrate/modules/circuit",
           },
           {
-            from: ["/main/spec/reserve-pool"],
-            to: "/main/integrate/modules/distribution",
+            from: ["/main/modules/consensus"],
+            to: "/main/integrate/modules/consensus",
+          },
+          {
+            from: ["/main/modules/crisis"],
+            to: "/main/integrate/modules/crisis",
+          },
+          {
+            from: ["/main/modules/evidence"],
+            to: "/main/integrate/modules/evidence",
+          },
+          {
+            from: ["/main/modules/genutil"],
+            to: "/main/integrate/modules/genutil",
+          },
+          {
+            from: ["/main/modules/gov"],
+            to: "/main/integrate/modules/gov",
+          },
+          {
+            from: ["/main/modules/group"],
+            to: "/main/integrate/modules/group",
+          },
+          {
+            from: ["/main/modules/mint"],
+            to: "/main/integrate/modules/mint",
+          },
+          {
+            from: ["/main/modules/nft"],
+            to: "/main/integrate/modules/nft",
+          },
+          {
+            from: ["/main/modules/params"],
+            to: "/main/integrate/modules/params",
+          },
+          {
+            from: ["/main/modules/slashing"],
+            to: "/main/integrate/modules/params",
+          },
+          {
+            from: ["/main/modules/staking"],
+            to: "/main/integrate/modules/params",
+          },
+          {
+            from: ["/main/modules/upgrade"],
+            to: "/main/integrate/modules/upgrade",
+          },
+          {
+            from: ["/main/packages"],
+            to: "/main/integrate/libraries",
+          },
+          {
+            from: ["/main/packages/collections"],
+            to: "/main/integrate/libraries/collections",
+          },
+          {
+            from: ["/main/packages/depinject"],
+            to: "/main/integrate/libraries/depinject",
+          },
+          {
+            from: ["/main/modules/packages/orm"],
+            to: "/main/integrate/libraries/orm",
+          },
+          {
+            from: ["/main/rfc"],
+            to: "/main/integrate/rfc",
+          },
+          {
+            from: ["/main/rfc/PROCESS"],
+            to: "/main/integrate/rfc/PROCESS",
+          },
+          {
+            from: ["/main/rfc/rfc-001-tx-validation"],
+            to: "/main/integrate/rfc/rfc-001-tx-validation",
+          },
+          {
+            from: ["/main/rfc/rfc-002-zero-copy-encoding"],
+            to: "/main/integrate/rfc/rfc-002-zero-copy-encoding",
+          },
+          {
+            from: ["/main/rfc/rfc-004-accounts"],
+            to: "/main/integrate/rfc/rfc-004-accounts",
+          },
+          {
+            from: ["/main/rfc/rfc-template"],
+            to: "/main/integrate/rfc/rfc-template",
+          },
+          {
+            from: ["/main/run-node/interact-node"],
+            to: "/main/user/run-node/interact-node",
+          },
+          {
+            from: ["/main/run-node/keyring"],
+            to: "/main/user/run-node/keyring",
+          },
+          {
+            from: ["/main/run-node/rosetta"],
+            to: "/main/user/run-node/rosetta",
+          },
+          {
+            from: ["/main/run-node/run-node"],
+            to: "/main/user/run-node/run-node",
+          },
+          {
+            from: ["/main/run-node/run-production"],
+            to: "/main/user/run-node/run-production",
+          },
+          {
+            from: ["/main/run-node/run-testnet"],
+            to: "/main/user/run-node/run-testnet",
+          },
+          {
+            from: ["/main/run-node/txs"],
+            to: "/main/user/run-node/txs",
+          },
+          {
+            from: ["/main/spec"],
+            to: "/main/integrate/spec",
+          },
+          {
+            from: ["/main/spec/addresses"],
+            to: "/main/integrate/spec/addresses",
+          },
+          {
+            from: ["/main/spec/addresses/bech32"],
+            to: "/main/integrate/spec/addresses/bech32",
+          },
+          {
+            from: ["/main/spec/SPEC_MODULE"],
+            to: "/main/integrate/spec/SPEC_MODULE",
+          },
+          {
+            from: ["/main/spec/SPEC_STANDARD"],
+            to: "/main/integrate/spec/SPEC_STANDARD",
+          },
+          {
+            from: ["/main/spec/store"],
+            to: "/main/integrate/spec/store",
+          },
+          {
+            from: ["/main/spec/store/interblock-cache"],
+            to: "/main/integrate/spec/store/interblock-cache",
+          },
+          {
+            from: ["/main/main/tooling"],
+            to: "/main/integrate/main/tooling",
+          },
+          {
+            from: ["/main/tooling/confix"],
+            to: "/main/integrate/tooling/confix",
           },
           {
             from: ["/main/run-node/cosmovisor"],
             to: "/main/integrate/tooling/cosmovisor",
           },
           {
-            from: ["/main/migrations/pre-upgrade"],
-            to: "/main/integrate/building-apps/app-upgrade",
-          },
-          {
-            from: ["/main/tooling/depinject"],
-            to: "/main/integrate/packages/depinject",
+            from: ["/main/spec/circuit-breaker"],
+            to: "/main/integrate/modules/circuit",
           },
         ],
       },
