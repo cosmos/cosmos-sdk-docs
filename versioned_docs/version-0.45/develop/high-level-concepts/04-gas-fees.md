@@ -4,7 +4,7 @@ This document describes the default strategies to handle gas and fees within a C
 
 ### Pre-requisite Readings
 
-- [Anatomy of an SDK Application](./app-anatomy.md) {prereq}
+- [Anatomy of an SDK Application](./00-overview-app.md) {prereq}
 
 ## Introduction to `Gas` and `Fees`
 
@@ -28,7 +28,7 @@ where:
 - `IsPastLimit()` returns `true` if the amount of gas consumed by the gas meter instance is strictly above the limit, `false` otherwise.
 - `IsOutOfGas()` returns `true` if the amount of gas consumed by the gas meter instance is above or equal to the limit, `false` otherwise.
 
-The gas meter is generally held in [`ctx`](../01-tx-lifecycle.md02-context.md), and consuming gas is done with the following pattern:
+The gas meter is generally held in [`ctx`](../02-context.md), and consuming gas is done with the following pattern:
 
 ```go
 ctx.GasMeter().ConsumeGas(amount, "description")
@@ -40,7 +40,7 @@ By default, the Cosmos SDK makes use of two different gas meters, the [main gas 
 
 `ctx.GasMeter()` is the main gas meter of the application. The main gas meter is initialized in `BeginBlock` via `setDeliverState`, and then tracks gas consumption during execution sequences that lead to state-transitions, i.e. those originally triggered by [`BeginBlock`](../../develop/advanced-concepts/00-baseapp.md#beginblock), [`DeliverTx`](../../develop/advanced-concepts/00-baseapp.md#delivertx) and [`EndBlock`](../../develop/advanced-concepts/00-baseapp.md#endblock). At the beginning of each `DeliverTx`, the main gas meter **must be set to 0** in the [`AnteHandler`](#antehandler), so that it can track gas consumption per-transaction.
 
-Gas consumption can be done manually, generally by the module developer in the [`BeginBlocker`, `EndBlocker`](../building-modules/beginblock-endblock.md) or [`Msg` service](../building-modules/03-msg-services.md), but most of the time it is done automatically whenever there is a read or write to the store. This automatic gas consumption logic is implemented in a special store called [`GasKv`](../01-tx-lifecycle.md04-store.md#gaskv-store).
+Gas consumption can be done manually, generally by the module developer in the [`BeginBlocker`, `EndBlocker`](../building-modules/beginblock-endblock.md) or [`Msg` service](../building-modules/03-msg-services.md), but most of the time it is done automatically whenever there is a read or write to the store. This automatic gas consumption logic is implemented in a special store called [`GasKv`](../04-store.md#gaskv-store).
 
 ### Block Gas Meter
 
@@ -48,7 +48,7 @@ Gas consumption can be done manually, generally by the module developer in the [
 
 +++ https://github.com/tendermint/tendermint/blob/v0.34.0-rc6/types/params.go#L34-L41
 
-When a new [transaction](../01-tx-lifecycle.md01-transactions.md) is being processed via `DeliverTx`, the current value of `BlockGasMeter` is checked to see if it is above the limit. If it is, `DeliverTx` returns immediately. This can happen even with the first transaction in a block, as `BeginBlock` itself can consume gas. If not, the transaction is processed normally. At the end of `DeliverTx`, the gas tracked by `ctx.BlockGasMeter()` is increased by the amount consumed to process the transaction:
+When a new [transaction](../01-transactions.md) is being processed via `DeliverTx`, the current value of `BlockGasMeter` is checked to see if it is above the limit. If it is, `DeliverTx` returns immediately. This can happen even with the first transaction in a block, as `BeginBlock` itself can consume gas. If not, the transaction is processed normally. At the end of `DeliverTx`, the gas tracked by `ctx.BlockGasMeter()` is increased by the amount consumed to process the transaction:
 
 ```go
 ctx.BlockGasMeter().ConsumeGas(

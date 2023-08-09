@@ -4,7 +4,7 @@ While encoding in the SDK used to be mainly handled by `go-amino` codec, the SDK
 
 ## Pre-requisite Readings
 
-- [Anatomy of an SDK application](../high-level-concepts/overview-app.md) {prereq}
+- [Anatomy of an SDK application](../high-level-concepts/00-overview-app.md) {prereq}
 
 ## Encoding
 

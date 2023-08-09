@@ -63,7 +63,7 @@ Typically, this interface is implemented in the `keeper` of a specific module. T
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/x/crisis/keeper/keeper.go#L49-L53
 
- The `InvariantRegistry` is therefore typically instantiated by instantiating the `keeper` of the `crisis` module in the [application's constructor function](../high-level-concepts/app-anatomy.md#constructor-function).
+ The `InvariantRegistry` is therefore typically instantiated by instantiating the `keeper` of the `crisis` module in the [application's constructor function](../high-level-concepts/00-overview-app.md#constructor-function).
 
 `Invariant`s can be checked manually via [`message`s](./02-messages-and-queries.md), but most often they are checked automatically at the end of each block. Here is an example from the `crisis` module:
 

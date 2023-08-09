@@ -4,7 +4,7 @@
 
 ## Pre-requisite Readings
 
-- [Anatomy of an SDK application](../high-level-concepts/overview-app.md) {prereq}
+- [Anatomy of an SDK application](../high-level-concepts/00-overview-app.md) {prereq}
 - [Tendermint Documentation on Events](https://docs.tendermint.com/master/spec/abci/abci.html#events) {prereq}
 
 ## Events

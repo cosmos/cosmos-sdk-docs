@@ -4,7 +4,7 @@ The main endpoint of an SDK application is the daemon client, otherwise known as
 
 ## Pre-requisite Readings
 
-- [Anatomy of an SDK application](../high-level-concepts/overview-app.md) {prereq}
+- [Anatomy of an SDK application](../high-level-concepts/00-overview-app.md) {prereq}
 
 ## `main` function
 
@@ -47,7 +47,7 @@ With the `db`, the `start` command creates a new instance of the application usi
 Note that an `appCreator` is a function that fulfills the `AppCreator` signature:
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.40.0-rc3/server/types/app.go#L48-L50
 
-In practice, the [constructor of the application](../high-level-concepts/overview-app.md#constructor-function) is passed as the `appCreator`.
+In practice, the [constructor of the application](../high-level-concepts/00-overview-app.md#constructor-function) is passed as the `appCreator`.
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.40.0-rc3/simapp/simd/cmd/root.go#L170-L215
 

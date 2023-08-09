@@ -4,7 +4,7 @@ This document describes the core parts of a Cosmos SDK application. Throughout t
 
 ## Node Client
 
-The Daemon, or [Full-Node Client](../advanced-concepts/04-node.md), is the core process of a Cosmos SDK-based blockchain. Participants in the network run this process to initialize their state-machine, connect with other full-nodes and update their state-machine as new blocks come in.
+The Daemon, or [Full-Node Client](../advanced-concepts/03-node.md), is the core process of a Cosmos SDK-based blockchain. Participants in the network run this process to initialize their state-machine, connect with other full-nodes and update their state-machine as new blocks come in.
 
 ```text
                 ^  +-------------------------------+  ^
@@ -24,9 +24,9 @@ Blockchain Node |  |           Consensus           |  |
                 v  +-------------------------------+  v
 ```
 
-The blockchain full-node presents itself as a binary, generally suffixed by `-d` for "daemon" (e.g. `appd` for `app` or `gaiad` for `gaia`). This binary is built by running a simple [`main.go`](../advanced-concepts/04-node.md#main-function) function placed in `./cmd/appd/`. This operation usually happens through the [Makefile](#dependencies-and-makefile).
+The blockchain full-node presents itself as a binary, generally suffixed by `-d` for "daemon" (e.g. `appd` for `app` or `gaiad` for `gaia`). This binary is built by running a simple [`main.go`](../advanced-concepts/03-node.md#main-function) function placed in `./cmd/appd/`. This operation usually happens through the [Makefile](#dependencies-and-makefile).
 
-Once the main binary is built, the node can be started by running the [`start` command](../advanced-concepts/04-node.md#start-command). This command function primarily does three things:
+Once the main binary is built, the node can be started by running the [`start` command](../advanced-concepts/03-node.md#start-command). This command function primarily does three things:
 
 1. Create an instance of the state-machine defined in [`app.go`](#core-application-file).
 2. Initialize the state-machine with the latest known state, extracted from the `db` stored in the `~/.app/data` folder. At this point, the state-machine is at height `appBlockHeight`.
@@ -41,11 +41,11 @@ In general, the core of the state-machine is defined in a file called `app.go`. 
 The first thing defined in `app.go` is the `type` of the application. It is generally comprised of the following parts:
 
 * **A reference to [`baseapp`](../../develop/advanced-concepts/00-baseapp.md).** The custom application defined in `app.go` is an extension of `baseapp`. When a transaction is relayed by Tendermint to the application, `app` uses `baseapp`'s methods to route them to the appropriate module. `baseapp` implements most of the core logic for the application, including all the [ABCI methods](https://docs.tendermint.com/master/spec/abci/abci.html) and the [routing logic](../../develop/advanced-concepts/00-baseapp.md#routing).
-* **A list of store keys**. The [store](../advanced-concepts/04-store.md), which contains the entire state, is implemented as a [`multistore`](../advanced-concepts/04-store.md#multistore) (i.e. a store of stores) in the Cosmos SDK. Each module uses one or multiple stores in the multistore to persist their part of the state. These stores can be accessed with specific keys that are declared in the `app` type. These keys, along with the `keepers`, are at the heart of the [object-capabilities model](../advanced-concepts/ocap.md) of the Cosmos SDK.
+* **A list of store keys**. The [store](../../advanced-concepts/04-store.md), which contains the entire state, is implemented as a [`multistore`](../advanced-concepts/04-store.md#multistore) (i.e. a store of stores) in the Cosmos SDK. Each module uses one or multiple stores in the multistore to persist their part of the state. These stores can be accessed with specific keys that are declared in the `app` type. These keys, along with the `keepers`, are at the heart of the [object-capabilities model](../advanced-concepts/ocap.md) of the Cosmos SDK.
 * **A list of module's `keeper`s.** Each module defines an abstraction called [`keeper`](../building-modules/06-keeper.md), which handles reads and writes for this module's store(s). The `keeper`'s methods of one module can be called from other modules (if authorized), which is why they are declared in the application's type and exported as interfaces to other modules so that the latter can only access the authorized functions.
 * **A reference to an [`appCodec`](../advanced-concepts/05-encoding.md).** The application's `appCodec` is used to serialize and deserialize data structures in order to store them, as stores can only persist `[]bytes`. The default codec is [Protocol Buffers](../advanced-concepts/05-encoding.md).
 * **A reference to a [`legacyAmino`](../advanced-concepts/05-encoding.md) codec.** Some parts of the Cosmos SDK have not been migrated to use the `appCodec` above, and are still hardcoded to use Amino. Other parts explicity use Amino for backwards compatibility. For these reasons, the application still holds a reference to the legacy Amino codec. Please note that the Amino codec will be removed from the SDK in the upcoming releases.
-* **A reference to a [module manager](../building-modules/01-module-manager.md#manager)** and a [basic module manager](../building-modules/01-module-manager.md#basicmanager). The module manager is an object that contains a list of the application's module. It facilitates operations related to these modules, like registering their [`Msg` service](../../develop/advanced-concepts/00-baseapp.md#msg-services) and [gRPC `Query` service](../../develop/advanced-concepts/00-baseapp.md#grpc-query-services), or setting the order of execution between modules for various functions like [`InitChainer`](#initchainer), [`BeginBlocker` and `EndBlocker`](#beginblocker-and-endblocker).
+* **A reference to a [module manager](../building-modules/01-module-manager.md#manager)** and a [basic module manager](../../integrate/building-modules/01-module-manager.md#basicmanager). The module manager is an object that contains a list of the application's module. It facilitates operations related to these modules, like registering their [`Msg` service](../../develop/advanced-concepts/00-baseapp.md#msg-services) and [gRPC `Query` service](../../develop/advanced-concepts/00-baseapp.md#grpc-query-services), or setting the order of execution between modules for various functions like [`InitChainer`](#initchainer), [`BeginBlocker` and `EndBlocker`](#beginblocker-and-endblocker).
 
 See an example of application type definition from `simapp`, the Cosmos SDK's own app used for demo and testing purposes:
 
@@ -53,7 +53,7 @@ See an example of application type definition from `simapp`, the Cosmos SDK's ow
 
 ### Constructor Function
 
-This function constructs a new application of the type defined in the section above. It must fulfill the `AppCreator` signature in order to be used in the [`start` command](../advanced-concepts/04-node.md#start-command) of the application's daemon command.
+This function constructs a new application of the type defined in the section above. It must fulfill the `AppCreator` signature in order to be used in the [`start` command](../advanced-concepts/03-node.md#start-command) of the application's daemon command.
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/server/types/app.go#L57-L59
 
@@ -126,7 +126,7 @@ See an example of a `MakeTestEncodingConfig` from `simapp`:
 
 ## Modules
 
-[Modules](../building-modules/intro.md) are the heart and soul of Cosmos SDK applications. They can be considered as state-machines nested within the state-machine. When a transaction is relayed from the underlying Tendermint engine via the ABCI to the application, it is routed by [`baseapp`](../../develop/advanced-concepts/00-baseapp.md) to the appropriate module in order to be processed. This paradigm enables developers to easily build complex state-machines, as most of the modules they need often already exist. **For developers, most of the work involved in building a Cosmos SDK application revolves around building custom modules required by their application that do not exist yet, and integrating them with modules that do already exist into one coherent application**. In the application directory, the standard practice is to store modules in the `x/` folder (not to be confused with the Cosmos SDK's `x/` folder, which contains already-built modules).
+[Modules](../building-modules/00-intro.md) are the heart and soul of Cosmos SDK applications. They can be considered as state-machines nested within the state-machine. When a transaction is relayed from the underlying Tendermint engine via the ABCI to the application, it is routed by [`baseapp`](../../develop/advanced-concepts/00-baseapp.md) to the appropriate module in order to be processed. This paradigm enables developers to easily build complex state-machines, as most of the modules they need often already exist. **For developers, most of the work involved in building a Cosmos SDK application revolves around building custom modules required by their application that do not exist yet, and integrating them with modules that do already exist into one coherent application**. In the application directory, the standard practice is to store modules in the `x/` folder (not to be confused with the Cosmos SDK's `x/` folder, which contains already-built modules).
 
 ### Application Module Interface
 
@@ -213,7 +213,7 @@ The Cosmos SDK also provides a development endpoint to generate [Swagger](https:
 
 [Interfaces](#command-line-grpc-services-and-rest-interfaces) let end-users interact with full-node clients. This means querying data from the full-node or creating and sending new transactions to be relayed by the full-node and eventually included in a block.
 
-The main interface is the [Command-Line Interface](../01-tx-lifecycle.md06-cli.md). The CLI of a Cosmos SDK application is built by aggregating [CLI commands](#cli) defined in each of the modules used by the application. The CLI of an application is the same as the daemon (e.g. `appd`), and defined in a file called `appd/main.go`. The file contains:
+The main interface is the [Command-Line Interface](../06-cli.md). The CLI of a Cosmos SDK application is built by aggregating [CLI commands](#cli) defined in each of the modules used by the application. The CLI of an application is the same as the daemon (e.g. `appd`), and defined in a file called `appd/main.go`. The file contains:
 
 * **A `main()` function**, which is executed to build the `appd` interface client. This function prepares each command and adds them to the `rootCmd` before building them. At the root of `appd`, the function adds generic commands like `status`, `keys` and `config`, query commands, tx commands and `rest-server`.
 * **Query commands** are added by calling the `queryCmd` function. This function returns a Cobra command that contains the query commands defined in each of the application's modules (passed as an array of `sdk.ModuleClients` from the `main()` function), as well as some other lower level query commands such as block or validator queries. Query command are called by using the command `appd query [query]` of the CLI.

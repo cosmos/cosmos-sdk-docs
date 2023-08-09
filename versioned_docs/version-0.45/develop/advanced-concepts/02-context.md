@@ -4,7 +4,7 @@ The `context` is a data structure intended to be passed from function to functio
 
 ## Pre-requisites Readings
 
-- [Anatomy of an SDK Application](../high-level-concepts/overview-app.md) {prereq}
+- [Anatomy of an SDK Application](../high-level-concepts/00-overview-app.md) {prereq}
 - [Lifecycle of a Transaction](../high-level-concepts/01-tx-lifecycle.md) {prereq}
 
 ## Context Definition

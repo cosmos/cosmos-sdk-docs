@@ -4,7 +4,7 @@ This document details how to build CLI and REST interfaces for a module. Example
 
 ## Prerequisite Readings
 
-* [Building Modules Intro](./intro.md) {prereq}
+* [Building Modules Intro](.00-intro.md) {prereq}
 
 ## CLI
 
@@ -76,7 +76,7 @@ Each module must also implement the `GetQueryCmd()` method for `AppModuleBasic` 
 
 ### Flags
 
-[Flags](../01-tx-lifecycle.md06-cli.md#flags) allow users to customize commands. `--fees` and `--gas-prices` are examples of flags that allow users to set the [fees](../high-level-concepts/gas-fees.md) and gas prices for their transactions.
+[Flags](../06-cli.md#flags) allow users to customize commands. `--fees` and `--gas-prices` are examples of flags that allow users to set the [fees](../high-level-concepts/gas-fees.md) and gas prices for their transactions.
 
 Flags that are specific to a module are typically created in a `flags.go` file in the module's `./client/cli` folder. When creating a flag, developers set the value type, the name of the flag, the default value, and a description about the flag. Developers also have the option to mark flags as _required_ so that an error is thrown if the user does not include a value for the flag.
 

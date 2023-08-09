@@ -4,11 +4,11 @@
 
 ## Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](../high-level-concepts/app-anatomy.md) {prereq}
+* [Anatomy of a Cosmos SDK Application](../high-level-concepts/00-overview-app.md) {prereq}
 
 ## Transactions
 
-Transactions are comprised of metadata held in [contexts](./03-context.md) and [`sdk.Msg`s](../building-modules/02-messages-and-queries.md) that trigger state changes within a module through the module's Protobuf [`Msg` service](../building-modules/03-msg-services.md).
+Transactions are comprised of metadata held in [contexts](./02-context.md) and [`sdk.Msg`s](../../integrate/building-modules/02-messages-and-queries.md) that trigger state changes within a module through the module's Protobuf [`Msg` service](../../integrate/building-modules/03-msg-services.md).
 
 When users want to interact with an application and make state changes (e.g. sending coins), they create transactions. Each of a transaction's `sdk.Msg` must be signed using the private key associated with the appropriate account(s), before the transaction is broadcasted to the network. A transaction must then be included in a block, validated, and approved by the network through the consensus process. To read more about the lifecycle of a transaction, click [here](../high-level-concepts/01-tx-lifecycle.md).
 
@@ -89,12 +89,12 @@ The next paragraphs will describe each of these components, in this order.
 Module `sdk.Msg`s are not to be confused with [ABCI Messages](https://docs.tendermint.com/master/spec/abci/abci.html#messages) which define interactions between the Tendermint and application layers.
 :::
 
-**Messages** (or `sdk.Msg`s) are module-specific objects that trigger state transitions within the scope of the module they belong to. Module developers define the messages for their module by adding methods to the Protobuf [`Msg` service](../building-modules/03-msg-services.md), and also implement the corresponding `MsgServer`.
+**Messages** (or `sdk.Msg`s) are module-specific objects that trigger state transitions within the scope of the module they belong to. Module developers define the messages for their module by adding methods to the Protobuf [`Msg` service](../../integrate/building-modules/03-msg-services.md), and also implement the corresponding `MsgServer`.
 
-Each `sdk.Msg`s is related to exactly one Protobuf [`Msg` service](../building-modules/03-msg-services.md) RPC, defined inside each module's `tx.proto` file. A SDK app router automatically maps every `sdk.Msg` to a corresponding RPC. Protobuf generates a `MsgServer` interface for each module `Msg` service, and the module developer needs to implement this interface.
+Each `sdk.Msg`s is related to exactly one Protobuf [`Msg` service](../../integrate/building-modules/03-msg-services.md) RPC, defined inside each module's `tx.proto` file. A SDK app router automatically maps every `sdk.Msg` to a corresponding RPC. Protobuf generates a `MsgServer` interface for each module `Msg` service, and the module developer needs to implement this interface.
 This design puts more responsibility on module developers, allowing application developers to reuse common functionalities without having to implement state transition logic repetitively.
 
-To learn more about Protobuf `Msg` services and how to implement `MsgServer`, click [here](../building-modules/03-msg-services.md).
+To learn more about Protobuf `Msg` services and how to implement `MsgServer`, click [here](../../integrate/building-modules/03-msg-services.md).
 
 While messages contain the information for state transition logic, a transaction's other metadata and relevant information are stored in the `TxBuilder` and `Context`.
 
@@ -140,7 +140,7 @@ Once the transaction bytes are generated, there are currently three ways of broa
 
 Application developers create entry points to the application by creating a [command-line interface](../advanced-concepts/06-cli.md), [gRPC and/or REST interface](../advanced-concepts/08-grpc_rest.md), typically found in the application's `./cmd` folder. These interfaces allow users to interact with the application through command-line.
 
-For the [command-line interface](../building-modules/09-module-interfaces.md#cli), module developers create subcommands to add as children to the application top-level transaction command `TxCmd`. CLI commands actually bundle all the steps of transaction processing into one simple command: creating messages, generating transactions and broadcasting. For concrete examples, see the [Interacting with a Node](../run-node/interact-node.md) section. An example transaction made using CLI looks like:
+For the [command-line interface](../../integrate/building-modules/09-module-interfaces.md#cli), module developers create subcommands to add as children to the application top-level transaction command `TxCmd`. CLI commands actually bundle all the steps of transaction processing into one simple command: creating messages, generating transactions and broadcasting. For concrete examples, see the [Interacting with a Node](../run-node/02-interact-node.md) section. An example transaction made using CLI looks like:
 
 ```bash
 simd tx send $MY_VALIDATOR_ADDRESS $RECIPIENT 1000stake
@@ -168,4 +168,4 @@ The three methods presented above are actually higher abstractions over the Tend
 
 ## Next {hide}
 
-Learn about the [context](./03-context.md) {hide}
+Learn about the [context](./02-context.md) {hide}

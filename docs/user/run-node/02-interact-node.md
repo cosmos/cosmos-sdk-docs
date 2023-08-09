@@ -13,7 +13,7 @@ There are multiple ways to interact with a node: using the CLI, using gRPC or us
 ### Pre-requisite Readings
 
 * [gRPC, REST and CometBFT Endpoints](../../develop/advanced-concepts/09-grpc_rest.md)
-* [Running a Node](01-run-node.md)
+* [Running a Node](./01-run-node.md)
 
 :::
 
@@ -68,7 +68,7 @@ Since the code generation library largely depends on your own tech stack, we wil
 
 [grpcurl](https://github.com/fullstorydev/grpcurl) is like `curl` but for gRPC. It is also available as a Go library, but we will use it only as a CLI command for debugging and testing purposes. Follow the instructions in the previous link to install it.
 
-Assuming you have a local node running (either a localnet, or connected a live network), you should be able to run the following command to list the Protobuf services available (you can replace `localhost:9000` by the gRPC server endpoint of another node, which is configured under the `grpc.address` field inside [`app.toml`](01-run-node.md#configuring-the-node-using-apptoml-and-configtoml)):
+Assuming you have a local node running (either a localnet, or connected a live network), you should be able to run the following command to list the Protobuf services available (you can replace `localhost:9000` by the gRPC server endpoint of another node, which is configured under the `grpc.address` field inside [`app.toml`](./01-run-node.md#configuring-the-node-using-apptoml-and-configtoml)):
 
 ```bash
 grpcurl -plaintext localhost:9090 list
@@ -270,7 +270,7 @@ curl \
 
 Make sure to replace `localhost:1317` with the REST endpoint of your node, configured under the `api.address` field.
 
-The list of all available REST endpoints is available as a Swagger specification file, it can be viewed at `localhost:1317/swagger`. Make sure that the `api.swagger` field is set to true in your [`app.toml`](01-run-node.md#configuring-the-node-using-apptoml) file.
+The list of all available REST endpoints is available as a Swagger specification file, it can be viewed at `localhost:1317/swagger`. Make sure that the `api.swagger` field is set to true in your [`app.toml`](./01-run-node.md#configuring-the-node-using-apptoml) file.
 
 ### Query for historical state using REST
 
@@ -288,4 +288,4 @@ Assuming the state at that block has not yet been pruned by the node, this query
 
 ### Cross-Origin Resource Sharing (CORS)
 
-[CORS policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) are not enabled by default to help with security. If you would like to use the rest-server in a public environment we recommend you provide a reverse proxy, this can be done with [nginx](https://www.nginx.com/). For testing and development purposes there is an `enabled-unsafe-cors` field inside [`app.toml`](01-run-node.md#configuring-the-node-using-apptoml).
+[CORS policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) are not enabled by default to help with security. If you would like to use the rest-server in a public environment we recommend you provide a reverse proxy, this can be done with [nginx](https://www.nginx.com/). For testing and development purposes there is an `enabled-unsafe-cors` field inside [`app.toml`](./01-run-node.md#configuring-the-node-using-apptoml).

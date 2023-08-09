@@ -4,8 +4,8 @@ Now that the application is ready and the keyring populated, it's time to see ho
 
 ## Pre-requisite Readings
 
-- [Anatomy of an SDK Application](../high-level-concepts/app-anatomy.md) {prereq}
-- [Setting up the keyring](./keyring.md) {prereq}
+- [Anatomy of an SDK Application](../high-level-concepts/00-overview-app.md) {prereq}
+- [Setting up the keyring](./00-keyring.md) {prereq}
 
 ## Initialize the Chain
 
@@ -55,7 +55,7 @@ jq '.app_state.mint.minter.inflation = "0.300000000000000000"' genesis.json > te
 
 ## Adding Genesis Accounts
 
-Before starting the chain, you need to populate the state with at least one account. To do so, first [create a new account in the keyring](./keyring.md#adding-keys-to-the-keyring) named `my_validator` under the `test` keyring backend (feel free to choose another name and another backend).
+Before starting the chain, you need to populate the state with at least one account. To do so, first [create a new account in the keyring](./00-keyring.md#adding-keys-to-the-keyring) named `my_validator` under the `test` keyring backend (feel free to choose another name and another backend).
 
 Now that you have created a local account, go ahead and grant it some `stake` tokens in your chain's genesis file. Doing so will also make sure your chain is aware of this account's existence:
 
@@ -63,7 +63,7 @@ Now that you have created a local account, go ahead and grant it some `stake` to
 simd add-genesis-account $MY_VALIDATOR_ADDRESS 100000000000stake
 ```
 
-Recall that `$MY_VALIDATOR_ADDRESS` is a variable that holds the address of the `my_validator` key in the [keyring](./keyring.md#adding-keys-to-the-keyring). Also note that the tokens in the SDK have the `{amount}{denom}` format: `amount` is is a 18-digit-precision decimal number, and `denom` is the unique token identifier with its denomination key (e.g. `atom` or `uatom`). Here, we are granting `stake` tokens, as `stake` is the token identifier used for staking in [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/v0.40.0-rc3/simapp). For your own chain with its own staking denom, that token identifier should be used instead.
+Recall that `$MY_VALIDATOR_ADDRESS` is a variable that holds the address of the `my_validator` key in the [keyring](./00-keyring.md#adding-keys-to-the-keyring). Also note that the tokens in the SDK have the `{amount}{denom}` format: `amount` is is a 18-digit-precision decimal number, and `denom` is the unique token identifier with its denomination key (e.g. `atom` or `uatom`). Here, we are granting `stake` tokens, as `stake` is the token identifier used for staking in [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/v0.40.0-rc3/simapp). For your own chain with its own staking denom, that token identifier should be used instead.
 
 Now that your account has some tokens, you need to add a validator to your chain. Validators are special full-nodes that participate in the consensus process (implemented in the [underlying consensus engine](../intro/sdk-app-architecture.md#tendermint)) in order to add new blocks to the chain. Any account can declare its intention to become a validator operator, but only those with sufficient delegation get to enter the active set (for example, only the top 125 validator candidates with the most delegation get to be validators in the Cosmos Hub). For this guide, you will add your local node (created via the `init` command above) as a validator of your chain. Validators can be declared before a chain is first started via a special transaction included in the genesis file called a `gentx`:
 
@@ -121,4 +121,4 @@ The naive way would be to run the same commands again in separate terminal windo
 
 ## Next {hide}
 
-Read about the [Interacting with your Node](./interact-node.md) {hide}
+Read about the [Interacting with your Node](./02-interact-node.md) {hide}

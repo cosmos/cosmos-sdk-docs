@@ -4,7 +4,7 @@ This document details how to build CLI and REST interfaces for a module. Example
 
 ## Prerequisite Readings
 
-- [Building Modules Intro](./intro.md) {prereq}
+- [Building Modules Intro](.00-intro.md) {prereq}
 
 ## CLI
 

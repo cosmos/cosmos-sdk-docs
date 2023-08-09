@@ -4,7 +4,7 @@ A store is a data structure that holds the state of the application. {synopsis}
 
 ### Pre-requisite Readings
 
-- [Anatomy of an SDK application](../high-level-concepts/overview-app.md) {prereq}
+- [Anatomy of an SDK application](../high-level-concepts/00-overview-app.md) {prereq}
 
 ## Introduction to SDK Stores
 
@@ -114,7 +114,7 @@ A `KVStore` is a simple key-value store used to store and retrieve data. A `Comm
 
 Individual `KVStore`s are used by modules to manage a subset of the global state. `KVStores` can be accessed by objects that hold a specific key. This `key` should only be exposed to the [`keeper`](../building-modules/06-keeper.md) of the module that defines the store.
 
-`CommitKVStore`s are declared by proxy of their respective `key` and mounted on the application's [multistore](#multistore) in the [main application file](../high-level-concepts/overview-app.md#core-application-file). In the same file, the `key` is also passed to the module's `keeper` that is responsible for managing the store.
+`CommitKVStore`s are declared by proxy of their respective `key` and mounted on the application's [multistore](#multistore) in the [main application file](../high-level-concepts/00-overview-app.md#core-application-file). In the same file, the `key` is also passed to the module's `keeper` that is responsible for managing the store.
 
 +++ https://github.com/cosmos/cosmos-sdk/blob/v0.40.0-rc6/store/types/store.go#L189-L219
 

@@ -4,7 +4,7 @@
 
 ## Pre-requisite Readings
 
-- [Introduction to SDK Modules](./intro.md) {prereq}
+- [Introduction to SDK Modules](.00-intro.md) {prereq}
 
 ## Messages
 

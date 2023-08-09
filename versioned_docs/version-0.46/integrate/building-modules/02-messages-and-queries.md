@@ -4,7 +4,7 @@
 
 ## Pre-requisite Readings
 
-* [Introduction to Cosmos SDK Modules](./intro.md) {prereq}
+* [Introduction to Cosmos SDK Modules](.00-intro.md) {prereq}
 
 ## Messages
 

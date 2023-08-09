@@ -64,7 +64,7 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 
 This simple switch returns a `querier` function specific to the type of the received `query`. At this point of the [query lifecycle](../high-level-concepts/query-lifecycle.md), the first element of the `path` (`path[0]`) contains the type of the query. The following elements are either empty or contain arguments needed to process the query.
 
-The `querier` functions themselves are pretty straightforward. They generally fetch a value or values from the state using the [`keeper`](./06-keeper.md). Then, they marshall the value(s) using the [`codec`](../01-tx-lifecycle.md05-encoding.md) and return the `[]byte` obtained as result.
+The `querier` functions themselves are pretty straightforward. They generally fetch a value or values from the state using the [`keeper`](./06-keeper.md). Then, they marshall the value(s) using the [`codec`](../05-encoding.md) and return the `[]byte` obtained as result.
 
 For a deeper look at `querier`s, see this [example implementation of a `querier` function](https://github.com/cosmos/cosmos-sdk/blob/v0.46.0-rc1/x/gov/keeper/querier.go) from the bank module.
 

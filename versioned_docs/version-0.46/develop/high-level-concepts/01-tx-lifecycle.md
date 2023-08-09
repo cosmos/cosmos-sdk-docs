@@ -4,7 +4,7 @@ This document describes the lifecycle of a transaction from creation to committe
 
 ## Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](./app-anatomy.md) {prereq}
+* [Anatomy of a Cosmos SDK Application](./00-overview-app.md) {prereq}
 
 ## Creation
 
@@ -144,8 +144,8 @@ must be in this proposer's mempool.
 
 The next step of consensus is to execute the transactions to fully validate them. All full-nodes
 that receive a block proposal from the correct proposer execute the transactions by calling the ABCI functions
-[`BeginBlock`](./app-anatomy.md#beginblocker-and-endblocker), `DeliverTx` for each transaction,
-and [`EndBlock`](./app-anatomy.md#beginblocker-and-endblocker). While each full-node runs everything
+[`BeginBlock`](./00-overview-app.md#beginblocker-and-endblocker), `DeliverTx` for each transaction,
+and [`EndBlock`](./00-overview-app.md#beginblocker-and-endblocker). While each full-node runs everything
 locally, this process yields a single, unambiguous result, since the messages' state transitions are deterministic and transactions are
 explicitly ordered in the block proposal.
 
