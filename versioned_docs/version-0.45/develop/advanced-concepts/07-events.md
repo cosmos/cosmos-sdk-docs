@@ -24,7 +24,7 @@ To parse the attribute values as strings, make sure to add `'` (single quotes) a
 :::
 
 Events, the `type` and `attributes` are defined on a **per-module basis** in the module's
-`/types/events.go` file, and triggered from the module's Protobuf [`Msg` service](../building-modules/03-msg-services.md)
+`/types/events.go` file, and triggered from the module's Protobuf [`Msg` service](../../integrate/building-modules/03-msg-services.md)
 by using the [`EventManager`](#eventmanager). In addition, each module documents its Events under
 `spec/xx_events.md`.
 
@@ -42,10 +42,10 @@ The following examples show how to query Events using the SDK.
 | Event                                            | Description                                                                                                                                              |
 | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `tx.height=23`                                   | Query all transactions at height 23                                                                                                                      |
-| `message.action='/cosmos.bank.v1beta1.Msg/Send'` | Query all transactions containing a x/bank `Send` [Service `Msg`](../building-modules/03-msg-services.md). Note the `'`s around the value.                  |
-| `message.action='send'`                          | Query all transactions containing a x/bank `Send` [legacy `Msg`](../building-modules/03-msg-services.md#legacy-amino-msgs). Note the `'`s around the value. |
+| `message.action='/cosmos.bank.v1beta1.Msg/Send'` | Query all transactions containing a x/bank `Send` [Service `Msg`](../../integrate/building-modules/03-msg-services.md). Note the `'`s around the value.                  |
+| `message.action='send'`                          | Query all transactions containing a x/bank `Send` [legacy `Msg`](../../integrate/building-modules/03-msg-services.md#legacy-amino-msgs). Note the `'`s around the value. |
 | `message.module='bank'`                          | Query all transactions containing messages from the x/bank module. Note the `'`s around the value.                                                       |
-| `create_validator.validator='cosmosval1...'`     | x/staking-specific Event, see [x/staking SPEC](../../../cosmos-sdk/x/staking/spec/07_events.md).                                                         |
+| `create_validator.validator='cosmosval1...'`     | x/staking-specific Event, see [staking](../../integrate/modules/staking/07_events.md).                                                         |
 
 ## EventManager
 
@@ -80,7 +80,7 @@ func NewHandler(keeper Keeper) sdk.Handler {
         switch msg := msg.(type) {
 ```
 
-See the [`Msg` services](../building-modules/03-msg-services.md) concept doc for a more detailed
+See the [`Msg` services](../../integrate/building-modules/03-msg-services.md) concept doc for a more detailed
 view on how to typically implement Events and use the `EventManager` in modules.
 
 ## Subscribing to Events
@@ -124,10 +124,10 @@ where `senderAddress` is an address following the [`AccAddress`](../high-level-c
 
 ## Typed Events (coming soon)
 
-As previously described, Events are defined on a per-module basis. It is the responsibility of the module developer to define Event types and Event attributes. Except in the `spec/XX_events.md` file, these Event types and attributes are unfortunately not easily discoverable, so the SDK proposes to use Protobuf-defined [Typed Events](../architecture/adr-032-typed-events.md) for emitting and querying Events.
+As previously described, Events are defined on a per-module basis. It is the responsibility of the module developer to define Event types and Event attributes. Except in the `spec/XX_events.md` file, these Event types and attributes are unfortunately not easily discoverable, so the SDK proposes to use Protobuf-defined [Typed Events](../../integrate/architecture/adr-032-typed-events.md) for emitting and querying Events.
 
 The Typed Events proposal has not yet been fully implemented. Documentation is not yet available.
 
 ## Next {hide}
 
-Learn about SDK [telemetry](./11-telemetry.md) {hide}
+Learn about SDK [telemetry](./10-telemetry.md) {hide}
