@@ -28,7 +28,7 @@ Note that the general format is as follows:
 simd query [moduleName] [command] <arguments> --flag <flagArg>
 ```
 
-To provide values such as `--node` (the full-node the CLI connects to), the user can use the [`app.toml`](../run-node/run-node.md#configuring-the-node-using-apptoml) config file to set them or provide them as flags.
+To provide values such as `--node` (the full-node the CLI connects to), the user can use the [`app.toml`](../run-node01-run-node#configuring-the-node-using-apptoml) config file to set them or provide them as flags.
 
 The CLI understands a specific set of commands, defined in a hierarchical structure by the application developer: from the [root command](../advanced-concepts/06-cli.md#root-command) (`simd`), the type of command (`Myquery`), the module that contains the command (`staking`), and command itself (`delegations`). Thus, the CLI knows exactly which module handles this command and directly passes the call there.
 

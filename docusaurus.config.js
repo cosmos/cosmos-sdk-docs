@@ -238,8 +238,8 @@ const config = {
           },
         redirects: [
           {
-            from: ["/", "/master", "/v0.43", "/v0.44"],
-            to: "/main",
+            from: ["/master", "/v0.43", "/v0.44"],
+            to: "/",
           },
           {
             from: [
@@ -343,7 +343,7 @@ const config = {
               "/main/modules/group/05_client",
               "/main/modules/group/06_metadata",
             ],
-            to: "/main/modules/group/",
+            to: "/modules",
           },
           {
             from: [
@@ -411,7 +411,7 @@ const config = {
           },
           {
             from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/main/integrate/modules",
+            to: "/modules",
           },
         ],
       },

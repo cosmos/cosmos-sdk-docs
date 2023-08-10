@@ -129,4 +129,4 @@ By default, the keyring generates a `secp256k1` keypair. The keyring also suppor
 
 ## Next {hide}
 
-Read about [running a node](./run-node.md) {hide}
+Read about [running a node](.01-run-node) {hide}
