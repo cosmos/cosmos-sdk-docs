@@ -36,7 +36,7 @@ jobs:
 
       - name: Run build-docs.sh
         run: |
-          chmod +x build-docs.sh  # Ensure the script is executable
+          chmod +x build-docs.sh
           ./build-docs.sh
 
       - name: Build
