@@ -117,6 +117,11 @@ const config = {
         footer: {
           links: [
             {
+              items: [
+                {
+                  html: `<a href="https://cosmos.network"><img src="static/img/logo-bw.svg" alt="Cosmos Logo"></a>`,
+                },
+              ],
             },
             {
               title: "Documentation",
