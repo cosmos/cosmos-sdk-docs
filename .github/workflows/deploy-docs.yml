@@ -28,6 +28,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Build Legacy Docs
+        run: |
+          chmod +x build-docs.sh
+          ./build-docs.sh
+
       - name: Build
         run: yarn build
 
