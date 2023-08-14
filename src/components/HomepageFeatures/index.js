@@ -50,7 +50,7 @@ const FeatureList = [
     },
     {
       title: `Join the Community`,
-      to: "/develop/intro/what-is-sdk",
+      to: "https://discord.com/invite/cosmosnetwork",
       Svg: require('@site/static/img/public-service.svg').default,
       description: (
           <>
@@ -60,13 +60,13 @@ const FeatureList = [
         ),
     },
     {
-        title: `Our Vision`,
-      to: "/develop/intro/what-is-sdk",
+      title: `Discuss`,
+      to: "https://github.com/orgs/cosmos/discussions",
         Svg: require('@site/static/img/ecosystem.svg').default,
         description: (
             <>
-                Learn about the long-term vision of the Cosmos project and how it aims to create an interoperable,
-                scalable, and sustainable ecosystem of blockchain applications.
+              Collaborative forum for the community to ask/answer questions, share information, discuss
+              items and give feedbacks on the teams roadmaps.
             </>
         ),
     },
