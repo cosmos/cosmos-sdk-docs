@@ -7,16 +7,12 @@ cd cosmos-sdk/docs;
 while read -r branch path_prefix; do
     echo "building vuepress $branch docs"
     (
-        git clean -fdx && git reset --hard && git checkout $branch && npm install &&
+        git clean -fdxq && git reset --hard && git checkout $branch && npm install &&
         VUEPRESS_BASE="/$path_prefix/"
+        rm basics/app-anatomy.md
         npm run build
+        mkdir -p "../../build/$path_prefix"
+
+        cp -r .vuepress/dist/* "../../build/$path_prefix"
     )
-
-    mkdir -p ./build/$path_prefix/
-    cp -r .vuepress/dist/* ./build/$path_prefix/
 done < vuepress_versions
-
-cd ../../
-pwd
-mkdir -p ./build
-cp -r ./cosmos-sdk/docs/build  ./build
