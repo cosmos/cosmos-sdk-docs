@@ -34,6 +34,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Build Legacy Docs
+        run: |
+          chmod +x build-docs.sh
+          ./build-docs.sh
+
       - name: Build
         run: yarn build
 
@@ -41,5 +46,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages
-          folder: ~/output
+          folder: build
           single-commit: true
