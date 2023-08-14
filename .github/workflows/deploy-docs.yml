@@ -34,6 +34,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Run build-docs.sh
+        run: |
+          chmod +x build-docs.sh  # Ensure the script is executable
+          ./build-docs.sh
+
       - name: Build
         run: yarn build
 
