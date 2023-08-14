@@ -119,7 +119,7 @@ const config = {
             {
               items: [
                 {
-                  html: `<a href="https://cosmos.network"><img src=/img/logo-bw.svg" alt="Cosmos Logo"></a>`,
+                  html: `<a href="https://cosmos.network"><img src="/img/logo-bw.svg" alt="Cosmos Logo"></a>`,
                 },
               ],
             },
