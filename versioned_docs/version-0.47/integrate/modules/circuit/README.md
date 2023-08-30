@@ -1,115 +1,37 @@
-# `x/circuit`
+---
+title: Cosmos SDK Documentation
+sidebar_position: 0
+---
 
-## Concepts
+Cosmos SDK is the world’s most popular framework for building application-specific blockchains.
 
-Circuit Breaker is a module that is meant to avoid a chain needing to halt/shut down in the presence of a vulnerability, instead the module will allow specific messages or all messages to be disabled. When operating a chain, if it is app specific then a halt of the chain is less detrimental, but if there are applications built on top of the chain then halting is expensive due to the disturbance to applications. 
+## Getting Started
 
-Circuit Breaker works with the idea that an address or set of addresses have the right to block messages from being executed and/or included in the mempool. Any address with a permission is able to reset the circuit breaker for the message. 
+Read all about the SDK or dive straight into the code with tutorials.
 
-## State
+* [**Introductions to the Cosmos SDK**](./intro/00-overview.md) - Learn about all the parts of the Cosmos SDK.
+* [**SDK Tutorials**](https://tutorials.cosmos.network) - Build a complete blockchain application from scratch.
 
-### Accounts
+## Explore the SDK
 
-* AccountPermissions `0x1 | account_address  -> ProtocolBuffer(CircuitBreakerPermissions)`
+Get familiar with the SDK and explore its main concepts.
 
-```go
-type level int32
+* [**Introduction**](./intro/00-overview.md) - High-level overview of the Cosmos SDK.
+* [**Basics**](./basics/00-app-anatomy.md) - Anatomy of a blockchain, transaction lifecycle, accounts and more.
+* [**Core Concepts**](./core/00-baseapp.md) -  Read about the core concepts like baseapp, the store, or the server.
+* [**Building Modules**](./building-modules/01-intro.md) -  Discover how to build modules for the Cosmos SDK.
+* [**Running a Node**](./run-node/00-keyring.md) - Running and interacting with nodes using the CLI and API.
+* [**Modules**](./modules/README.md) - Explore existing modules to build your application with.
 
-const (
-    // LEVEL_NONE_UNSPECIFIED indicates that the account will have no circuit
-    // breaker permissions.
-    LEVEL_NONE_UNSPECIFIED = iota
-    // LEVEL_SOME_MSGS indicates that the account will have permission to
-    // trip or reset the circuit breaker for some Msg type URLs. If this level
-    // is chosen, a non-empty list of Msg type URLs must be provided in
-    // limit_type_urls.
-    LEVEL_SOME_MSGS
-    // LEVEL_ALL_MSGS indicates that the account can trip or reset the circuit
-    // breaker for Msg's of all type URLs.
-    LEVEL_ALL_MSGS 
-    // LEVEL_SUPER_ADMIN indicates that the account can take all circuit breaker
-    // actions and can grant permissions to other accounts.
-    LEVEL_SUPER_ADMIN
-)
+## Explore the Stack
 
-type Access struct {
-	level int32 
-	msgs []string // if full permission, msgs can be empty
-}
-```
+Check out the docs for the various parts of the Cosmos stack.
 
+* [**Cosmos Hub**](https://hub.cosmos.network) - The first of thousands of interconnected blockchains on the Cosmos Network.
+* [**CometBFT**](https://docs.cometbft.com) - The leading BFT engine for building blockchains, powering Cosmos SDK.
 
-### Disable List
+## Help & Support
 
-List of type urls that are disabled.
-
-* DisableList `0x2 | msg_type_url -> []byte{}` <!--- should this be stored in json to skip encoding and decoding each block, does it matter?-->
-
-## State Transitions
-
-### Authorize 
-
-Authorize, is called by the module authority (default governance module account) or any account with `LEVEL_SUPER_ADMIN` to give permission to disable/enable messages to another account. There are three levels of permissions that can be granted. `LEVEL_SOME_MSGS` limits the number of messages that can be disabled. `LEVEL_ALL_MSGS` permits all messages to be disabled. `LEVEL_SUPER_ADMIN` allows an account to take all circuit breaker actions including authorizing and deauthorizing other accounts.
-
-```protobuf
-  // AuthorizeCircuitBreaker allows a super-admin to grant (or revoke) another
-  // account's circuit breaker permissions.
-  rpc AuthorizeCircuitBreaker(MsgAuthorizeCircuitBreaker) returns (MsgAuthorizeCircuitBreakerResponse);
-```
-
-### Trip
-
-Trip, is called by an account to disable message execution for a specific msgURL. 
-
-```protobuf
-  // TripCircuitBreaker pauses processing of Msg's in the state machine.
-  rpc TripCircuitBreaker(MsgTripCircuitBreaker) returns (MsgTripCircuitBreakerResponse);
-```
-
-### Reset
-
-Reset is called to enable execution of a previously disabled message. 
-
-```protobuf
-  // ResetCircuitBreaker resumes processing of Msg's in the state machine that
-  // have been been paused using TripCircuitBreaker.
-  rpc ResetCircuitBreaker(MsgResetCircuitBreaker) returns (MsgResetCircuitBreakerResponse);
-```
-
-## Messages
-
-### MsgAuthorizeCircuitBreaker
-
-```protobuf reference
-https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/circuit/v1/tx.proto#L25-L75
-```
-
-This message is expected to fail if:
-
-* the granter is not an account with permission level `LEVEL_SUPER_ADMIN` or the module authority
-* if the type urls does not exist <!-- TODO: is this possible?-->
-
-### MsgTripCircuitBreaker
-
-```protobuf reference 
-https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/circuit/v1/tx.proto#L77-L93
-```
-
-This message is expected to fail if:
-
-* if the signer does not have a permission level with the ability to disable the specified type url message
-* if the type urls does not exist <!-- TODO: is this possible?-->
-
-### MsgResetCircuitBreaker
-
-```protobuf reference
-https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/circuit/v1/tx.proto#L95-109
-```
-
-This message is expected to fail if:
-
-* if the type urls does not exist <!-- TODO: is this possible?-->
-* if the type url is not disabled
-
-* `## Events` - list and describe event tags used
-* `## Client` - list and describe CLI commands and gRPC and REST endpoints
+* [**Discord**](https://discord.gg/cosmosnetwork) - Chat with Cosmos developers on Discord.
+* [**GitHub Discussions**](https://github.com/cosmos/cosmos-sdk/discussions) - Ask questions and discuss SDK development on GitHub.
+* [**Found an issue?**](https://github.com/cosmos/cosmos-sdk/edit/main/docs/docs/README.md) - Help us improve this page by suggesting edits on GitHub.

@@ -1,6 +1,5 @@
 ---
 sidebar_position: 1
-dislayed_sidebar: developSidebar
 ---
 
 # Accounts
@@ -9,17 +8,16 @@ dislayed_sidebar: developSidebar
 This document describes the in-built account and public key system of the Cosmos SDK.
 :::
 
-:::note
+:::note Pre-requisite Readings
 
-### Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](00-overview-app.md)
+* [Anatomy of a Cosmos SDK Application](./00-app-anatomy.md)
 
 :::
 
 ## Account Definition
 
-In the Cosmos SDK, an _account_ designates a pair of _public key_ `PubKey` and _private key_ `PrivKey`. The `PubKey` can be derived to generate various `Addresses`, which are used to identify users (among other parties) in the application. `Addresses` are also associated with [`message`s](../../integrate/building-modules/02-messages-and-queries.md#messages) to identify the sender of the `message`. The `PrivKey` is used to generate [digital signatures](#keys-accounts-addresses-and-signatures) to prove that an `Address` associated with the `PrivKey` approved of a given `message`.
+In the Cosmos SDK, an _account_ designates a pair of _public key_ `PubKey` and _private key_ `PrivKey`. The `PubKey` can be derived to generate various `Addresses`, which are used to identify users (among other parties) in the application. `Addresses` are also associated with [`message`s](../building-modules/02-messages-and-queries.md#messages) to identify the sender of the `message`. The `PrivKey` is used to generate [digital signatures](#signatures) to prove that an `Address` associated with the `PrivKey` approved of a given `message`.
 
 For HD key derivation the Cosmos SDK uses a standard called [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki). The BIP32 allows users to create an HD wallet (as specified in [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)) - a set of accounts derived from an initial secret seed. A seed is usually created from a 12- or 24-word mnemonic. A single seed can derive any number of `PrivKey`s using a one-way cryptographic function. Then, a `PubKey` can be derived from the `PrivKey`. Naturally, the mnemonic is the most sensitive information, as private keys can always be re-generated if the mnemonic is preserved.
 
@@ -154,7 +152,7 @@ The default implementation of `Keyring` comes from the third-party [`99designs/k
 
 A few notes on the `Keyring` methods:
 
-* `Sign(uid string, msg []byte) ([]byte, types.PubKey, error)` strictly deals with the signature of the `msg` bytes. You must prepare and encode the transaction into a canonical `[]byte` form. Because protobuf is not deterministic, it has been decided in [ADR-020](../../integrate/architecture/adr-020-protobuf-transaction-encoding.md) that the canonical `payload` to sign is the `SignDoc` struct, deterministically encoded using [ADR-027](../../integrate/architecture/adr-027-deterministic-protobuf-serialization.md). Note that signature verification is not implemented in the Cosmos SDK by default, it is deferred to the [`anteHandler`](../advanced-concepts/00-baseapp.md#antehandler).
+* `Sign(uid string, msg []byte) ([]byte, types.PubKey, error)` strictly deals with the signature of the `msg` bytes. You must prepare and encode the transaction into a canonical `[]byte` form. Because protobuf is not deterministic, it has been decided in [ADR-020](../architecture/adr-020-protobuf-transaction-encoding.md) that the canonical `payload` to sign is the `SignDoc` struct, deterministically encoded using [ADR-027](../architecture/adr-027-deterministic-protobuf-serialization.md). Note that signature verification is not implemented in the Cosmos SDK by default, it is deferred to the [`anteHandler`](../core/00-baseapp.md#antehandler).
 
 ```protobuf reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/proto/cosmos/tx/v1beta1/tx.proto#L48-L65
@@ -200,7 +198,7 @@ First a new function to create a private key from a secret number is needed in t
 func NewPrivKeyFromSecret(secret []byte) (*PrivKey, error) {
 	var d = new(big.Int).SetBytes(secret)
 	if d.Cmp(secp256r1.Params().N) >= 1 {
-		return nil, errorsmod.Wrap(errors.ErrInvalidRequest, "secret not in the curve base field")
+		return nil, sdkerrors.Wrap(errors.ErrInvalidRequest, "secret not in the curve base field")
 	}
 	sk := new(ecdsa.PrivKey)
 	return &PrivKey{&ecdsaSK{*sk}}, nil

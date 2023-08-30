@@ -1,69 +1,37 @@
-# `x/genutil`
+---
+title: Cosmos SDK Documentation
+sidebar_position: 0
+---
 
-## Concepts
+Cosmos SDK is the world’s most popular framework for building application-specific blockchains.
 
-The `genutil` package contains a variaety of genesis utility functionalities for usage within a blockchain application. Namely:
+## Getting Started
 
-* Genesis transactions related (gentx)
-* Commands for collection and creation of gentxs
-* `InitChain` processing of gentxs
-* Genesis file validation
-* Genesis file migration
-* CometBFT related initialization
-    * Translation of an app genesis to a CometBFT genesis
+Read all about the SDK or dive straight into the code with tutorials.
 
-## Client
+* [**Introductions to the Cosmos SDK**](./intro/00-overview.md) - Learn about all the parts of the Cosmos SDK.
+* [**SDK Tutorials**](https://tutorials.cosmos.network) - Build a complete blockchain application from scratch.
 
-### CLI
+## Explore the SDK
 
-The genutil commands are available under the `genesis` subcommand.
+Get familiar with the SDK and explore its main concepts.
 
-#### add-genesis-account
+* [**Introduction**](./intro/00-overview.md) - High-level overview of the Cosmos SDK.
+* [**Basics**](./basics/00-app-anatomy.md) - Anatomy of a blockchain, transaction lifecycle, accounts and more.
+* [**Core Concepts**](./core/00-baseapp.md) -  Read about the core concepts like baseapp, the store, or the server.
+* [**Building Modules**](./building-modules/01-intro.md) -  Discover how to build modules for the Cosmos SDK.
+* [**Running a Node**](./run-node/00-keyring.md) - Running and interacting with nodes using the CLI and API.
+* [**Modules**](./modules/README.md) - Explore existing modules to build your application with.
 
-Add a genesis account to `genesis.json`. Learn more [here](https://docs.cosmos.network/main/run-node/run-node#adding-genesis-accounts).
+## Explore the Stack
 
-#### collect-gentxs
+Check out the docs for the various parts of the Cosmos stack.
 
-Collect genesis txs and output a `genesis.json` file.
+* [**Cosmos Hub**](https://hub.cosmos.network) - The first of thousands of interconnected blockchains on the Cosmos Network.
+* [**CometBFT**](https://docs.cometbft.com) - The leading BFT engine for building blockchains, powering Cosmos SDK.
 
-```shell
-simd genesis collect-gentxs
-```
+## Help & Support
 
-This will create a new `genesis.json` file that includes data from all the validators (we sometimes call it the "super genesis file" to distinguish it from single-validator genesis files).
-
-#### gentx
-
-Generate a genesis tx carrying a self delegation.
-
-```shell
-simd genesis gentx [key_name] [amount] --chain-id [chain-id]
-```
-
-This will create the genesis transaction for your new chain. Here `amount` should be at least `1000000000stake`.
-If you provide too much or too little, you will encounter an error when starting a node.
-
-#### migrate
-
-Migrate genesis to a specified target (SDK) version.
-
-```shell
-simd genesis migrate [target-version]
-```
-
-:::tip
-The `migrate` command is extensible and takes a `MigrationMap`. This map is a mapping of target versions to genesis migrations functions.
-When not using the default `MigrationMap`, it is recommended to still call the default `MigrationMap` corresponding the SDK version of the chain and prepend/append your own genesis migrations.
-:::
-
-#### validate-genesis
-
-Validates the genesis file at the default location or at the location passed as an argument.
-
-```shell
-simd genesis validate-genesis
-```
-
-:::warning
-Validate genesis only validates if the genesis is valid at the **current application binary**. For validating a genesis from a previous version of the application, use the `migrate` command to migrate the genesis to the current version.
-:::
+* [**Discord**](https://discord.gg/cosmosnetwork) - Chat with Cosmos developers on Discord.
+* [**GitHub Discussions**](https://github.com/cosmos/cosmos-sdk/discussions) - Ask questions and discuss SDK development on GitHub.
+* [**Found an issue?**](https://github.com/cosmos/cosmos-sdk/edit/main/docs/docs/README.md) - Help us improve this page by suggesting edits on GitHub.

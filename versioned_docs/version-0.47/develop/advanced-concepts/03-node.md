@@ -8,11 +8,9 @@ sidebar_position: 1
 The main endpoint of a Cosmos SDK application is the daemon client, otherwise known as the full-node client. The full-node runs the state-machine, starting from a genesis file. It connects to peers running the same client in order to receive and relay transactions, block proposals and signatures. The full-node is constituted of the application, defined with the Cosmos SDK, and of a consensus engine connected to the application via the ABCI.
 :::
 
-:::note
+:::note Pre-requisite Readings
 
-### Pre-requisite Readings
-
-* [Anatomy of an SDK application](../high-level-concepts/00-overview-app.md)
+* [Anatomy of an SDK application](../basics/00-app-anatomy.md)
 
 :::
 
@@ -22,8 +20,8 @@ The full-node client of any Cosmos SDK application is built by running a `main` 
 
 In general, developers will implement the `main.go` function with the following structure:
 
-* First, an [`encodingCodec`](06-encoding.md) is instantiated for the application.
-* Then, the `config` is retrieved and config parameters are set. This mainly involves setting the Bech32 prefixes for [addresses](../high-level-concepts/03-accounts.md#addresses).
+* First, an [`encodingCodec`](./05-encoding.md) is instantiated for the application.
+* Then, the `config` is retrieved and config parameters are set. This mainly involves setting the Bech32 prefixes for [addresses](../basics/03-accounts.md#addresses).
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/types/config.go#L14-L29
@@ -71,7 +69,7 @@ Note that an `appCreator` is a function that fulfills the `AppCreator` signature
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/server/types/app.go#L64-L66
 ```
 
-In practice, the [constructor of the application](../high-level-concepts/00-overview-app.md#constructor-function) is passed as the `appCreator`.
+In practice, the [constructor of the application](../basics/00-app-anatomy.md#constructor-function) is passed as the `appCreator`.
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/simapp/simd/cmd/root.go#L254-L268
@@ -83,7 +81,7 @@ Then, the instance of `app` is used to instantiate a new CometBFT node:
 https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/server/start.go#L336-L348
 ```
 
-The CometBFT node can be created with `app` because the latter satisfies the [`abci.Application` interface](https://github.com/cometbft/cometbft/blob/v0.37.0/abci/types/application.go#L9-L35) (given that `app` extends [`baseapp`](00-baseapp.md)). As part of the `node.New` method, CometBFT makes sure that the height of the application (i.e. number of blocks since genesis) is equal to the height of the CometBFT node. The difference between these two heights should always be negative or null. If it is strictly negative, `node.New` will replay blocks until the height of the application reaches the height of the CometBFT node. Finally, if the height of the application is `0`, the CometBFT node will call [`InitChain`](00-baseapp.md#initchain) on the application to initialize the state from the genesis file.
+The CometBFT node can be created with `app` because the latter satisfies the [`abci.Application` interface](https://github.com/cometbft/cometbft/blob/v0.37.0/abci/types/application.go#L9-L35) (given that `app` extends [`baseapp`](./00-baseapp.md)). As part of the `node.New` method, CometBFT makes sure that the height of the application (i.e. number of blocks since genesis) is equal to the height of the CometBFT node. The difference between these two heights should always be negative or null. If it is strictly negative, `node.New` will replay blocks until the height of the application reaches the height of the CometBFT node. Finally, if the height of the application is `0`, the CometBFT node will call [`InitChain`](./00-baseapp.md#initchain) on the application to initialize the state from the genesis file.
 
 Once the CometBFT node is instantiated and in sync with the application, the node can be started:
 
@@ -95,4 +93,4 @@ Upon starting, the node will bootstrap its RPC and P2P server and start dialing 
 
 ## Other commands
 
-To discover how to concretely run a node and interact with it, please refer to our [Running a Node, API and CLI](../../user/run-node/01-run-node.md) guide.
+To discover how to concretely run a node and interact with it, please refer to our [Running a Node, API and CLI](../run-node/01-run-node.md) guide.

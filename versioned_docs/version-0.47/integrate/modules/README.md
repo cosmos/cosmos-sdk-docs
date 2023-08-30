@@ -1,42 +1,37 @@
 ---
+title: Cosmos SDK Documentation
 sidebar_position: 0
-slug : /modules
 ---
 
-# Module Summary
+Cosmos SDK is the world’s most popular framework for building application-specific blockchains.
 
-Here are some production-grade modules that can be used in Cosmos SDK applications, along with their respective documentation:
+## Getting Started
 
-* [Auth](auth/README.md) - Authentication of accounts and transactions for Cosmos SDK applications.
-* [Authz](authz/README.md) - Authorization for accounts to perform actions on behalf of other accounts.
-* [Bank](bank/README.md) - Token transfer functionalities.
-* [Crisis](crisis/README.md) - Halting the blockchain under certain circumstances (e.g. if an invariant is broken).
-* [Distribution](distribution/README.md) - Fee distribution, and staking token provision distribution.
-* [Evidence](evidence/README.md) - Evidence handling for double signing, misbehaviour, etc.
-* [Feegrant](feegrant/README.md) - Grant fee allowances for executing transactions.
-* [Governance](gov/README.md) - On-chain proposals and voting.
-* [Mint](mint/README.md) - Creation of new units of staking token.
-* [Params](params/README.md) - Globally available parameter store.
-* [Slashing](slashing/README.md) - Validator punishment mechanisms.
-* [Staking](staking/README.md) - Proof-of-Stake layer for public blockchains.
-* [Upgrade](upgrade/README.md) - Software upgrades handling and coordination.
-* [NFT](nft/README.md) - NFT module implemented based on [ADR43](https://docs.cosmos.network/main/architecture/adr-043-nft-module.html).
-* [Consensus](consensus/README.md) - Consensus module for modifying CometBFT's ABCI consensus params.
-* [Circuit](circuit/README.md) - Circuit breaker module for pausing messages.
-* [Genutil](genutil/README.md) - Genesis utilities for the Cosmos SDK.
+Read all about the SDK or dive straight into the code with tutorials.
 
-To learn more about the process of building modules, visit the [building modules reference documentation](https://docs.cosmos.network/main/building-modules/intro).
+* [**Introductions to the Cosmos SDK**](./intro/00-overview.md) - Learn about all the parts of the Cosmos SDK.
+* [**SDK Tutorials**](https://tutorials.cosmos.network) - Build a complete blockchain application from scratch.
 
-## IBC
+## Explore the SDK
 
-The IBC module for the SDK is maintained by the IBC Go team in its [own repository](https://github.com/cosmos/ibc-go).
+Get familiar with the SDK and explore its main concepts.
 
-Additionally, the [capability module](https://github.com/cosmos/ibc-go/tree/fdd664698d79864f1e00e147f9879e58497b5ef1/modules/capability) is from v0.48+ maintained by the IBC Go team in its [own repository](https://github.com/cosmos/ibc-go/tree/fdd664698d79864f1e00e147f9879e58497b5ef1/modules/capability).
+* [**Introduction**](./intro/00-overview.md) - High-level overview of the Cosmos SDK.
+* [**Basics**](./basics/00-app-anatomy.md) - Anatomy of a blockchain, transaction lifecycle, accounts and more.
+* [**Core Concepts**](./core/00-baseapp.md) -  Read about the core concepts like baseapp, the store, or the server.
+* [**Building Modules**](./building-modules/01-intro.md) -  Discover how to build modules for the Cosmos SDK.
+* [**Running a Node**](./run-node/00-keyring.md) - Running and interacting with nodes using the CLI and API.
+* [**Modules**](./modules/README.md) - Explore existing modules to build your application with.
 
-## CosmWasm
+## Explore the Stack
 
-The CosmWasm module enables smart contracts, learn more by going to their [documentation site](https://book.cosmwasm.com/), or visit [the repository](https://github.com/CosmWasm/cosmwasm).
+Check out the docs for the various parts of the Cosmos stack.
 
-## EVM
+* [**Cosmos Hub**](https://hub.cosmos.network) - The first of thousands of interconnected blockchains on the Cosmos Network.
+* [**CometBFT**](https://docs.cometbft.com) - The leading BFT engine for building blockchains, powering Cosmos SDK.
 
-Read more about writing smart contracts with solidity at the official [`evm` documentation page](https://docs.evmos.org/modules/evm/).
+## Help & Support
+
+* [**Discord**](https://discord.gg/cosmosnetwork) - Chat with Cosmos developers on Discord.
+* [**GitHub Discussions**](https://github.com/cosmos/cosmos-sdk/discussions) - Ask questions and discuss SDK development on GitHub.
+* [**Found an issue?**](https://github.com/cosmos/cosmos-sdk/edit/main/docs/docs/README.md) - Help us improve this page by suggesting edits on GitHub.
