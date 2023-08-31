@@ -60,22 +60,11 @@ go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v0.1.0
 
 Run `cosmovisor version` to check the cosmovisor version.
 
-You can also install from source by pulling the cosmos-sdk repository and switching to the correct version and building as follows:
+Alternatively, for building from source, simply run `make cosmovisor`. The binary will be located in `tools/cosmovisor`.
 
-```shell
-git clone git@github.com:cosmos/cosmos-sdk
-cd cosmos-sdk
-git checkout cosmovisor/vx.x.x
-make cosmovisor
-```
-
-This will build cosmovisor in `/cosmovisor` directory. Afterwards you may want to put it into your machine's PATH like as follows:
-
-```shell
-cp cosmovisor/cosmovisor ~/go/bin/cosmovisor
-```
-
-*Note: If you are using go `v1.15` or earlier, you will need to use `go get`, and you may want to run the command outside a project directory.*
+:::warning
+Building from source using `make cosmovisor` won't display the correct `cosmovisor` version.
+:::
 
 ### Command Line Arguments And Environment Variables
 
@@ -99,7 +88,8 @@ All arguments passed to `cosmovisor run` will be passed to the application binar
 * `DAEMON_POLL_INTERVAL` (*optional*, default 300 milliseconds), is the interval length for polling the upgrade plan file. The value must be a duration (e.g. `1s`).
 * `DAEMON_DATA_BACKUP_DIR` option to set a custom backup directory. If not set, `DAEMON_HOME` is used.
 * `UNSAFE_SKIP_BACKUP` (defaults to `false`), if set to `true`, upgrades directly without performing a backup. Otherwise (`false`, default) backs up the data before trying the upgrade. The default value of false is useful and recommended in case of failures and when a backup needed to rollback. We recommend using the default backup option `UNSAFE_SKIP_BACKUP=false`.
-* `DAEMON_PREUPGRADE_MAX_RETRIES` (defaults to `0`). The maximum number of times to call `pre-upgrade` in the application after exit status of `31`. After the maximum number of retries, cosmovisor fails the upgrade.
+* `DAEMON_PREUPGRADE_MAX_RETRIES` (defaults to `0`). The maximum number of times to call `pre-upgrade` in the application after exit status of `31`. After the maximum number of retries, Cosmovisor fails the upgrade.
+* `COSMOVISOR_DISABLE_LOGS` (defaults to `false`). If set to true, this will disable Cosmovisor logs (but not the underlying process) completely. This may be useful, for example, when a Cosmovisor subcommand you are executing returns a valid JSON you are then parsing, as logs added by Cosmovisor make this output not a valid JSON.
 
 ### Folder Layout
 
@@ -210,12 +200,12 @@ If `DAEMON_ALLOW_DOWNLOAD_BINARIES` is set to `true`, and no local binary can be
     When submitting this as a proposal ensure there are no spaces. An example command using `gaiad` could look like:
 
     ```shell
-    > gaiad tx gov submit-proposal software-upgrade Vega \
+    > gaiad tx upgrade software-upgrade Vega \
     --title Vega \
     --deposit 100uatom \
     --upgrade-height 7368420 \
     --upgrade-info '{"binaries":{"linux/amd64":"https://github.com/cosmos/gaia/releases/download/v6.0.0-rc1/gaiad-v6.0.0-rc1-linux-amd64","linux/arm64":"https://github.com/cosmos/gaia/releases/download/v6.0.0-rc1/gaiad-v6.0.0-rc1-linux-arm64","darwin/amd64":"https://github.com/cosmos/gaia/releases/download/v6.0.0-rc1/gaiad-v6.0.0-rc1-darwin-amd64"}}' \
-    --description "upgrade to Vega" \
+    --summary "upgrade to Vega" \
     --gas 400000 \
     --from user \
     --chain-id test \
@@ -266,9 +256,9 @@ Clean `~/.simapp` (never do this in a production environment):
 Set up app config:
 
 ```shell
-./build/simd config chain-id test
-./build/simd config keyring-backend test
-./build/simd config broadcast-mode sync
+./build/simd config set client chain-id test
+./build/simd config set client keyring-backend test
+./build/simd config set client broadcast-mode sync
 ```
 
 Initialize the node and overwrite any previous genesis file (never do this in a production environment):
@@ -292,9 +282,6 @@ cat <<< $(jq '.app_state.gov.voting_params.voting_period = "20s"' $HOME/.simapp/
 ```
 
 Create a validator, and setup genesis transaction:
-
-<!-- TODO: add-genesis-account does not read keyring-backend from config -->
-<!-- TODO: gentx does not read chain-id from config -->
 
 ```shell
 ./build/simd keys add validator
@@ -335,7 +322,7 @@ cosmovisor run start
 
 Update app to the latest version (e.g. v0.45).
 
-Next, we can add a migration - which is defined using `x/upgrade` [upgrade plan](https://github.com/cosmos/cosmos-sdk/blob/main/docs/core/upgrade.md) (you may refer to a past version if you are using an older Cosmos SDK release). In a migration we can do any deterministic state change.
+Next, we can add a migration - which is defined using `x/upgrade` [upgrade plan](https://github.com/cosmos/cosmos-sdk/blob/main/docs/advanced-concepts/13-upgrade.md) (you may refer to a past version if you are using an older Cosmos SDK release). In a migration we can do any deterministic state change.
 
 Build the new version `simd` binary:
 
@@ -351,10 +338,27 @@ cp ./build/simd $DAEMON_HOME/cosmovisor/upgrades/test1/bin
 ```
 
 Open a new terminal window and submit an upgrade proposal along with a deposit and a vote (these commands must be run within 20 seconds of each other):
-Note, when using a `v0.46+` chain, replace `submit-proposal` by `submit-legacy-proposal`.
+
+**<= v0.45**:
 
 ```shell
 ./build/simd tx gov submit-proposal software-upgrade test1 --title upgrade --description upgrade --upgrade-height 200 --from validator --yes
+./build/simd tx gov deposit 1 10000000stake --from validator --yes
+./build/simd tx gov vote 1 yes --from validator --yes
+```
+
+**v0.46, v0.47**:
+
+```shell
+./build/simd tx gov submit-legacy-proposal software-upgrade test1 --title upgrade --description upgrade --upgrade-height 200 --from validator --yes
+./build/simd tx gov deposit 1 10000000stake --from validator --yes
+./build/simd tx gov vote 1 yes --from validator --yes
+```
+
+**>= v0.48+**:
+
+```shell
+./build/simd tx upgrade software-upgrade test1 --title upgrade --summary upgrade --upgrade-height 200 --from validator --yes
 ./build/simd tx gov deposit 1 10000000stake --from validator --yes
 ./build/simd tx gov vote 1 yes --from validator --yes
 ```

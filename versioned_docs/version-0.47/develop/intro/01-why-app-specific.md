@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
+dislayed_sidebar: developSidebar
 ---
 
 # Application-Specific Blockchains
