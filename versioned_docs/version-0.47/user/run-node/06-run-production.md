@@ -72,7 +72,6 @@ or
 ```bash
 sudo ufw allow 22
 ```
-
 Both of the above commands are the same. 
 
 3. Allow Port 26656 (cometbft p2p port). If the node has a modified p2p port then that port must be used here.
@@ -167,7 +166,6 @@ cargo install tmkms --features=softsign
 tmkms init config
 tmkms softsign keygen ./config/secrets/secret_connection_key
 ```
-
 or 
 
 Cargo install: 
@@ -238,11 +236,11 @@ reconnect = true
 ```bash
 vim $HOME/.simd/config/config.toml
 
-priv_validator_laddr = "tcp://127.0.0.1:26659"
+priv_validator_laddr = "tcp://0.0.0.0:26659"
 ```
 
 :::tip
-The above address it set to `127.0.0.1` but it is recommended to set the tmkms server to secure the startup
+The above address it set to `0.0.0.0` but it is recommended to set the tmkms server to secure the startup
 :::
 
 :::tip
@@ -255,7 +253,6 @@ It is recommended to comment or delete the lines that specify the path of the va
 # Path to the JSON file containing the last sign state of a validator
 # priv_validator_state_file = "data/priv_validator_state.json"
 ```
-
 :::
 
 6. Start the two processes. 

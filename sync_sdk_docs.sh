@@ -3,9 +3,9 @@
 REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
 
 WORK_DIR=$(pwd)
-#
-#rm -rf ./cosmos-sdk
-#git clone "$REMOTE_REPO_URL" cosmos-sdk
+
+rm -rf ./cosmos-sdk
+git clone "$REMOTE_REPO_URL" cosmos-sdk
 
 VERSIONS=($(jq -r '.[]' versions.json))
 
@@ -17,16 +17,17 @@ for version in "${VERSIONS[@]}"; do
   cd cosmos-sdk
   git fetch origin "$branch"
   git checkout "$branch"
-  REMOTE_DIR=$(pwd)
-  cd docs/
+  cd docs
   bash pre.sh
-  cd "$REMOTE_DIR"
 
   if ! git show-ref --verify "refs/remotes/origin/$branch" &>/dev/null; then
     echo "Branch $branch does not exist in the remote repository."
     continue
+  else
+      "$branch exists, continuing..."
   fi
-  remote_md_files=$(find "docs/docs" -name "*.md")
+
+  remote_md_files=$(find "docs" -name "*.md")
   cd "$WORK_DIR"
   local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
   for local_file in $local_md_files; do
@@ -37,12 +38,13 @@ for version in "${VERSIONS[@]}"; do
               if diff "$local_file" "./cosmos-sdk/$remote_file" &>/dev/null; then
                   echo "No differences found for $local_basename"
               else
-                  echo "Differences found for $local_basename. Replacing local file with remote file..."
-                  cp "./cosmos-sdk/$remote_file" "$local_file"
+                  echo "Differences found for $local_basename and $remote_file. Replacing $local_file with remote file..."
+                  pwd
+                  cp "./cosmos-sdk/docs/$remote_file" "$local_file"
                   echo "Local file replaced."
               fi
             elif [ -z "$local_md_files" ]; then
-              cp "./cosmos-sdk/$remote_file" "$local_file"
+              cp "./cosmos-sdk/docs/$remote_file" "$local_file"
           fi
       done
   done

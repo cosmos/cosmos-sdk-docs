@@ -107,7 +107,7 @@ func newOutOfGasRecoveryMiddleware(gasWanted uint64, ctx sdk.Context, next recov
         err, ok := recoveryObj.(sdk.ErrorOutOfGas)
         if !ok { return nil }
 
-        return errorsmod.Wrap(
+        return sdkerrors.Wrap(
             sdkerrors.ErrOutOfGas, fmt.Sprintf(
                 "out of gas in location: %v; gasWanted: %d, gasUsed: %d", err.Descriptor, gasWanted, ctx.GasMeter().GasConsumed(),
             ),
@@ -123,7 +123,7 @@ func newOutOfGasRecoveryMiddleware(gasWanted uint64, ctx sdk.Context, next recov
 ```go
 func newDefaultRecoveryMiddleware() recoveryMiddleware {
     handler := func(recoveryObj interface{}) error {
-        return errorsmod.Wrap(
+        return sdkerrors.Wrap(
             sdkerrors.ErrPanic, fmt.Sprintf("recovered: %v\nstack:\n%v", recoveryObj, string(debug.Stack())),
         )
     }

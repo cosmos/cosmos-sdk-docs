@@ -85,12 +85,12 @@ Also, it should be noted that this ADR includes only the simplest form of consen
 
     ```go
     abci.ValidatorUpdate{
-        PubKey: cmttypes.TM2PB.PubKey(OldConsPubKey),
+        PubKey: tmtypes.TM2PB.PubKey(OldConsPubKey),
         Power:  0,
     }
 
     abci.ValidatorUpdate{
-        PubKey: cmttypes.TM2PB.PubKey(NewConsPubKey),
+        PubKey: tmtypes.TM2PB.PubKey(NewConsPubKey),
         Power:  v.ConsensusPower(),
     }
     ```
