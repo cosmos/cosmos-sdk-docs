@@ -20,7 +20,7 @@ A new core API is proposed as a way to develop cosmos-sdk applications that will
 * more stable than the current framework
 * enable deterministic events and queries,
 * support event listeners
-* [ADR 033: Protobuf-based Inter-Module Communication](adr-033-protobuf-inter-module-comm.md) clients.
+* [ADR 033: Protobuf-based Inter-Module Communication](./adr-033-protobuf-inter-module-comm.md) clients.
 
 ## Context
 
@@ -90,7 +90,7 @@ slower than more fast moving projects.
 ### Core Services
 
 The following "core services" are defined by the core API. All valid runtime module implementations should provide
-implementations of these services to modules via both [dependency injection](adr-057-app-wiring.md) and
+implementations of these services to modules via both [dependency injection](./adr-057-app-wiring.md) and
 manual wiring. The individual services described below are all bundled in a convenient `appmodule.Service`
 "bundle service" so that for simplicity modules can declare a dependency on a single service.
 
@@ -256,7 +256,7 @@ type GenesisTarget = func(field string) (io.WriteCloser, error)
 
 All genesis objects for a given module are expected to conform to the semantics of a JSON object.
 Each field in the JSON object should be read and written separately to support streaming genesis.
-The [ORM](adr-055-orm.md) and [collections](adr-062-collections-state-layer.md) both support
+The [ORM](./adr-055-orm.md) and [collections](./adr-062-collections-state-layer.md) both support
 streaming genesis and modules using these frameworks generally do not need to write any manual
 genesis code.
 
@@ -377,7 +377,7 @@ Additional `AppModule` extension interfaces either inside or outside of core wil
 these concerns.
 
 In the case of gogo proto and amino interfaces, the registration of these generally should happen as early
-as possible during initialization and in [ADR 057: App Wiring](./adr-057-app-wiring.md), protobuf type registration  
+as possible during initialization and in [ADR 057: App Wiring](./adr-057-app-wiring-1.md), protobuf type registration  
 happens before dependency injection (although this could alternatively be done dedicated DI providers).
 
 gRPC gateway registration should probably be handled by the runtime module, but the core API shouldn't depend on gRPC
@@ -407,11 +407,11 @@ Crisis module invariants and simulations are subject to potential redesign and s
 defined in the crisis and simulation modules respectively.
 
 Extension interface for CLI commands will be provided via the `cosmossdk.io/client/v2` module and its
-[autocli](adr-058-auto-generated-cli.md) framework.
+[autocli](./adr-058-auto-generated-cli.md) framework.
 
 #### Example Usage
 
-Here is an example of setting up a hypothetical `foo` v2 module which uses the [ORM](adr-055-orm.md) for its state
+Here is an example of setting up a hypothetical `foo` v2 module which uses the [ORM](./adr-055-orm.md) for its state
 management and genesis.
 
 ```go
@@ -443,6 +443,51 @@ a minor version indicator of the core module that is accessible at runtime. Corr
 should check this compatibility version and return an error if the current `RuntimeCompatibilityVersion` is higher
 than the version of the core API that this runtime version can support. When new features are adding to the `core`
 module API that runtime modules are required to support, this version should be incremented.
+
+### Runtime Modules
+
+The initial `runtime` module will simply be created within the existing `github.com/cosmos/cosmos-sdk` go module
+under the `runtime` package. This module will be a small wrapper around the existing `BaseApp`, `sdk.Context` and
+module manager and follow the Cosmos SDK's existing [0-based versioning](https://0ver.org). To move to semantic
+versioning as well as runtime modularity, new officially supported runtime modules will be created under the
+`cosmossdk.io/runtime` prefix. For each supported consensus engine a semantically-versioned go module should be created
+with a runtime implementation for that consensus engine. For example:
+- `cosmossdk.io/runtime/comet`
+- `cosmossdk.io/runtime/comet/v2`
+- `cosmossdk.io/runtime/rollkit`
+- etc.
+
+These runtime modules should attempt to be semantically versioned even if the underlying consensus engine is not. Also,
+because a runtime module is also a first class Cosmos SDK module, it should have a protobuf module config type.
+A new semantically versioned module config type should be created for each of these runtime module such that there is a
+1:1 correspondence between the go module and module config type. This is the same practice should be followed for every 
+semantically versioned Cosmos SDK module as described in [ADR 057: App Wiring](./adr-057-app-wiring.md).
+
+Currently, `github.com/cosmos/cosmos-sdk/runtime` uses the protobuf config type `cosmos.app.runtime.v1alpha1.Module`.
+When we have a standalone v1 comet runtime, we should use a dedicated protobuf module config type such as
+`cosmos.runtime.comet.v1.Module1`. When we release v2 of the comet runtime (`cosmossdk.io/runtime/comet/v2`) we should
+have a corresponding `cosmos.runtime.comet.v2.Module` protobuf type.
+
+In order to make it easier to support different consensus engines that support the same core module functionality as
+described in this ADR, a common go module should be created with shared runtime components. The easiest runtime components
+to share initially are probably the message/query router, inter-module client, service register, and event router.
+This common runtime module should be created initially as the `cosmossdk.io/runtime/common` go module.
+
+When this new architecture has been implemented, the main dependency for a Cosmos SDK module would be
+`cosmossdk.io/core` and that module should be able to be used with any supported consensus engine (to the extent
+that it does not explicitly depend on consensus engine specific functionality such as Comet's block headers). An
+app developer would then be able to choose which consensus engine they want to use by importing the corresponding
+runtime module. The current `BaseApp` would be refactored into the `cosmossdk.io/runtime/comet` module, the router
+infrastructure in `baseapp/` would be refactored into `cosmossdk.io/runtime/common` and support ADR 033, and eventually
+a dependency on `github.com/cosmos/cosmos-sdk` would no longer be required.
+
+In short, modules would depend primarily on `cosmossdk.io/core`, and each `cosmossdk.io/runtime/{consensus-engine}`
+would implement the `cosmossdk.io/core` functionality for that consensus engine.
+
+On additional piece that would need to be resolved as part of this architecture is how runtimes relate to the server.
+Likely it would make sense to modularize the current server architecture so that it can be used with any runtime even
+if that is based on a consensus engine besides Comet. This means that eventually the Comet runtime would need to
+encapsulate the logic for starting Comet and the ABCI app.
 
 ### Testing
 
@@ -500,8 +545,8 @@ as by providing service implementations by wrapping `sdk.Context`.
 
 ## References
 
-* [ADR 033: Protobuf-based Inter-Module Communication](adr-033-protobuf-inter-module-comm.md)
-* [ADR 057: App Wiring](./adr-057-app-wiring.md)
-* [ADR 055: ORM](adr-055-orm.md)
-* [ADR 028: Public Key Addresses](adr-028-public-key-addresses.md)
+* [ADR 033: Protobuf-based Inter-Module Communication](./adr-033-protobuf-inter-module-comm.md)
+* [ADR 057: App Wiring](./adr-057-app-wiring-1.md)
+* [ADR 055: ORM](./adr-055-orm.md)
+* [ADR 028: Public Key Addresses](./adr-028-public-key-addresses.md)
 * [Keeping Your Modules Compatible](https://go.dev/blog/module-compatibility)

@@ -3,9 +3,9 @@
 REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
 
 WORK_DIR=$(pwd)
-
-rm -rf ./cosmos-sdk
-git clone "$REMOTE_REPO_URL" cosmos-sdk
+#
+#rm -rf ./cosmos-sdk
+#git clone "$REMOTE_REPO_URL" cosmos-sdk
 
 VERSIONS=($(jq -r '.[]' versions.json))
 
@@ -17,6 +17,10 @@ for version in "${VERSIONS[@]}"; do
   cd cosmos-sdk
   git fetch origin "$branch"
   git checkout "$branch"
+  REMOTE_DIR=$(pwd)
+  cd docs/
+  bash pre.sh
+  cd "$REMOTE_DIR"
 
   if ! git show-ref --verify "refs/remotes/origin/$branch" &>/dev/null; then
     echo "Branch $branch does not exist in the remote repository."

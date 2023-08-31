@@ -1,37 +1,39 @@
 ---
-title: Cosmos SDK Documentation
-sidebar_position: 0
+sidebar_position: 1
 ---
 
-Cosmos SDK is the world’s most popular framework for building application-specific blockchains.
+# Requests for Comments
 
-## Getting Started
+A Request for Comments (RFC) is a record of discussion on an open-ended topic
+related to the design and implementation of the Cosmos SDK, for which no
+immediate decision is required.
 
-Read all about the SDK or dive straight into the code with tutorials.
+The purpose of an RFC is to serve as a historical record of a high-level
+discussion that might otherwise only be recorded in an ad-hoc way (for example,
+via gists or Google docs) that are difficult to discover for someone after the
+fact. An RFC _may_ give rise to more specific architectural _decisions_ for
+the Cosmos SDK, but those decisions must be recorded separately in
+[Architecture Decision Records (ADR)](../architecture).
 
-* [**Introductions to the Cosmos SDK**](./intro/00-overview.md) - Learn about all the parts of the Cosmos SDK.
-* [**SDK Tutorials**](https://tutorials.cosmos.network) - Build a complete blockchain application from scratch.
+As a rule of thumb, if you can articulate a specific question that needs to be
+answered, write an ADR. If you need to explore the topic and get input from
+others to know what questions need to be answered, an RFC may be appropriate.
 
-## Explore the SDK
+## RFC Content
 
-Get familiar with the SDK and explore its main concepts.
+An RFC should provide:
 
-* [**Introduction**](./intro/00-overview.md) - High-level overview of the Cosmos SDK.
-* [**Basics**](./basics/00-app-anatomy.md) - Anatomy of a blockchain, transaction lifecycle, accounts and more.
-* [**Core Concepts**](./core/00-baseapp.md) -  Read about the core concepts like baseapp, the store, or the server.
-* [**Building Modules**](./building-modules/01-intro.md) -  Discover how to build modules for the Cosmos SDK.
-* [**Running a Node**](./run-node/00-keyring.md) - Running and interacting with nodes using the CLI and API.
-* [**Modules**](./modules/README.md) - Explore existing modules to build your application with.
+* A **changelog**, documenting when and how the RFC has changed.
+* An **abstract**, briefly summarizing the topic so the reader can quickly tell
+  whether it is relevant to their interest.
+* Any **background** a reader will need to understand and participate in the
+  substance of the discussion (links to other documents are fine here).
+* The **discussion**, the primary content of the document.
 
-## Explore the Stack
+The [rfc-template.md](./rfc-template.md) file includes placeholders for these
+sections.
 
-Check out the docs for the various parts of the Cosmos stack.
+## Table of Contents
 
-* [**Cosmos Hub**](https://hub.cosmos.network) - The first of thousands of interconnected blockchains on the Cosmos Network.
-* [**CometBFT**](https://docs.cometbft.com) - The leading BFT engine for building blockchains, powering Cosmos SDK.
-
-## Help & Support
-
-* [**Discord**](https://discord.gg/cosmosnetwork) - Chat with Cosmos developers on Discord.
-* [**GitHub Discussions**](https://github.com/cosmos/cosmos-sdk/discussions) - Ask questions and discuss SDK development on GitHub.
-* [**Found an issue?**](https://github.com/cosmos/cosmos-sdk/edit/main/docs/docs/README.md) - Help us improve this page by suggesting edits on GitHub.
+<!-- - [RFC-NNN: Title](./rfc-NNN-title.md) -->
+* [RFC-002: Zero Copy Encoding](./rfc-002-zero-copy-encoding.md)

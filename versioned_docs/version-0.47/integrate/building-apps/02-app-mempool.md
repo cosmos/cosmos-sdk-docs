@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Application mempool
+# Application Mempool
 
 :::note Synopsis
 This sections describes how the app-side mempool can be used and replaced. 
@@ -15,7 +15,7 @@ Notably it introduces the `PrepareProposal` and `ProcessProposal` steps of ABCI+
 
 :::note Pre-requisite Readings
 
-* [BaseApp](../core/00-baseapp.md)
+* [BaseApp](../../develop/advanced-concepts/00-baseapp.md)
 
 :::
 
@@ -48,7 +48,7 @@ selected DO NOT exceed the maximum block gas (if set) and the maximum bytes prov
 by `req.MaxBytes`.
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/baseapp/baseapp.go#L868-L916
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/baseapp/abci_utils.go
 ```
 
 This default implementation can be overridden by the application developer in
@@ -79,7 +79,7 @@ proposal is proposed.
 Here is the implementation of the default implementation:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/baseapp/baseapp.go#L927-L942
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/baseapp/abci_utils.go#L153-L159
 ```
 
 Like `PrepareProposal` this implementation is the default and can be modified by
