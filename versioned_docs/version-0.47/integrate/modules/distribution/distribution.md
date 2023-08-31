@@ -352,22 +352,15 @@ The transaction fails if the amount cannot be transferred from the sender to the
 
 ```go
 func (k Keeper) FundCommunityPool(ctx context.Context, amount sdk.Coins, sender sdk.AccAddress) error {
-  if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, sender, types.ModuleName, amount); err != nil {
-    return err
-  }
+    if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, sender, types.ModuleName, amount); err != nil {
+        return err
+    }
 
-  feePool, err := k.FeePool.Get(ctx)
-  if err != nil {
-    return err
-  }
+	feePool := k.GetFeePool(ctx)
+	feePool.CommunityPool = feePool.CommunityPool.Add(sdk.NewDecCoinsFromCoins(amount...)...)
+	k.SetFeePool(ctx, feePool)
 
-  feePool.CommunityPool = feePool.CommunityPool.Add(sdk.NewDecCoinsFromCoins(amount...)...)
-	
-  if err := k.FeePool.Set(ctx, feePool); err != nil {
-    return err
-  }
-
-  return nil
+	return nil
 }
 ```
 
@@ -688,7 +681,7 @@ rewards:
 
 The `validator-distribution-info` command allows users to query validator commission and self-delegation rewards for validator.
 
-````shell
+```shell
 simd query distribution validator-distribution-info cosmosvaloper1...
 ```
 
