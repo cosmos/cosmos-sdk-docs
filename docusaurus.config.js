@@ -73,7 +73,7 @@ const config = {
               label: "Develop",
             },
             {
-              to: "/integrate/building-modules/intro",
+              to: "/build/building-modules/intro",
               position: "left",
               label: "Integrate",
             },
