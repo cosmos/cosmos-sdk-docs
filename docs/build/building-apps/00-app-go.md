@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-dislayed_sidebar: integrateSidebar
+dislayed_sidebar: buildSidebar
 ---
 
 # Overview of `app.go`
