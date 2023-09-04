@@ -1,6 +1,6 @@
 ---
 sidebar_position: 0
-dislayed_sidebar: developSidebar
+
 ---
 
 # Main Components of the Cosmos SDK

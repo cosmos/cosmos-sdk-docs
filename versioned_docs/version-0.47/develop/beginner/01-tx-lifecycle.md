@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-dislayed_sidebar: developSidebar
+
 ---
 
 # Transaction Lifecycle

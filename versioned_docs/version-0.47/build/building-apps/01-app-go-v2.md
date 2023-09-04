@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-dislayed_sidebar: buildSidebar
+
 ---
 
 # Overview of `app_v2.go`
