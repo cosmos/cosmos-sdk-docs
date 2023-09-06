@@ -1,0 +1,28 @@
+name: Copy MD Files
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version:
+
+      - name: Install Dependencies
+        run: |
+          npm install -g jq   
+          yarn install --frozen-lockfile  
+
+      - name: Run Sync Script
+        run: |
+          chmod +x sync_script.sh  
+          ./sync_script.sh
