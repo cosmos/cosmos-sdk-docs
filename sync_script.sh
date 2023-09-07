@@ -19,6 +19,10 @@ for version in "${VERSIONS[@]}"; do
   branch="release/v$version.x"  # Determine the branch name
   version_directory="version-$version"  # Create a directory name based on the version
 
+    # Skip the '0.47' branch until docs backported
+    if [ "$branch" = "release/v0.47.x" ]; then
+      echo "Skipping branch $branch..."
+      continue
     fi
 
   # Change to the 'cosmos-sdk' directory
