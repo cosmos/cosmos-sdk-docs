@@ -17,7 +17,7 @@ const FeatureList = [
   },
   {
     title:`Build a Chain`,
-    to: "/integrate/building-apps/app-go",
+    to: "/build/building-apps/app-go",
     Svg: require('@site/static/img/link.svg').default,
     description: (
       <>
@@ -28,7 +28,7 @@ const FeatureList = [
   },
   {
     title: `Build a Module`,
-    to: "/integrate/building-modules/intro",
+    to: "/build/building-modules/intro",
     Svg: require('@site/static/img/cube.svg').default,
     description: (
       <>
