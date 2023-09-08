@@ -431,7 +431,7 @@ const config = {
           },
           {
             from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/main/modules",
+            to: "/main/build/modules/auth/",
           },
         ],
       },
