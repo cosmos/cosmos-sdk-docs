@@ -4,8 +4,7 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
-// const lastVersion = "v0.47";
-const lastVersion = "current";
+const lastVersion = "0.47";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -40,13 +39,22 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
+          lastVersion: lastVersion,
           versions: {
             current: {
               path: "main",
               label: "Main",
               banner: "unreleased",
             },
-          },
+            "0.50": {
+              path: "0.50",
+              label: "0.50",
+            },
+            "0.47": {
+              path: "0.47",
+              label: "0.47",
+            },
+          }
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -75,14 +83,14 @@ const config = {
           },
           items: [
             {
-              to: "/develop/intro/what-is-sdk",
+              to: "/develop/main/intro/what-is-sdk",
               position: "left",
               label: "Develop",
             },
             {
               to: "/build/building-modules/intro",
               position: "left",
-              label: "Integrate",
+              label: "Build",
             },
             {
               to: "/user/run-node/keyring",
