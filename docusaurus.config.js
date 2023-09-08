@@ -4,8 +4,8 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
-// const lastVersion = "v0.47";
-const lastVersion = "current";
+// const lastVersion = "current";
+const lastVersion = "0.47";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -43,8 +43,15 @@ const config = {
           versions: {
             current: {
               path: "main",
-              label: "Main",
               banner: "unreleased",
+            },
+            "0.50": {
+              path: "0.50",
+              label: "0.50",
+            },
+            "0.47": {
+              path: "0.47",
+              label: "0.47",
             },
           },
         },
@@ -82,7 +89,7 @@ const config = {
             {
               to: "/build/building-modules/intro",
               position: "left",
-              label: "Integrate",
+              label: "Build",
             },
             {
               to: "/user/run-node/keyring",
@@ -237,10 +244,10 @@ const config = {
             existingPath.replace('/intro', '/develop/intro'),
             existingPath.replace('/architecture', '/build/architecture/'),
             existingPath.replace('/building-apps', '/build/building-apps'),
-            existingPath.replace('/building-modules', '/build/building-modules'),
+            // existingPath.replace('/building-modules', '/build/building-modules'),
             existingPath.replace('/tooling', '/build/libraries'),
             existingPath.replace('/migrations', '/build/libraries'),
-            existingPath.replace('/modules', '/build/modules'),
+            // existingPath.replace('/modules', '/build/modules'),
             existingPath.replace('/rfc', '/build/rfc'),
             existingPath.replace('/spec', '/build/spec'),
             existingPath.replace('/tooling', '/build/tooling'),
@@ -355,7 +362,7 @@ const config = {
               "/main/modules/group/05_client",
               "/main/modules/group/06_metadata",
             ],
-            to: "/modules",
+            to: "/main/build/modules/auth",
           },
           {
             from: [
@@ -423,7 +430,7 @@ const config = {
           },
           {
             from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/modules",
+            to: "/main/build/modules/auth/",
           },
         ],
       },
