@@ -83,7 +83,7 @@ const config = {
           },
           items: [
             {
-              to: "/develop/main/intro/what-is-sdk",
+              to: "/develop/intro/what-is-sdk",
               position: "left",
               label: "Develop",
             },
