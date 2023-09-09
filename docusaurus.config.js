@@ -5,7 +5,7 @@ const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 // const lastVersion = "current";
-const lastVersion = "0.47";
+// const lastVersion = "0.47";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -40,19 +40,20 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
+          // lastVersion: lastVersion,
           versions: {
             current: {
               path: "main",
               banner: "unreleased",
             },
-            "0.50": {
-              path: "0.50",
-              label: "0.50",
-            },
-            "0.47": {
-              path: "0.47",
-              label: "0.47",
-            },
+            // "0.50": {
+            //   path: "0.50",
+            //   label: "0.50",
+            // },
+            // "0.47": {
+            //   path: "0.47",
+            //   label: "0.47",
+            // },
           },
         },
         theme: {
