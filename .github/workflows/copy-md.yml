@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   schedule:
       - cron: '0 0,12 * * *'
+  push:
 
 
 jobs:
@@ -27,3 +28,8 @@ jobs:
         run: |
           chmod +x sync_script.sh  
           ./sync_script.sh
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: always()
+        with:
+          commit_message: sync simapp changes
