@@ -84,19 +84,19 @@ const config = {
         items: [
           {
             type: "docsVersion",
-            to: "develop",
+            to: "/develop/intro/what-is-sdk",
             position: "left",
             label: "Develop",
           },
           {
             type: "docsVersion",
-            to: "build",
+            to: "/build/building-modules/intro",
             position: "left",
             label: "Build",
           },
           {
             type: "docsVersion",
-            to: "user",
+            to: "/user/run-node/keyring",
             position: "left",
             label: "User Guides",
           },
