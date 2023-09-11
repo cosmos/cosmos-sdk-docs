@@ -40,16 +40,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          versions: {
-            // "0.50": {
-            //   path: "0.50",
-            //   label: "0.50",
-            // },
-            // 0.47: {
-            //   path: "0.47",
-            //   label: "0.47",
-            // },
-          },
+          versions: {},
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
