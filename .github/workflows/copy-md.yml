@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          apt install jq -y
+          yarn global add jq
           yarn install --frozen-lockfile  
 
       - name: Run Sync Script
