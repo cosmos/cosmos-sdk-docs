@@ -11,7 +11,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "Explore the SDK",
   tagline:
-      "Cosmos SDK is the world's most popular framework for building application-specific blockchains.",
+    "Cosmos SDK is the world's most popular framework for building application-specific blockchains.",
   url: "https://docs.cosmos.network",
   baseUrl: "/cosmos-sdk-docs",
   onBrokenLinks: "warn",
@@ -43,17 +43,17 @@ const config = {
           // lastVersion: lastVersion,
           versions: {
             current: {
-              path: "main",
-              banner: "unreleased",
+              path: "",
+              label: "next",
             },
-            // "0.50": {
-            //   path: "0.50",
-            //   label: "0.50",
-            // },
-            // "0.47": {
-            //   path: "0.47",
-            //   label: "0.47",
-            // },
+            "0.50": {
+              path: "0.50",
+              label: "0.50",
+            },
+            0.47: {
+              path: "0.47",
+              label: "0.47",
+            },
           },
         },
         theme: {
@@ -64,154 +64,151 @@ const config = {
   ],
 
   themeConfig:
-  /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-      ({
-        image: "img/banner.jpg",
-        docs: {
-          sidebar: {
-            autoCollapseCategories: true,
-          },
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      image: "img/banner.jpg",
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true,
         },
-        navbar: {
-          title: "Cosmos SDK",
-          hideOnScroll: false,
-          logo: {
-            alt: "Cosmos SDK Logo",
-            src: "img/logo-sdk.svg",
-            href: "/",
-            target: "_self",
+      },
+      navbar: {
+        title: "Cosmos SDK",
+        hideOnScroll: false,
+        logo: {
+          alt: "Cosmos SDK Logo",
+          src: "img/logo-sdk.svg",
+          href: "/",
+          target: "_self",
+        },
+        items: [
+          {
+            type: "docsVersion",
+            to: "/develop/intro/what-is-sdk",
+            position: "left",
+            label: "Develop",
           },
-          items: [
-            {
-              to: "/develop/intro/what-is-sdk",
-              position: "left",
-              label: "Develop",
-            },
-            {
-              to: "/build/building-modules/intro",
-              position: "left",
-              label: "Build",
-            },
-            {
-              to: "/user/run-node/keyring",
-              position: "left",
-              label: "User Guides",
-            },
-            // {
-            //   to: "/",
-            //   position: "left",
-            //   label: "Vision",
-            // },
-            {
-              href: "https://github.com/cosmos/cosmos-sdk",
-              html: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon">
+          {
+            type: "docsVersion",
+            to: "/build/building-modules/intro",
+            position: "left",
+            label: "Build",
+          },
+          {
+            type: "docsVersion",
+            to: "/user/run-node/keyring",
+            position: "left",
+            label: "User Guides",
+          },
+          {
+            href: "https://github.com/cosmos/cosmos-sdk",
+            html: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0.300049C5.4 0.300049 0 5.70005 0 12.3001C0 17.6001 3.4 22.1001 8.2 23.7001C8.8 23.8001 9 23.4001 9 23.1001C9 22.8001 9 22.1001 9 21.1001C5.7 21.8001 5 19.5001 5 19.5001C4.5 18.1001 3.7 17.7001 3.7 17.7001C2.5 17.0001 3.7 17.0001 3.7 17.0001C4.9 17.1001 5.5 18.2001 5.5 18.2001C6.6 20.0001 8.3 19.5001 9 19.2001C9.1 18.4001 9.4 17.9001 9.8 17.6001C7.1 17.3001 4.3 16.3001 4.3 11.7001C4.3 10.4001 4.8 9.30005 5.5 8.50005C5.5 8.10005 5 6.90005 5.7 5.30005C5.7 5.30005 6.7 5.00005 9 6.50005C10 6.20005 11 6.10005 12 6.10005C13 6.10005 14 6.20005 15 6.50005C17.3 4.90005 18.3 5.30005 18.3 5.30005C19 7.00005 18.5 8.20005 18.4 8.50005C19.2 9.30005 19.6 10.4001 19.6 11.7001C19.6 16.3001 16.8 17.3001 14.1 17.6001C14.5 18.0001 14.9 18.7001 14.9 19.8001C14.9 21.4001 14.9 22.7001 14.9 23.1001C14.9 23.4001 15.1 23.8001 15.7 23.7001C20.5 22.1001 23.9 17.6001 23.9 12.3001C24 5.70005 18.6 0.300049 12 0.300049Z" fill="currentColor"/>
             </svg>
             `,
-              position: "right",
-            },
-            {
-              type: "docsVersionDropdown",
-              position: "right",
-              dropdownActiveClassDisabled: true,
-              dropdownItemsAfter: [
-                {
-                  href: "https://docs.cosmos.network/v0.46/",
-                  label: "v0.46",
-                  target: "_self",
-                },
-                {
-                  href: "https://docs.cosmos.network/v0.45/",
-                  label: "v0.45",
-                  target: "_self",
-                },
-              ],
-            },
-          ],
-        },
-        footer: {
-          links: [
-            {
-              items: [
-                {
-                  html: `<a href="https://cosmos.network"><img src="/img/logo-bw.svg" alt="Cosmos Logo"></a>`,
-                },
-              ],
-            },
-            {
-              title: "Documentation",
-              items: [
-                {
-                  label: "Cosmos Hub",
-                  href: "https://hub.cosmos.network",
-                },
-                {
-                  label: "CometBFT",
-                  href: "https://docs.cometbft.com",
-                },
-                {
-                  label: "IBC Go",
-                  href: "https://ibc.cosmos.network",
-                },
-              ],
-            },
-            {
-              title: "Community",
-              items: [
-                {
-                  label: "Blog",
-                  href: "https://blog.cosmos.network",
-                },
-                {
-                  label: "Forum",
-                  href: "https://forum.cosmos.network",
-                },
-                {
-                  label: "Discord",
-                  href: "https://discord.gg/cosmosnetwork",
-                },
-                {
-                  label: "Reddit",
-                  href: "https://reddit.com/r/cosmosnetwork",
-                },
-              ],
-            },
-            {
-              title: "Social",
-              items: [
-                {
-                  label: "Discord",
-                  href: "https://discord.gg/cosmosnetwork",
-                },
-                {
-                  label: "Twitter",
-                  href: "https://twitter.com/cosmos_sdk",
-                },
-                {
-                  label: "Youtube",
-                  href: "https://www.youtube.com/c/CosmosProject",
-                },
-                {
-                  label: "Telegram",
-                  href: "https://t.me/cosmosproject",
-                },
-              ],
-            },
-          ],
-          copyright: `<p>The development of the Cosmos SDK is led primarily by <a href="https://interchain.io/ecosystem">Interchain Core Teams</a>. Funding for this development comes primarily from the Interchain Foundation, a Swiss non-profit.</p>`,
-        },
-        prism: {
-          theme: lightCodeTheme,
-          darkTheme: darkCodeTheme,
-          additionalLanguages: ["protobuf", "go-module"], // https://prismjs.com/#supported-languages
-        },
-        algolia: {
-          appId: "QLS2QSP47E",
-          apiKey: "4d9feeb481e3cfef8f91bbc63e090042",
-          indexName: "cosmos_network",
-          contextualSearch: false,
-        },
-      }),
+            position: "right",
+          },
+          {
+            type: "docsVersionDropdown",
+            position: "right",
+            dropdownItemsAfter: [
+              {
+                href: "https://docs.cosmos.network/v0.46/",
+                label: "v0.46",
+                target: "_self",
+              },
+              {
+                href: "https://docs.cosmos.network/v0.45/",
+                label: "v0.45",
+                target: "_self",
+              },
+            ],
+          },
+        ],
+      },
+      footer: {
+        links: [
+          {
+            items: [
+              {
+                html: `<a href="https://cosmos.network"><img src="/img/logo-bw.svg" alt="Cosmos Logo"></a>`,
+              },
+            ],
+          },
+          {
+            title: "Documentation",
+            items: [
+              {
+                label: "Cosmos Hub",
+                href: "https://hub.cosmos.network",
+              },
+              {
+                label: "CometBFT",
+                href: "https://docs.cometbft.com",
+              },
+              {
+                label: "IBC Go",
+                href: "https://ibc.cosmos.network",
+              },
+            ],
+          },
+          {
+            title: "Community",
+            items: [
+              {
+                label: "Blog",
+                href: "https://blog.cosmos.network",
+              },
+              {
+                label: "Forum",
+                href: "https://forum.cosmos.network",
+              },
+              {
+                label: "Discord",
+                href: "https://discord.gg/cosmosnetwork",
+              },
+              {
+                label: "Reddit",
+                href: "https://reddit.com/r/cosmosnetwork",
+              },
+            ],
+          },
+          {
+            title: "Social",
+            items: [
+              {
+                label: "Discord",
+                href: "https://discord.gg/cosmosnetwork",
+              },
+              {
+                label: "Twitter",
+                href: "https://twitter.com/cosmos_sdk",
+              },
+              {
+                label: "Youtube",
+                href: "https://www.youtube.com/c/CosmosProject",
+              },
+              {
+                label: "Telegram",
+                href: "https://t.me/cosmosproject",
+              },
+            ],
+          },
+        ],
+        copyright: `<p>The development of the Cosmos SDK is led primarily by <a href="https://interchain.io/ecosystem">Interchain Core Teams</a>. Funding for this development comes primarily from the Interchain Foundation, a Swiss non-profit.</p>`,
+      },
+      prism: {
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+        additionalLanguages: ["protobuf", "go-module"], // https://prismjs.com/#supported-languages
+      },
+      algolia: {
+        appId: "QLS2QSP47E",
+        apiKey: "4d9feeb481e3cfef8f91bbc63e090042",
+        indexName: "cosmos_network",
+        contextualSearch: false,
+      },
+    }),
   themes: ["@you54f/theme-github-codeblock"],
   plugins: [
     async function myPlugin(context, options) {
@@ -240,20 +237,20 @@ const config = {
         toExtensions: ["html"],
         createRedirects(existingPath) {
           return [
-            existingPath.replace('/core', '/develop/advanced'),
-            existingPath.replace('/basics', '/develop/beginner'),
-            existingPath.replace('/intro', '/develop/intro'),
-            existingPath.replace('/architecture', '/build/architecture/'),
-            existingPath.replace('/building-apps', '/build/building-apps'),
+            existingPath.replace("/core", "/develop/advanced"),
+            existingPath.replace("/basics", "/develop/beginner"),
+            existingPath.replace("/intro", "/develop/intro"),
+            existingPath.replace("/architecture", "/build/architecture/"),
+            existingPath.replace("/building-apps", "/build/building-apps"),
             // existingPath.replace('/building-modules', '/build/building-modules'),
-            existingPath.replace('/tooling', '/build/libraries'),
-            existingPath.replace('/migrations', '/build/libraries'),
+            existingPath.replace("/tooling", "/build/libraries"),
+            existingPath.replace("/migrations", "/build/libraries"),
             // existingPath.replace('/modules', '/build/modules'),
-            existingPath.replace('/rfc', '/build/rfc'),
-            existingPath.replace('/spec', '/build/spec'),
-            existingPath.replace('/tooling', '/build/tooling'),
-            existingPath.replace('/run-node', '/user/run-node'),
-            existingPath.replace('/validate', '/user/validate')
+            existingPath.replace("/rfc", "/build/rfc"),
+            existingPath.replace("/spec", "/build/spec"),
+            existingPath.replace("/tooling", "/build/tooling"),
+            existingPath.replace("/run-node", "/user/run-node"),
+            existingPath.replace("/validate", "/user/validate"),
           ];
         },
         redirects: [
@@ -435,7 +432,7 @@ const config = {
           },
         ],
       },
-    ]
+    ],
   ],
 };
 
