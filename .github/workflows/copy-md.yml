@@ -2,11 +2,11 @@ name: Copy MD Files
 
 on:
   workflow_dispatch:
-    schedule:
+  schedule:
       - cron: '0 0,12 * * *'
   push:
 
-    
+
 jobs:
   sync-docs:
     runs-on: ubuntu-latest
