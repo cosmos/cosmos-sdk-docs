@@ -40,10 +40,11 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
+          lastVersion: "0.50",
           versions: {
             current: {
               path: "main",
-              label: "Main",
+              label: "Next",
               banner: "unreleased",
             },
             "0.50": {
