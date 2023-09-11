@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
     schedule:
       - cron: '0 0,12 * * *'
+  push:
+
+    
 jobs:
   sync-docs:
     runs-on: ubuntu-latest
@@ -15,7 +18,7 @@ jobs:
       - name: Set Up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version:
+          node-version: 16
 
       - name: Install Dependencies
         run: |
