@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e -o pipefail
+
 # Set the remote repository URL to clone from
 REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
 
