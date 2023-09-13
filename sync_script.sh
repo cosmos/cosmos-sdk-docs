@@ -21,11 +21,11 @@ for version in "${VERSIONS[@]}"; do
   branch="release/v$version.x"  # Determine the branch name
   version_directory="version-$version"  # Create a directory name based on the version
 
-    # Skip the '0.47' branch until docs backported
-    if [ "$branch" = "release/v0.47.x" ]; then
-      echo "Skipping branch $branch..."
-      continue
-    fi
+  # Skip the '0.47' branch until docs backported
+  if [ "$branch" = "release/v0.47.x" ]; then
+    echo "Skipping branch $branch..."
+    continue
+  fi
 
   # Change to the 'cosmos-sdk' directory
   cd cosmos-sdk
@@ -51,39 +51,47 @@ for version in "${VERSIONS[@]}"; do
   # Change back to the original working directory
   cd "$WORK_DIR"
 
-  # Find all Markdown files in the local versioned_docs directory
-  local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
+    if [ "$version" == "main" ]; then
+       local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
+    else
+      # Find all Markdown files in the local versioned_docs directory
+      local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
+    fi
 
-  if [ -n "$(find "versioned_docs/$version_directory" -type f -name "*.md")" ]; then
+  if [ "$local_md_files" ]; then
     echo "There are Markdown files in the directory."
-      # Iterate over each local Markdown file
+    # Iterate over each local Markdown file
     for local_file in $local_md_files; do
-        local_basename=$(basename "$local_file")
+      # Construct the relative path of the local file
+     if [ "$version" != "main" ]; then
+       local_relative_path="${local_file#versioned_docs/$version_directory/}"
+     else
+       local_relative_path="${local_file#docs/}"
+     fi
+      # Iterate over each remote Markdown file
+      for remote_file in $remote_md_files; do
+        # Construct the relative path of the remote file
+        remote_relative_path="${remote_file#docs/}"
 
-        # Iterate over each remote Markdown file
-        for remote_file in $remote_md_files; do
-          remote_basename=$(basename "$remote_file")
-
-          # Compare the filenames to find matching files
-          if [ "$local_basename" = "$remote_basename" ]; then
-            # Check for differences between the local and remote files
-            if diff "$local_file" "./cosmos-sdk/$remote_file" &>/dev/null; then
-              echo "No differences found for $local_basename"
-            else
-              # Replace the local file with the remote file if differences are found
-              echo "Differences found for $local_basename and $remote_file. Replacing $local_file with remote file..."
-              pwd
-              cp "./cosmos-sdk/docs/$remote_file" "$local_file"
-              echo "Local file replaced."
-            fi
-          elif [ -z "$local_md_files" ]; then
-            # If there are no local Markdown files, copy the remote file to the local directory
+        # Compare the relative paths to find matching files
+        if [ "$local_relative_path" = "$remote_relative_path" ]; then
+          # Check for differences between the local and remote files
+          if diff "$local_file" "./cosmos-sdk/docs/$remote_file" &>/dev/null; then
+            echo "No differences found for $local_file and $remote_file"
+          else
+            # Replace the local file with the remote file if differences are found
+            echo "Differences found for $local_file and $remote_file. Replacing $local_file with remote file..."
             cp "./cosmos-sdk/docs/$remote_file" "$local_file"
+            echo "Local file $local_file replaced with ./cosmos-sdk/docs/$remote_file"
           fi
-        done
+        fi
       done
+    done
   else
-    echo "No Markdown files found in the directory, copying over docs folder."
-    cp -r "./cosmos-sdk/docs/docs" "$WORK_DIR/versioned_docs/$version_directory"
+    # The file does not exist, so copy the remote file
+    cp "./cosmos-sdk/docs/$remote_file" "$local_file"
+    echo "File $local_file created and replaced with ./cosmos-sdk/docs/$remote_file"
   fi
 done
+
+rm -rf ./cosmos-sdk
