@@ -85,3 +85,5 @@ for version in "${VERSIONS[@]}"; do
     cp -r "./cosmos-sdk/docs/docs" "$WORK_DIR/versioned_docs/$version_directory"
   fi
 done
+
+rm -rf ./cosmos-sdk
