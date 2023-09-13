@@ -9,8 +9,8 @@ REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
 WORK_DIR=$(pwd)
 
 # Remove any existing 'cosmos-sdk' directory and clone the remote repository
-#rm -rf ./cosmos-sdk
-#git clone "$REMOTE_REPO_URL" cosmos-sdk
+rm -rf ./cosmos-sdk
+git clone "$REMOTE_REPO_URL" cosmos-sdk
 
 # Read the versions from a JSON file and remove the 'v' prefix
 VERSIONS=($(jq -r '.[]' versions.json))
