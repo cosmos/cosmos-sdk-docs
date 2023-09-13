@@ -6,7 +6,6 @@ on:
       - cron: '0 0,12 * * *'
   push:
 
-
 jobs:
   sync-docs:
     runs-on: ubuntu-latest
@@ -28,8 +27,8 @@ jobs:
         run: |
           chmod +x sync_script.sh  
           ./sync_script.sh
-          
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: always()
         with:
-          commit_message: sync simapp changes
+          commit_message: sync documentation changes
