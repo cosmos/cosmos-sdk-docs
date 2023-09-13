@@ -51,16 +51,23 @@ for version in "${VERSIONS[@]}"; do
   # Change back to the original working directory
   cd "$WORK_DIR"
 
-  # Find all Markdown files in the local versioned_docs directory
-  local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
+    if [ "$version" == "main" ]; then
+       local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
+    else
+      # Find all Markdown files in the local versioned_docs directory
+      local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
+    fi
 
-  if [ -n "$(find "versioned_docs/$version_directory" -type f -name "*.md")" ]; then
+  if [ "$local_md_files" ]; then
     echo "There are Markdown files in the directory."
     # Iterate over each local Markdown file
     for local_file in $local_md_files; do
       # Construct the relative path of the local file
-      local_relative_path="${local_file#versioned_docs/$version_directory/}"
-
+     if [ "$version" != "main" ]; then
+       local_relative_path="${local_file#versioned_docs/$version_directory/}"
+     else
+       local_relative_path="${local_file#docs/}"
+     fi
       # Iterate over each remote Markdown file
       for remote_file in $remote_md_files; do
         # Construct the relative path of the remote file
@@ -70,19 +77,20 @@ for version in "${VERSIONS[@]}"; do
         if [ "$local_relative_path" = "$remote_relative_path" ]; then
           # Check for differences between the local and remote files
           if diff "$local_file" "./cosmos-sdk/docs/$remote_file" &>/dev/null; then
-            echo "No differences found for $local_file"
+            echo "No differences found for $local_file and $remote_file"
           else
             # Replace the local file with the remote file if differences are found
             echo "Differences found for $local_file and $remote_file. Replacing $local_file with remote file..."
             cp "./cosmos-sdk/docs/$remote_file" "$local_file"
-            echo "Local file replaced."
+            echo "Local file $local_file replaced with ./cosmos-sdk/docs/$remote_file"
           fi
         fi
       done
     done
   else
-    echo "No Markdown files found in the directory, copying over docs folder."
-    cp -r "./cosmos-sdk/docs/docs" "$WORK_DIR/versioned_docs/$version_directory"
+    # The file does not exist, so copy the remote file
+    cp "./cosmos-sdk/docs/$remote_file" "$local_file"
+    echo "File $local_file created and replaced with ./cosmos-sdk/docs/$remote_file"
   fi
 done
 
