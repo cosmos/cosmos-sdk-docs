@@ -14,6 +14,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Create Sync-Branch
+        run: |
+          git checkout -b sync-branch
+
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
