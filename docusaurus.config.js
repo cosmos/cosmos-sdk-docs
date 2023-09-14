@@ -12,7 +12,7 @@ const config = {
   tagline:
     "Cosmos SDK is the world's most popular framework for building application-specific blockchains.",
   url: "https://docs.cosmos.network",
-  baseUrl: "/cosmos-sdk-docs", // TODO to change on deployed
+  baseUrl: "/cosmos-sdk-docs", // TODO to change before live.
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.svg",
