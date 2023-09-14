@@ -47,14 +47,14 @@ const config = {
               label: "Main",
               banner: "unreleased",
             },
-            "0.50": {
-              path: "0.50",
-              label: "0.50",
-            },
-            "0.47": {
-              path: "0.47",
-              label: "0.47",
-            },
+            // "0.50": {
+            //   path: "0.50",
+            //   label: "0.50",
+            // },
+            // "0.47": {
+            //   path: "0.47",
+            //   label: "0.47",
+            // },
           },
         },
         theme: {
