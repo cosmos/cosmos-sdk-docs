@@ -257,7 +257,6 @@ const config = {
             existingPath.replace('/spec', '/build/spec'),
             existingPath.replace('/tooling', '/build/tooling'),
             existingPath.replace('/run-node', '/user/run-node'),
-            existingPath.replace('/validate', '/user/validate')
           ];
         },
         redirects: [
