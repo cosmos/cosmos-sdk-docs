@@ -428,7 +428,7 @@ const config = {
           },
           {
             from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/main/build/modules/",
+            to: "/main/build/modules/auth", // TODO this should point to /modules - to debug before going live
           },
         ],
       },
