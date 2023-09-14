@@ -205,7 +205,7 @@ const config = {
       algolia: {
         appId: "QLS2QSP47E",
         apiKey: "4d9feeb481e3cfef8f91bbc63e090042",
-        indexName: "cosmos_network",
+        indexName: "sdk_docs",
         contextualSearch: false,
       },
     }),
@@ -428,7 +428,7 @@ const config = {
           },
           {
             from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/main/build/modules",
+            to: "/main/build/modules/",
           },
         ],
       },
