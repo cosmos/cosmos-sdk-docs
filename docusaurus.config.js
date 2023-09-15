@@ -258,6 +258,50 @@ const config = {
         // },
         redirects: [
           {
+            from: '/core',
+            to: '/develop/advanced',
+          },
+          {
+            from: '/basics',
+            to: '/develop/beginner',
+          },
+          {
+            from: '/intro',
+            to: '/develop/intro',
+          },
+          {
+            from: '/architecture',
+            to: '/build/architecture/',
+          },
+          {
+            from: '/building-apps',
+            to: '/build/building-apps',
+          },
+          {
+            from: '/tooling',
+            to: '/build/libraries',
+          },
+          {
+            from: '/migrations',
+            to: '/build/libraries',
+          },
+          {
+            from: '/rfc',
+            to: '/build/rfc',
+          },
+          {
+            from: '/spec',
+            to: '/build/spec',
+          },
+          {
+            from: '/tooling',
+            to: '/build/tooling',
+          },
+          {
+            from: '/run-node',
+            to: '/user/run-node',
+          },
+          {
             from: ["/master", "/v0.43", "/v0.44"],
             to: "/",
           },
