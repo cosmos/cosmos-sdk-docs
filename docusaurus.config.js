@@ -244,7 +244,7 @@ const config = {
       {
         fromExtensions: ["html"],
         toExtensions: ["html"],
-        redirects: [redirects,
+        redirects: [...redirects,
           {
             from: ["/master", "/v0.43", "/v0.44"],
             to: "/",
@@ -426,51 +426,57 @@ const config = {
     ]
   ],
 };
+function generateRedirects(version) {
+  const redirects = [
+    {
+      from: `/${version}/core`,
+      to: `/${version}/develop/advanced/baseapp`,
+    },
+    {
+      from: `/${version}/basics`,
+      to: `/${version}/develop/beginner/overview-app`,
+    },
+    {
+      from: `/${version}/intro`,
+      to: `/${version}/develop/intro/what-is-sdk`,
+    },
+    {
+      from: `/${version}/architecture`,
+      to: `/${version}/build/architecture/`,
+    },
+    {
+      from: `/${version}/building-apps`,
+      to: `/${version}/build/building-apps/app-go`,
+    },
+    {
+      from: `/${version}/building-modules`,
+      to: `/${version}/build/building-apps/app-go`,
+    },
+    {
+      from: `/${version}/tooling`,
+      to: `/${version}/build/tooling/cosmovisor`,
+    },
+    {
+      from: `/${version}/migrations`,
+      to: `/${version}/build/migrations/intro`,
+    },
+    {
+      from: `/${version}/rfc`,
+      to: `/${version}/build/rfc`,
+    },
+    {
+      from: `/${version}/spec`,
+      to: `/${version}/build/spec/addresses`,
+    },
+    {
+      from: `/${version}/run-node`,
+      to: `/${version}/user/run-node/keyring`,
+    },
+    // Add other redirects based on the version here
+  ];
 
-  function generateRedirects(version) {
-    const redirects = [
-      {
-        from: '/${version}/core',
-        to: `/${version}/develop/advanced/baseapp`,
-      },
-      {
-        from: '/${version}/basics',
-        to: `/${version}/develop/beginner/overview-app`,
-      },
-      {
-        from: '/${version}/intro',
-        to: `/${version}/develop/intro/what-is-sdk`,
-      },
-      {
-        from: '/${version}/architecture',
-        to: `/${version}/build/architecture/`,
-      },
-      {
-        from: '/${version}/building-apps',
-        to: `/${version}/build/building-apps/app-go`,
-      },
-      {
-        from: '/${version}/tooling',
-        to: `/${version}/build/tooling/cosmovisor`,
-      },
-      {
-        from: '/${version}/migrations',
-        to: `/${version}/build/migrations/intro`,
-      },
-      {
-        from: '/${version}/rfc',
-        to: `/${version}/build/rfc`,
-      },
-      {
-        from: '/${version}/spec',
-        to: `/${version}/build/spec/addresses`,
-      },
-      {
-        from: '/${version}/run-node',
-        to: `/${version}/user/run-node/keyring`,
-      },
-    ];
-    return redirects;
-  }
+  return redirects;
+}
+
 
 module.exports = config;
