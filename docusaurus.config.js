@@ -263,11 +263,11 @@ const config = {
           },
           {
             from: '/basics',
-            to: '/main//develop/beginner',
+            to: '/main/develop/beginner',
           },
           {
             from: '/intro',
-            to: '/main//develop/intro',
+            to: '/main/develop/intro',
           },
           {
             from: '/architecture',
@@ -275,31 +275,31 @@ const config = {
           },
           {
             from: '/building-apps',
-            to: '/main//build/building-apps',
+            to: '/main/build/building-apps',
           },
           {
             from: '/tooling',
-            to: '/main//build/libraries',
+            to: '/main/build/libraries',
           },
           {
             from: '/migrations',
-            to: '/main//build/libraries',
+            to: '/main/build/libraries',
           },
           {
             from: '/rfc',
-            to: '/main//build/rfc',
+            to: '/main/build/rfc',
           },
           {
             from: '/spec',
-            to: '/main//build/spec',
+            to: '/main/build/spec',
           },
           {
             from: '/tooling',
-            to: '/main//build/tooling',
+            to: '/main/build/tooling',
           },
           {
             from: '/run-node',
-            to: '/main//user/run-node',
+            to: '/main/user/run-node',
           },
           {
             from: ["/master", "/v0.43", "/v0.44"],
