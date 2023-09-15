@@ -1,7 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const redirectVersions = ["main","0.50","0.47"]
+const redirectVersions = ["main","v0.50","v0.47"]
 const redirects = [];
 redirectVersions.forEach((version) => {
   redirects.push(...generateRedirects(version));
