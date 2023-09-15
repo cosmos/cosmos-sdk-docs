@@ -10,9 +10,14 @@ jobs:
   sync-docs-and-create-pr:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          ref: sync-docs-branch
 
       - name: Checkout Sync-Branch
         run: |
@@ -26,20 +31,22 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          yarn install --frozen-lockfile  
+          yarn install --frozen-lockfile
 
       - name: Run Sync Script
         run: |
-          chmod +x sync_script.sh  
+          chmod +x sync_script.sh
           ./sync_script.sh
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        if: always()
+      - name: Add And Commit
+        uses: EndBug/add-and-commit@v9
         with:
-          commit_message: sync documentation changes
+          message: 'Update Docs'
 
-      - name: Push Changes
-        run: git push origin sync-docs-branch
+      - name: Push To Sync-Docs-Branch
+        uses: ad-m/github-push-action@master
+        with:
+          branch: sync-docs-branch
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
