@@ -453,6 +453,14 @@ function generateRedirects(version) {
       to: `/${version}/build/building-apps/app-go`,
     },
     {
+      from: `/${version}/modules`,
+      to: `/${version}/moddules/auth`,
+    },
+    {
+      from: `/${version}/packages`,
+      to: `/${version}/packages/collections`,
+    },
+    {
       from: `/${version}/tooling`,
       to: `/${version}/build/tooling/cosmovisor`,
     },
@@ -472,7 +480,6 @@ function generateRedirects(version) {
       from: `/${version}/run-node`,
       to: `/${version}/user/run-node/keyring`,
     },
-    // Add other redirects based on the version here
   ];
 
   return redirects;
