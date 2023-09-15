@@ -235,24 +235,27 @@ const config = {
       {
         fromExtensions: ["html"],
         toExtensions: ["html"],
-        createRedirects(existingPath) {
-          return [
-            existingPath.replace("/core", "/develop/advanced"),
-            existingPath.replace("/basics", "/develop/beginner"),
-            existingPath.replace("/intro", "/develop/intro"),
-            existingPath.replace("/architecture", "/build/architecture/"),
-            existingPath.replace("/building-apps", "/build/building-apps"),
-            // existingPath.replace('/building-modules', '/build/building-modules'),
-            existingPath.replace("/tooling", "/build/libraries"),
-            existingPath.replace("/migrations", "/build/libraries"),
-            // existingPath.replace('/modules', '/build/modules'),
-            existingPath.replace("/rfc", "/build/rfc"),
-            existingPath.replace("/spec", "/build/spec"),
-            existingPath.replace("/tooling", "/build/tooling"),
-            existingPath.replace("/run-node", "/user/run-node"),
-            existingPath.replace("/validate", "/user/validate"),
-          ];
-        },
+        // createRedirects(existingPath) {
+        //   return [
+        //     existingPath.replace("/core", "/develop/advanced"),
+        //     existingPath.replace("/basics", "/develop/beginner"),
+        //     existingPath.replace("/intro", "/develop/intro"),
+        //     existingPath.replace("/architecture", "/build/architecture/"),
+        //     existingPath.replace("/building-apps", "/build/building-apps"),
+        //     existingPath.replace(
+        //       "/building-modules",
+        //       "/build/building-modules"
+        //     ),
+        //     existingPath.replace("/tooling", "/build/libraries"),
+        //     existingPath.replace("/migrations", "/build/libraries"),
+        //     existingPath.replace("/modules", "/build/modules"),
+        //     existingPath.replace("/rfc", "/build/rfc"),
+        //     existingPath.replace("/spec", "/build/spec"),
+        //     existingPath.replace("/tooling", "/build/tooling"),
+        //     existingPath.replace("/run-node", "/user/run-node"),
+        //     existingPath.replace("/validate", "/user/validate"),
+        //   ];
+        // },
         redirects: [
           {
             from: ["/master", "/v0.43", "/v0.44"],
