@@ -245,7 +245,7 @@ const config = {
           },
           {
             from: '/main/basics',
-            to: '/main/develop/beginner/app-anatomy',
+            to: '/main/develop/beginner/overview-app',
           },
           {
             from: '/main/intro',
@@ -253,7 +253,7 @@ const config = {
           },
           {
             from: '/main/architecture',
-            to: '/build/architecture/',
+            to: '/main/build/architecture/',
           },
           {
             from: '/main/building-apps',
@@ -273,11 +273,11 @@ const config = {
           },
           {
             from: '/main/spec',
-            to: '/main/build/spec',
+            to: '/main/build/spec/addresses',
           },
           {
             from: '/main/run-node',
-            to: '/main/run-node/keyring',
+            to: '/main/user/run-node/keyring',
           },
           {
             from: ["/master", "/v0.43", "/v0.44"],
