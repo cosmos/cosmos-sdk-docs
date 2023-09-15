@@ -426,6 +426,10 @@ const config = {
 function generateRedirects(version) {
   const redirects = [
     {
+      from: `/${version}`,
+      to: `/`,
+    },
+    {
       from: `/${version}/core`,
       to: `/${version}/develop/advanced/baseapp`,
     },
