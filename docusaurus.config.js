@@ -1,6 +1,12 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+const redirectVersions = ["main","0.50","0.47"]
+const redirects = [];
+redirectVersions.forEach((version) => {
+  redirects.push(...generateRedirects(version));
+});
+
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
@@ -238,47 +244,7 @@ const config = {
       {
         fromExtensions: ["html"],
         toExtensions: ["html"],
-        redirects: [
-          {
-            from: '/main/core',
-            to: '/main/develop/advanced/baseapp',
-          },
-          {
-            from: '/main/basics',
-            to: '/main/develop/beginner/overview-app',
-          },
-          {
-            from: '/main/intro',
-            to: '/main/develop/intro/what-is-sdk',
-          },
-          {
-            from: '/main/architecture',
-            to: '/main/build/architecture/',
-          },
-          {
-            from: '/main/building-apps',
-            to: '/main/build/building-apps/app-go',
-          },
-          {
-            from: '/main/tooling',
-            to: '/main/build/tooling/cosmovisor',
-          },
-          {
-            from: '/main/migrations',
-            to: '/main/build/migrations/intro',
-          },
-          {
-            from: '/main/rfc',
-            to: '/main/build/rfc',
-          },
-          {
-            from: '/main/spec',
-            to: '/main/build/spec/addresses',
-          },
-          {
-            from: '/main/run-node',
-            to: '/main/user/run-node/keyring',
-          },
+        redirects: [redirects,
           {
             from: ["/master", "/v0.43", "/v0.44"],
             to: "/",
@@ -460,5 +426,51 @@ const config = {
     ]
   ],
 };
+
+  function generateRedirects(version) {
+    const redirects = [
+      {
+        from: '/${version}/core',
+        to: `/${version}/develop/advanced/baseapp`,
+      },
+      {
+        from: '/${version}/basics',
+        to: `/${version}/develop/beginner/overview-app`,
+      },
+      {
+        from: '/${version}/intro',
+        to: `/${version}/develop/intro/what-is-sdk`,
+      },
+      {
+        from: '/${version}/architecture',
+        to: `/${version}/build/architecture/`,
+      },
+      {
+        from: '/${version}/building-apps',
+        to: `/${version}/build/building-apps/app-go`,
+      },
+      {
+        from: '/${version}/tooling',
+        to: `/${version}/build/tooling/cosmovisor`,
+      },
+      {
+        from: '/${version}/migrations',
+        to: `/${version}/build/migrations/intro`,
+      },
+      {
+        from: '/${version}/rfc',
+        to: `/${version}/build/rfc`,
+      },
+      {
+        from: '/${version}/spec',
+        to: `/${version}/build/spec/addresses`,
+      },
+      {
+        from: '/${version}/run-node',
+        to: `/${version}/user/run-node/keyring`,
+      },
+    ];
+    return redirects;
+  }
 
 module.exports = config;
