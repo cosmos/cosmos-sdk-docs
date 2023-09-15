@@ -455,11 +455,11 @@ function generateRedirects(version) {
     },
     {
       from: `/${version}/modules`,
-      to: `/${version}/moddules`,
+      to: `/${version}/modules`,
     },
     {
       from: `/${version}/packages`,
-      to: `/${version}/packages/collections`,
+      to: `/${version}/packages/01-depinject`,
     },
     {
       from: `/${version}/tooling`,
