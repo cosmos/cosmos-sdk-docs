@@ -459,7 +459,7 @@ function generateRedirects(version) {
     },
     {
       from: `/${version}/packages`,
-      to: `/${version}/packages/01-depinject`,
+      to: `/${version}/build/packages/depinject`,
     },
     {
       from: `/${version}/tooling`,
