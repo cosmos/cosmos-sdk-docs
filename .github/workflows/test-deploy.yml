@@ -16,7 +16,6 @@ jobs:
           node-version: 16.x
           cache: npm
       - run: |
-          chmod +x build-docs.sh
           ./build-docs.sh
 
       - run: yarn install --frozen-lockfile
