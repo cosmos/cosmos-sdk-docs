@@ -1,4 +1,4 @@
-name: Copy MD Files and Push Changes
+name: Copy MD Files
 
 on:
   workflow_dispatch:
