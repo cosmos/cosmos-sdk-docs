@@ -416,7 +416,7 @@ const config = {
           },
           {
             from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/main/build/modules/auth/",
+            to: "/main/build/modules/",
           },
         ],
       },
@@ -451,7 +451,7 @@ function generateRedirects(version) {
     },
     {
       from: `/${version}/building-modules`,
-      to: `/${version}/build/building-apps/app-go`,
+      to: `/${version}/build/building-modules/app-go`,
     },
     {
       from: `/${version}/modules`,
@@ -459,11 +459,11 @@ function generateRedirects(version) {
     },
     {
       from: `/${version}/packages`,
-      to: `/${version}/build/packages/depinject`,
+      to: `/${version}/build/packages`,
     },
     {
       from: `/${version}/tooling`,
-      to: `/${version}/build/tooling/cosmovisor`,
+      to: `/${version}/build/tooling`,
     },
     {
       from: `/${version}/migrations`,
