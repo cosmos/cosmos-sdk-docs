@@ -15,11 +15,19 @@ git clone "$REMOTE_REPO_URL" cosmos-sdk
 # Read the versions from a JSON file and remove the 'v' prefix
 VERSIONS=($(jq -r '.[]' versions.json))
 
+VERSIONS+=("main")
+
 # Iterate over each version
 for version in "${VERSIONS[@]}"; do
-  version="${version#v}"  # Remove the 'v' prefix from the version number
-  branch="release/v$version.x"  # Determine the branch name
-  version_directory="version-$version"  # Create a directory name based on the version
+  echo "$version"
+  if [ "$version" == "main" ]; then
+    branch="main"  # Set the branch to 'main'
+    version_directory=""  # For 'main', the version directory is empty
+  else
+    version="${version#v}"  # Remove the 'v' prefix from the version number
+    branch="release/v$version.x"  # Determine the branch name
+    version_directory="version-$version"  # Create a directory name based on the version
+  fi
 
   # Skip the '0.47' branch until docs backported
   if [ "$branch" = "release/v0.47.x" ]; then
@@ -51,12 +59,12 @@ for version in "${VERSIONS[@]}"; do
   # Change back to the original working directory
   cd "$WORK_DIR"
 
-    if [ "$version" == "main" ]; then
-       local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
-    else
-      # Find all Markdown files in the local versioned_docs directory
-      local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
-    fi
+  if [ "$version" == "main" ]; then
+      local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
+  else
+    # Find all Markdown files in the local versioned_docs directory
+    local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
+  fi
 
   if [ "$local_md_files" ]; then
     echo "There are Markdown files in the directory."
