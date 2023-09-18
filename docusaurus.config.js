@@ -455,7 +455,7 @@ function generateRedirects(version) {
     },
     {
       from: `/${version}/modules`,
-      to: `/${version}/modules`,
+      to: `/${version}/build/modules`,
     },
     {
       from: `/${version}/packages`,
