@@ -2,7 +2,9 @@
 
 rm -rf ./cosmos-sdk
 git clone https://github.com/cosmos/cosmos-sdk/ cosmos-sdk;
-cd cosmos-sdk/docs;
+cd cosmos-sdk;
+git checkout release/v0.50.x;
+cd docs;
 
 while read -r branch path_prefix; do
     echo "building vuepress $branch docs"
@@ -16,3 +18,5 @@ while read -r branch path_prefix; do
         cp -r .vuepress/dist/* "../../build/$path_prefix"
     )
 done < vuepress_versions
+
+rm -rf ./cosmos-sdk
