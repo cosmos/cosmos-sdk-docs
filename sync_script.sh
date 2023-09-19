@@ -15,7 +15,7 @@ git clone "$REMOTE_REPO_URL" cosmos-sdk
 # Read the versions from a JSON file and remove the 'v' prefix
 VERSIONS=($(jq -r '.[]' versions.json))
 
-VERSIONS+=("main")
+# VERSIONS+=("main")
 
 # Iterate over each version
 for version in "${VERSIONS[@]}"; do
@@ -34,7 +34,7 @@ for version in "${VERSIONS[@]}"; do
     echo "Skipping branch $branch..."
     continue
   fi
-
+  
   # Change to the 'cosmos-sdk' directory
   cd cosmos-sdk
 
