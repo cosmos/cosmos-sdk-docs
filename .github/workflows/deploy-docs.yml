@@ -33,7 +33,7 @@ jobs:
 
       - name: Build Docs
         run: |
-          ./build-docs.sh
+          ./build-legacy-docs.sh
 
       - name: Build
         run: yarn build
