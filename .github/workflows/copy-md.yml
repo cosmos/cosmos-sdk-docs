@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0,12 * * *'
+  push: 
 
 jobs:
   sync-docs-and-create-pr:
@@ -42,7 +43,10 @@ jobs:
         with:
           message: 'Updated MD File Changes from cosmos-sdk/docs'
 
-      - name: Push To Sync-Docs-Branch
-        uses: ad-m/github-push-action@master
-        with:
-          branch: sync-docs-branch
+      # - name: Push To Sync-Docs-Branch
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     branch: sync-docs-branch
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
