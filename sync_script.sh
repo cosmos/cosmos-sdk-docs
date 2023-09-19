@@ -20,21 +20,21 @@ VERSIONS=($(jq -r '.[]' versions.json))
 # Iterate over each version
 for version in "${VERSIONS[@]}"; do
   echo "$version"
-  if [ "$version" == "main" ]; then
-    branch="main"  # Set the branch to 'main'
-    version_directory=""  # For 'main', the version directory is empty
-  else
+  # if [ "$version" == "main" ]; then
+  #   branch="main"  # Set the branch to 'main'
+  #   version_directory=""  # For 'main', the version directory is empty
+  # else
     version="${version#v}"  # Remove the 'v' prefix from the version number
     branch="release/v$version.x"  # Determine the branch name
     version_directory="version-$version"  # Create a directory name based on the version
-  fi
+  # fi
 
   # Skip the '0.47' branch until docs backported
   if [ "$branch" = "release/v0.47.x" ]; then
     echo "Skipping branch $branch..."
     continue
   fi
-  
+
   # Change to the 'cosmos-sdk' directory
   cd cosmos-sdk
 
@@ -59,23 +59,23 @@ for version in "${VERSIONS[@]}"; do
   # Change back to the original working directory
   cd "$WORK_DIR"
 
-  if [ "$version" == "main" ]; then
-      local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
-  else
+  # if [ "$version" == "main" ]; then
+  #     local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
+  # else
     # Find all Markdown files in the local versioned_docs directory
     local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
-  fi
+  # fi
 
   if [ "$local_md_files" ]; then
     echo "There are Markdown files in the directory."
     # Iterate over each local Markdown file
     for local_file in $local_md_files; do
       # Construct the relative path of the local file
-     if [ "$version" != "main" ]; then
-       local_relative_path="${local_file#versioned_docs/$version_directory/}"
-     else
+    #  if [ "$version" != "main" ]; then
+    #    local_relative_path="${local_file#versioned_docs/$version_directory/}"
+    #  else
        local_relative_path="${local_file#docs/}"
-     fi
+    #  fi
       # Iterate over each remote Markdown file
       for remote_file in $remote_md_files; do
         # Construct the relative path of the remote file
