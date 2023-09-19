@@ -451,7 +451,7 @@ function generateRedirects(version) {
     },
     {
       from: `/${version}/building-modules`,
-      to: `/${version}/build/building-modules/app-go`,
+      to: `/${version}/build/building-modules/intro`,
     },
     {
       from: `/${version}/modules`,
