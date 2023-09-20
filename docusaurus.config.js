@@ -1,6 +1,12 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+const redirectVersions = ["main","v0.50","v0.47"]
+const redirects = [];
+redirectVersions.forEach((version) => {
+  redirects.push(...generateRedirects(version));
+});
+
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
@@ -49,7 +55,7 @@ const config = {
               path: "v0.50",
               label: "v0.50",
             },
-            0.47: {
+            "0.47": {
               path: "v0.47",
               label: "v0.47",
             },
@@ -235,252 +241,249 @@ const config = {
       {
         fromExtensions: ["html"],
         toExtensions: ["html"],
-        // createRedirects(existingPath) {
-        //   return [
-        //     existingPath.replace("/core", "/develop/advanced"),
-        //     existingPath.replace("/basics", "/develop/beginner"),
-        //     existingPath.replace("/intro", "/develop/intro"),
-        //     existingPath.replace("/architecture", "/build/architecture/"),
-        //     existingPath.replace("/building-apps", "/build/building-apps"),
-        //     existingPath.replace(
-        //       "/building-modules",
-        //       "/build/building-modules"
-        //     ),
-        //     existingPath.replace("/tooling", "/build/libraries"),
-        //     existingPath.replace("/migrations", "/build/libraries"),
-        //     existingPath.replace("/modules", "/build/modules"),
-        //     existingPath.replace("/rfc", "/build/rfc"),
-        //     existingPath.replace("/spec", "/build/spec"),
-        //     existingPath.replace("/tooling", "/build/tooling"),
-        //     existingPath.replace("/run-node", "/user/run-node"),
-        //     existingPath.replace("/validate", "/user/validate"),
-        //   ];
-        // },
-        // redirects: [
-        //   {
-        //     from: '/core',
-        //     to: '/develop/advanced',
-        //   },
-        //   {
-        //     from: '/basics',
-        //     to: '/develop/beginner',
-        //   },
-        //   {
-        //     from: '/intro',
-        //     to: '/develop/intro',
-        //   },
-        //   {
-        //     from: '/architecture',
-        //     to: '/build/architecture/',
-        //   },
-        //   {
-        //     from: '/building-apps',
-        //     to: '/build/building-apps',
-        //   },
-        //   {
-        //     from: '/tooling',
-        //     to: '/build/libraries',
-        //   },
-        //   {
-        //     from: '/migrations',
-        //     to: '/build/libraries',
-        //   },
-        //   {
-        //     from: '/rfc',
-        //     to: '/build/rfc',
-        //   },
-        //   {
-        //     from: '/spec',
-        //     to: '/build/spec',
-        //   },
-        //   {
-        //     from: '/tooling',
-        //     to: '/build/tooling',
-        //   },
-        //   {
-        //     from: '/run-node',
-        //     to: '/user/run-node',
-        //   },
-        //   {
-        //     from: ["/master", "/v0.43", "/v0.44"],
-        //     to: "/",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/auth/01_concepts",
-        //       "/main/modules/auth/02_state",
-        //       "/main/modules/auth/03_antehandlers",
-        //       "/main/modules/auth/04_keepers",
-        //       "/main/modules/auth/06_params",
-        //       "/main/modules/auth/07_client",
-        //     ],
-        //     to: "/main/build/modules/auth",
-        //   },
-        //   {
-        //     from: "/main/modules/auth/05_vesting",
-        //     to: "/main/build/modules/auth/vesting",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/authz/01_concepts",
-        //       "/main/modules/authz/02_state",
-        //       "/main/modules/authz/03_messages",
-        //       "/main/modules/authz/04_events",
-        //       "/main/modules/authz/05_client",
-        //     ],
-        //     to: "/main/build/modules/authz",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/bank/01_state",
-        //       "/main/modules/bank/02_keepers",
-        //       "/main/modules/bank/04_events",
-        //       "/main/modules/bank/05_params",
-        //       "/main/modules/bank/06_client",
-        //     ],
-        //     to: "/main/build/modules/bank",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/crisis/01_state",
-        //       "/main/modules/crisis/02_messages",
-        //       "/main/modules/crisis/03_events",
-        //       "/main/modules/crisis/04_params",
-        //       "/main/modules/crisis/05_client",
-        //     ],
-        //     to: "/main/build/modules/crisis",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/distribution/01_concepts",
-        //       "/main/modules/distribution/02_state",
-        //       "/main/modules/distribution/03_begin_block",
-        //       "/main/modules/distribution/04_messages",
-        //       "/main/modules/distribution/05_hooks",
-        //       "/main/modules/distribution/06_events",
-        //       "/main/modules/distribution/07_params",
-        //       "/main/modules/distribution/08_client",
-        //     ],
-        //     to: "/main/build/modules/distribution",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/evidence/01_concepts",
-        //       "/main/modules/evidence/02_state",
-        //       "/main/modules/evidence/03_messages",
-        //       "/main/modules/evidence/04_events",
-        //       "/main/modules/evidence/05_params",
-        //       "/main/modules/evidence/06_begin_block",
-        //       "/main/modules/evidence/07_client",
-        //     ],
-        //     to: "/main/build/modules/evidence",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/feegrant/01_concepts",
-        //       "/main/modules/feegrant/02_state",
-        //       "/main/modules/feegrant/03_messages",
-        //       "/main/modules/feegrant/04_events",
-        //       "/main/modules/feegrant/05_client",
-        //     ],
-        //     to: "/main/build/modules/feegrant",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/gov/01_concepts",
-        //       "/main/modules/gov/02_state",
-        //       "/main/modules/gov/03_messages",
-        //       "/main/modules/gov/04_events",
-        //       "/main/modules/gov/05_future_improvements",
-        //       "/main/modules/gov/06_params",
-        //       "/main/modules/gov/07_client",
-        //       "/main/modules/gov/08_metadata",
-        //     ],
-        //     to: "/main/build/modules/gov",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/group/01_concepts",
-        //       "/main/modules/group/02_state",
-        //       "/main/modules/group/03_messages",
-        //       "/main/modules/group/04_events",
-        //       "/main/modules/group/05_client",
-        //       "/main/modules/group/06_metadata",
-        //     ],
-        //     to: "/main/build/modules/auth",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/mint/01_concepts",
-        //       "/main/modules/mint/02_state",
-        //       "/main/modules/mint/03_begin_block",
-        //       "/main/modules/mint/04_params",
-        //       "/main/modules/mint/05_events",
-        //       "/main/modules/mint/06_client",
-        //     ],
-        //     to: "/main/build/modules/mint/",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/nft/01_concepts",
-        //       "/main/modules/nft/02_state",
-        //       "/main/modules/nft/03_messages",
-        //       "/main/modules/nft/04_events",
-        //     ],
-        //     to: "/main/build/modules/nft/",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/params/01_keeper",
-        //       "/main/modules/params/02_subspace",
-        //     ],
-        //     to: "/main/build/modules/params/",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/slashing/01_concepts",
-        //       "/main/modules/slashing/02_state",
-        //       "/main/modules/slashing/03_messages",
-        //       "/main/modules/slashing/04_begin_block",
-        //       "/main/modules/slashing/05_hooks",
-        //       "/main/modules/slashing/06_events",
-        //       "/main/modules/slashing/07_tombstone",
-        //       "/main/modules/slashing/08_params",
-        //       "/main/modules/slashing/09_client",
-        //     ],
-        //     to: "/main/build/modules/slashing/",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/staking/01_state",
-        //       "/main/modules/staking/02_state_transitions",
-        //       "/main/modules/staking/03_messages",
-        //       "/main/modules/staking/04_begin_block",
-        //       "/main/modules/staking/05_end_block",
-        //       "/main/modules/staking/06_hooks",
-        //       "/main/modules/staking/07_events",
-        //       "/main/modules/staking/08_params",
-        //       "/main/modules/staking/09_client",
-        //     ],
-        //     to: "/main/build/modules/staking/",
-        //   },
-        //   {
-        //     from: [
-        //       "/main/modules/upgrade/01_concepts",
-        //       "/main/modules/upgrade/02_state",
-        //       "/main/modules/upgrade/03_events",
-        //       "/main/modules/upgrade/04_client",
-        //     ],
-        //     to: "/main/build/modules/upgrade/",
-        //   },
-        //   {
-        //     from: ["/main/modules/capability", "/main/ecosystem"],
-        //     to: "/main/build/modules/auth", // TODO this should point to /modules - to debug before going live
-        //   },
-        // ],
+        redirects: [...redirects,
+          {
+            from: ["/master", "/v0.43", "/v0.44"],
+            to: "/",
+          },
+          {
+            from: [
+              "/main/modules/auth/01_concepts",
+              "/main/modules/auth/02_state",
+              "/main/modules/auth/03_antehandlers",
+              "/main/modules/auth/04_keepers",
+              "/main/modules/auth/06_params",
+              "/main/modules/auth/07_client",
+            ],
+            to: "/main/build/modules/auth",
+          },
+          {
+            from: "/main/modules/auth/05_vesting",
+            to: "/main/build/modules/auth/vesting",
+          },
+          {
+            from: [
+              "/main/modules/authz/01_concepts",
+              "/main/modules/authz/02_state",
+              "/main/modules/authz/03_messages",
+              "/main/modules/authz/04_events",
+              "/main/modules/authz/05_client",
+            ],
+            to: "/main/build/modules/authz",
+          },
+          {
+            from: [
+              "/main/modules/bank/01_state",
+              "/main/modules/bank/02_keepers",
+              "/main/modules/bank/04_events",
+              "/main/modules/bank/05_params",
+              "/main/modules/bank/06_client",
+            ],
+            to: "/main/build/modules/bank",
+          },
+          {
+            from: [
+              "/main/modules/crisis/01_state",
+              "/main/modules/crisis/02_messages",
+              "/main/modules/crisis/03_events",
+              "/main/modules/crisis/04_params",
+              "/main/modules/crisis/05_client",
+            ],
+            to: "/main/build/modules/crisis",
+          },
+          {
+            from: [
+              "/main/modules/distribution/01_concepts",
+              "/main/modules/distribution/02_state",
+              "/main/modules/distribution/03_begin_block",
+              "/main/modules/distribution/04_messages",
+              "/main/modules/distribution/05_hooks",
+              "/main/modules/distribution/06_events",
+              "/main/modules/distribution/07_params",
+              "/main/modules/distribution/08_client",
+            ],
+            to: "/main/build/modules/distribution",
+          },
+          {
+            from: [
+              "/main/modules/evidence/01_concepts",
+              "/main/modules/evidence/02_state",
+              "/main/modules/evidence/03_messages",
+              "/main/modules/evidence/04_events",
+              "/main/modules/evidence/05_params",
+              "/main/modules/evidence/06_begin_block",
+              "/main/modules/evidence/07_client",
+            ],
+            to: "/main/build/modules/evidence",
+          },
+          {
+            from: [
+              "/main/modules/feegrant/01_concepts",
+              "/main/modules/feegrant/02_state",
+              "/main/modules/feegrant/03_messages",
+              "/main/modules/feegrant/04_events",
+              "/main/modules/feegrant/05_client",
+            ],
+            to: "/main/build/modules/feegrant",
+          },
+          {
+            from: [
+              "/main/modules/gov/01_concepts",
+              "/main/modules/gov/02_state",
+              "/main/modules/gov/03_messages",
+              "/main/modules/gov/04_events",
+              "/main/modules/gov/05_future_improvements",
+              "/main/modules/gov/06_params",
+              "/main/modules/gov/07_client",
+              "/main/modules/gov/08_metadata",
+            ],
+            to: "/main/build/modules/gov",
+          },
+          {
+            from: [
+              "/main/modules/group/01_concepts",
+              "/main/modules/group/02_state",
+              "/main/modules/group/03_messages",
+              "/main/modules/group/04_events",
+              "/main/modules/group/05_client",
+              "/main/modules/group/06_metadata",
+            ],
+            to: "/main/build/modules/auth",
+          },
+          {
+            from: [
+              "/main/modules/mint/01_concepts",
+              "/main/modules/mint/02_state",
+              "/main/modules/mint/03_begin_block",
+              "/main/modules/mint/04_params",
+              "/main/modules/mint/05_events",
+              "/main/modules/mint/06_client",
+            ],
+            to: "/main/build/modules/mint/",
+          },
+          {
+            from: [
+              "/main/modules/nft/01_concepts",
+              "/main/modules/nft/02_state",
+              "/main/modules/nft/03_messages",
+              "/main/modules/nft/04_events",
+            ],
+            to: "/main/build/modules/nft/",
+          },
+          {
+            from: [
+              "/main/modules/params/01_keeper",
+              "/main/modules/params/02_subspace",
+            ],
+            to: "/main/build/modules/params/",
+          },
+          {
+            from: [
+              "/main/modules/slashing/01_concepts",
+              "/main/modules/slashing/02_state",
+              "/main/modules/slashing/03_messages",
+              "/main/modules/slashing/04_begin_block",
+              "/main/modules/slashing/05_hooks",
+              "/main/modules/slashing/06_events",
+              "/main/modules/slashing/07_tombstone",
+              "/main/modules/slashing/08_params",
+              "/main/modules/slashing/09_client",
+            ],
+            to: "/main/build/modules/slashing/",
+          },
+          {
+            from: [
+              "/main/modules/staking/01_state",
+              "/main/modules/staking/02_state_transitions",
+              "/main/modules/staking/03_messages",
+              "/main/modules/staking/04_begin_block",
+              "/main/modules/staking/05_end_block",
+              "/main/modules/staking/06_hooks",
+              "/main/modules/staking/07_events",
+              "/main/modules/staking/08_params",
+              "/main/modules/staking/09_client",
+            ],
+            to: "/main/build/modules/staking/",
+          },
+          {
+            from: [
+              "/main/modules/upgrade/01_concepts",
+              "/main/modules/upgrade/02_state",
+              "/main/modules/upgrade/03_events",
+              "/main/modules/upgrade/04_client",
+            ],
+            to: "/main/build/modules/upgrade/",
+          },
+          {
+            from: ["/main/modules/capability", "/main/ecosystem"],
+            to: "/main/build/modules/",
+          },
+        ],
       },
     ],
   ],
 };
+function generateRedirects(version) {
+  const redirects = [
+    {
+      from: `/${version}`,
+      to: `/`,
+    },
+    {
+      from: `/${version}/core`,
+      to: `/${version}/develop/advanced/baseapp`,
+    },
+    {
+      from: `/${version}/basics`,
+      to: `/${version}/develop/beginner/overview-app`,
+    },
+    {
+      from: `/${version}/intro`,
+      to: `/${version}/develop/intro/what-is-sdk`,
+    },
+    {
+      from: `/${version}/architecture`,
+      to: `/${version}/build/architecture/`,
+    },
+    {
+      from: `/${version}/building-apps`,
+      to: `/${version}/build/building-apps/app-go`,
+    },
+    {
+      from: `/${version}/building-modules`,
+      to: `/${version}/build/building-modules/intro`,
+    },
+    {
+      from: `/${version}/modules`,
+      to: `/${version}/build/modules`,
+    },
+    {
+      from: `/${version}/packages`,
+      to: `/${version}/build/packages`,
+    },
+    {
+      from: `/${version}/tooling`,
+      to: `/${version}/build/tooling`,
+    },
+    {
+      from: `/${version}/migrations`,
+      to: `/${version}/build/migrations/intro`,
+    },
+    {
+      from: `/${version}/rfc`,
+      to: `/${version}/build/rfc`,
+    },
+    {
+      from: `/${version}/spec`,
+      to: `/${version}/build/spec/addresses`,
+    },
+    {
+      from: `/${version}/run-node`,
+      to: `/${version}/user/run-node/keyring`,
+    },
+  ];
+
+  return redirects;
+}
 
 module.exports = config;

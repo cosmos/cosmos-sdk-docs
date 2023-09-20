@@ -10,7 +10,7 @@ This document describes the default strategies to handle gas and fees within a C
 
 :::note Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](./00-app-anatomy.md)
+* [Anatomy of a Cosmos SDK Application](./00-overview-app.md)
 
 :::
 
