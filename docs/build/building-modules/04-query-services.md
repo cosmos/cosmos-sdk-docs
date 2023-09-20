@@ -5,15 +5,13 @@ sidebar_position: 1
 # Query Services
 
 :::note Synopsis
-A Protobuf Query service processes [`queries`](02-messages-and-queries.md#queries). Query services are specific to the module in which they are defined, and only process `queries` defined within said module. They are called from `BaseApp`'s [`Query` method](../../develop/advanced/00-baseapp.md#query).
+A Protobuf Query service processes [`queries`](./02-messages-and-queries.md#queries). Query services are specific to the module in which they are defined, and only process `queries` defined within said module. They are called from `BaseApp`'s [`Query` method](../../develop/advanced/00-baseapp.md#query).
 :::
 
-:::note
+:::note Pre-requisite Readings
 
-### Pre-requisite Readings
-
-* [Module Manager](01-module-manager.md)
-* [Messages and Queries](02-messages-and-queries.md)
+* [Module Manager](./01-module-manager.md)
+* [Messages and Queries](./02-messages-and-queries.md)
 
 :::
 
@@ -30,13 +28,13 @@ type QueryServer interface {
 }
 ```
 
-These custom queries methods should be implemented by a module's keeper, typically in `./keeper/grpc_query.go`. The first parameter of these methods is a generic `context.Context`. Therefore, the Cosmos SDK provides a function `sdk.UnwrapSDKContext` to retrieve the `sdk.Context` from the provided
+These custom queries methods should be implemented by a module's keeper, typically in `./keeper/grpc_query.go`. The first parameter of these methods is a generic `context.Context`. Therefore, the Cosmos SDK provides a function `sdk.UnwrapSDKContext` to retrieve the `context.Context` from the provided
 `context.Context`.
 
 Here's an example implementation for the bank module:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/x/bank/keeper/grpc_query.go
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/bank/keeper/grpc_query.go
 ```
 
 ### Calling queries from the State Machine

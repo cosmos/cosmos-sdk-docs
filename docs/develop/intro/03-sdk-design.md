@@ -1,11 +1,10 @@
 ---
-sidebar_position: 0
-
+sidebar_position: 1
 ---
 
 # Main Components of the Cosmos SDK
 
-The Cosmos SDK is a framework that facilitates the development of secure state-machines on top of CometBFT. At its core, the Cosmos SDK is a boilerplate implementation of the [ABCI](02-sdk-app-architecture.md#abci) in Golang. It comes with a [`multistore`](../advanced/04-store.md#multistore) to persist data and a [`router`](../advanced/00-baseapp.md#routing) to handle transactions.
+The Cosmos SDK is a framework that facilitates the development of secure state-machines on top of CometBFT. At its core, the Cosmos SDK is a boilerplate implementation of the [ABCI](./02-sdk-app-architecture.md#abci) in Golang. It comes with a [`multistore`](../advanced/04-store.md#multistore) to persist data and a [`router`](../advanced/00-baseapp.md#routing) to handle transactions.
 
 Here is a simplified view of how transactions are handled by an application built on top of the Cosmos SDK when transferred from CometBFT via `DeliverTx`:
 
@@ -16,12 +15,12 @@ Here is a simplified view of how transactions are handled by an application buil
 
 ## `baseapp`
 
-`baseapp` is the boilerplate implementation of a Cosmos SDK application. It comes with an implementation of the ABCI to handle the connection with the underlying consensus engine. Typically, a Cosmos SDK application extends `baseapp` by embedding it in [`app.go`](../beginner/00-overview-app.md#core-application-file).
+`baseapp` is the boilerplate implementation of a Cosmos SDK application. It comes with an implementation of the ABCI to handle the connection with the underlying consensus engine. Typically, a Cosmos SDK application extends `baseapp` by embedding it in [`app.go`]../beginner/00-app-anatomy.md#core-application-file).
 
 Here is an example of this from `simapp`, the Cosmos SDK demonstration app:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/simapp/app.go#L164-L203
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/simapp/app.go#L170-L212
 ```
 
 The goal of `baseapp` is to provide a secure interface between the store and the extensible state machine while defining as little about the state machine as possible (staying true to the ABCI).
@@ -30,7 +29,7 @@ For more on `baseapp`, please click [here](../advanced/00-baseapp.md).
 
 ## Multistore
 
-The Cosmos SDK provides a [`multistore`](../advanced/04-store.md#multistore) for persisting state. The multistore allows developers to declare any number of [`KVStores`](../advanced/04-store.md#base-layer-kvstores). These `KVStores` only accept the `[]byte` type as value and therefore any custom structure needs to be marshalled using [a codec](../advanced/06-encoding.md) before being stored.
+The Cosmos SDK provides a [`multistore`](../advanced/04-store.md#multistore) for persisting state. The multistore allows developers to declare any number of [`KVStores`](../advanced/04-store.md#base-layer-kvstores). These `KVStores` only accept the `[]byte` type as value and therefore any custom structure needs to be marshalled using [a codec](../advanced/05-encoding.md) before being stored.
 
 The multistore abstraction is used to divide the state in distinct compartments, each managed by its own module. For more on the multistore, click [here](../advanced/04-store.md#multistore)
 
