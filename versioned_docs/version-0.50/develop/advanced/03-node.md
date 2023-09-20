@@ -10,7 +10,7 @@ The main endpoint of a Cosmos SDK application is the daemon client, otherwise kn
 
 :::note Pre-requisite Readings
 
-* [Anatomy of an SDK application](../beginner/00-app-anatomy.md)
+* [Anatomy of an SDK application](../beginner/00-overview-app.md)
 
 :::
 
@@ -69,7 +69,7 @@ Note that an `appCreator` is a function that fulfills the `AppCreator` signature
 https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/server/types/app.go#L68
 ```
 
-In practice, the [constructor of the application](../beginner/00-app-anatomy.md#constructor-function) is passed as the `appCreator`.
+In practice, the [constructor of the application](../beginner/00-overview-app.md#constructor-function) is passed as the `appCreator`.
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/simapp/simd/cmd/root_v2.go#L294-L308

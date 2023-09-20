@@ -10,7 +10,7 @@ sidebar_position: 1
 
 :::note Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](../beginner/00-app-anatomy.md)
+* [Anatomy of a Cosmos SDK Application](../beginner/00-overview-app.md)
 
 :::
 
