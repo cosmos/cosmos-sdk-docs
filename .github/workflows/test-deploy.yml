@@ -16,7 +16,7 @@ jobs:
           node-version: 16.x
           cache: npm
       - run: |
-          ./build-docs.sh
+          ./build-legacy-docs.sh
 
       - run: yarn install --frozen-lockfile
       - run: yarn build

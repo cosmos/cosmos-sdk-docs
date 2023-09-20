@@ -42,9 +42,6 @@ for version in "${VERSIONS[@]}"; do
   git fetch origin "$branch"
   git checkout "$branch"
 
-  # Change to the 'docs' directory within the 'cosmos-sdk' repository
-  cd docs
-
   # Check if the branch exists in the remote repository
   if ! git show-ref --verify "refs/remotes/origin/$branch" &>/dev/null; then
     echo "Branch $branch does not exist in the remote repository."
@@ -54,13 +51,19 @@ for version in "${VERSIONS[@]}"; do
   fi
 
   # Find all Markdown files in the 'docs' directory
-  remote_md_files=$(find "docs" -name "*.md")
+  if [ "$version" == "main" ]; then # update for 0.51
+    # main has a different strucutre then versions
+    remote_md_files=$(find "docs" -name "*.md")
+  else
+    cd docs 
+    remote_md_files=$(find "docs" -name "*.md")
+  fi 
 
   # Change back to the original working directory
   cd "$WORK_DIR"
 
   if [ "$version" == "main" ]; then
-      local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
+    local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
   else
     # Find all Markdown files in the local versioned_docs directory
     local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
@@ -81,6 +84,7 @@ for version in "${VERSIONS[@]}"; do
         # Construct the relative path of the remote file
         remote_relative_path="${remote_file#docs/}"
 
+
         # Compare the relative paths to find matching files
         if [ "$local_relative_path" = "$remote_relative_path" ]; then
           # Check for differences between the local and remote files
@@ -89,8 +93,11 @@ for version in "${VERSIONS[@]}"; do
           else
             # Replace the local file with the remote file if differences are found
             echo "Differences found for $local_file and $remote_file. Replacing $local_file with remote file..."
-            cp "./cosmos-sdk/docs/$remote_file" "$local_file"
-            echo "Local file $local_file replaced with ./cosmos-sdk/docs/$remote_file"
+            if [ "$version" == "main" ]; then
+              cp "./cosmos-sdk/$remote_file" "$local_file"
+            else
+              cp "./cosmos-sdk/docs/$remote_file" "$local_file"
+            fi
           fi
         fi
       done
