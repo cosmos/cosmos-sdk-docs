@@ -55,7 +55,8 @@ for version in "${VERSIONS[@]}"; do
     # main has a different strucutre then versions
     remote_md_files=$(find "docs" -name "*.md")
   else
-    cd docs 
+    cd docs
+    npm run build
     remote_md_files=$(find "docs" -name "*.md")
   fi 
 
