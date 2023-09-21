@@ -9,7 +9,7 @@ sidebar_position: 1
 
 :::note Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK application](../beginner/00-overview-app.md)
+* [Anatomy of a Cosmos SDK application](../beginner/00-app-anatomy.md)
 * [CometBFT Documentation on Events](https://docs.cometbft.com/v0.37/spec/abci/abci++_basic_concepts#events)
 
 :::

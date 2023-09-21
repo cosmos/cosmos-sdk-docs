@@ -1,6 +1,6 @@
 # dependencies
 /node_modules
-/cosmos-sdk
+./cosmos-sdk
 
 # production
 /build

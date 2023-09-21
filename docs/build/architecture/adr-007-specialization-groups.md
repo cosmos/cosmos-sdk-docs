@@ -174,4 +174,4 @@ type SpecializationGroup interface {
 
 ## References
 
-* [dCERT ADR](adr-008-dCERT-group.md)
+* [dCERT ADR](./adr-008-dCERT-group.md)

@@ -105,12 +105,12 @@ One consequence of this convention is that each `Msg` type can be the request pa
 
 ### Encoding
 
-Encoding of transactions generated with `Msg` services do not differ from current Protobuf transaction encoding as defined in [ADR-020](adr-020-protobuf-transaction-encoding.md). We are encoding `Msg` types (which are exactly `Msg` service methods' request parameters) as `Any` in `Tx`s which involves packing the
+Encoding of transactions generated with `Msg` services do not differ from current Protobuf transaction encoding as defined in [ADR-020](./adr-020-protobuf-transaction-encoding.md). We are encoding `Msg` types (which are exactly `Msg` service methods' request parameters) as `Any` in `Tx`s which involves packing the
 binary-encoded `Msg` with its type URL.
 
 ### Decoding
 
-Since `Msg` types are packed into `Any`, decoding transactions messages are done by unpacking `Any`s into `Msg` types. For more information, please refer to [ADR-020](adr-020-protobuf-transaction-encoding.md#transactions).
+Since `Msg` types are packed into `Any`, decoding transactions messages are done by unpacking `Any`s into `Msg` types. For more information, please refer to [ADR-020](./adr-020-protobuf-transaction-encoding.md#transactions).
 
 ### Routing
 
@@ -122,7 +122,7 @@ For backward compatability, the old handlers are not removed yet. If BaseApp rec
 
 ### Module Configuration
 
-In [ADR 021](adr-021-protobuf-query-encoding.md), we introduced a method `RegisterQueryService`
+In [ADR 021](./adr-021-protobuf-query-encoding.md), we introduced a method `RegisterQueryService`
 to `AppModule` which allows for modules to register gRPC queriers.
 
 To register `Msg` services, we attempt a more extensible approach by converting `RegisterQueryService`
@@ -198,5 +198,5 @@ Finally, closing a module to client API opens desirable OCAP patterns discussed 
 * [Initial Github Issue \#7122](https://github.com/cosmos/cosmos-sdk/issues/7122)
 * [proto 3 Language Guide: Defining Services](https://developers.google.com/protocol-buffers/docs/proto3#services)
 * [Initial pre-`Any` `Msg` designs](https://docs.google.com/document/d/1eEgYgvgZqLE45vETjhwIw4VOqK-5hwQtZtjVbiXnIGc)
-* [ADR 020](adr-020-protobuf-transaction-encoding.md)
-* [ADR 021](adr-021-protobuf-query-encoding.md)
+* [ADR 020](./adr-020-protobuf-transaction-encoding.md)
+* [ADR 021](./adr-021-protobuf-query-encoding.md)

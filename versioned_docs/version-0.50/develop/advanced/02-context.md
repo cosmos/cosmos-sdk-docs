@@ -10,7 +10,7 @@ The `context` is a data structure intended to be passed from function to functio
 
 :::note Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK Application](../beginner/00-overview-app.md)
+* [Anatomy of a Cosmos SDK Application](../beginner/00-app-anatomy.md)
 * [Lifecycle of a Transaction](../beginner/01-tx-lifecycle.md)
 
 :::

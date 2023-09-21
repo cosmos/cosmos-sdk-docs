@@ -10,7 +10,7 @@ While encoding in the Cosmos SDK used to be mainly handled by `go-amino` codec, 
 
 :::note Pre-requisite Readings
 
-* [Anatomy of a Cosmos SDK application](../beginner/00-overview-app.md)
+* [Anatomy of a Cosmos SDK application](../beginner/00-app-anatomy.md)
 
 :::
 
