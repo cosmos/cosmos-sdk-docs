@@ -1,11 +1,11 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const redirectVersions = ["main","v0.50","v0.47"]
-const redirects = [];
-redirectVersions.forEach((version) => {
-  redirects.push(...generateRedirects(version));
-});
+// const redirectVersions = ["main","v0.50","v0.47"]
+// const redirects = [];
+// redirectVersions.forEach((version) => {
+//   redirects.push(...generateRedirects(version));
+// });
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
@@ -241,7 +241,7 @@ const config = {
       {
         fromExtensions: ["html"],
         toExtensions: ["html"],
-        redirects: [...redirects,
+        redirects: [
           {
             from: ["/master", "/v0.43", "/v0.44"],
             to: "/",
@@ -419,71 +419,144 @@ const config = {
             to: "/main/build/modules/",
           },
         ],
+        createRedirects(existingPath) {
+          if (existingPath.includes('/core')) {
+            return [
+              existingPath.replace("/core", "/develop/advanced"),
+            ];
+          }
+          return undefined;
+          if (existingPath.includes('/basics')) {
+            return [
+              existingPath.replace("/basics", "/develop/beginner"),
+            ];
+          }
+          if (existingPath.includes('/intro')) {
+            return [
+              existingPath.replace("/intro", "/develop/intro"),
+            ];
+          }
+          if (existingPath.includes('/architecture')) {
+            return [
+              existingPath.replace("/architecture", "/build/architecture/"),
+            ];
+          }
+          if (existingPath.includes('/building-apps')) {
+            return [
+              existingPath.replace("/building-apps", "/build/building-apps"),
+            ]
+          }
+          if (existingPath.includes('/building-modules')) {
+            return [
+              existingPath.replace("/building-modules", "/build/building-modules"),
+            ]
+          }
+          if (existingPath.includes('/tooling')) {
+            return [
+              existingPath.replace("/tooling", "/build/libraries"),
+            ]
+          }
+          if (existingPath.includes('/migrations')) {
+            return [
+              existingPath.replace("/migrations", "/build/libraries"),
+            ]
+          }
+          if (existingPath.includes('/modules')) {
+            return [
+              existingPath.replace("/modules", "/build/modules"),
+            ]
+          }
+          if (existingPath.includes('/rfc')) {
+            return [
+              existingPath.replace("/rfc", "/build/rfc"),
+            ]
+          }
+          if (existingPath.includes('/spec')) {
+            return [
+              existingPath.replace("/spec", "/build/spec"),
+            ]
+          }
+          if (existingPath.includes('/tooling')) {
+            return [
+              existingPath.replace("/tooling", "/build/tooling"),
+            ]
+          }
+          if (existingPath.includes('/run-node')) {
+            return [
+              existingPath.replace("/run-node", "/user/run-node"),
+            ]
+          }
+          if (existingPath.includes('/validate')) {
+            return [
+              existingPath.replace("/validate", "/user/validate"),
+            ];
+          }
+        },
       },
     ],
   ],
 };
-function generateRedirects(version) {
-  const redirects = [
-    {
-      from: `/${version}`,
-      to: `/`,
-    },
-    {
-      from: `/${version}/core`,
-      to: `/${version}/develop/advanced/baseapp`,
-    },
-    {
-      from: `/${version}/basics`,
-      to: `/${version}/develop/beginner/overview-app`,
-    },
-    {
-      from: `/${version}/intro`,
-      to: `/${version}/develop/intro/what-is-sdk`,
-    },
-    {
-      from: `/${version}/architecture`,
-      to: `/${version}/build/architecture/`,
-    },
-    {
-      from: `/${version}/building-apps`,
-      to: `/${version}/build/building-apps/app-go`,
-    },
-    {
-      from: `/${version}/building-modules`,
-      to: `/${version}/build/building-modules/intro`,
-    },
-    {
-      from: `/${version}/modules`,
-      to: `/${version}/build/modules`,
-    },
-    {
-      from: `/${version}/packages`,
-      to: `/${version}/build/packages`,
-    },
-    {
-      from: `/${version}/tooling`,
-      to: `/${version}/build/tooling`,
-    },
-    {
-      from: `/${version}/migrations`,
-      to: `/${version}/build/migrations/intro`,
-    },
-    {
-      from: `/${version}/rfc`,
-      to: `/${version}/build/rfc`,
-    },
-    {
-      from: `/${version}/spec`,
-      to: `/${version}/build/spec/addresses`,
-    },
-    {
-      from: `/${version}/run-node`,
-      to: `/${version}/user/run-node/keyring`,
-    },
-  ];
-
-  return redirects;
-}
+// function generateRedirects(version) {
+//   const redirects = [
+//     {
+//       from: `/${version}`,
+//       to: `/`,
+//     },
+//     {
+//       from: `/${version}/core`,
+//       to: `/${version}/develop/advanced/baseapp`,
+//     },
+//     {
+//       from: `/${version}/basics`,
+//       to: `/${version}/develop/beginner/overview-app`,
+//     },
+//     {
+//       from: `/${version}/intro`,
+//       to: `/${version}/develop/intro/what-is-sdk`,
+//     },
+//     {
+//       from: `/${version}/architecture`,
+//       to: `/${version}/build/architecture/`,
+//     },
+//     {
+//       from: `/${version}/building-apps`,
+//       to: `/${version}/build/building-apps/app-go`,
+//     },
+//     {
+//       from: `/${version}/building-modules`,
+//       to: `/${version}/build/building-modules/intro`,
+//     },
+//     {
+//       from: `/${version}/modules`,
+//       to: `/${version}/build/modules`,
+//     },
+//     {
+//       from: `/${version}/packages`,
+//       to: `/${version}/build/packages`,
+//     },
+//     {
+//       from: `/${version}/tooling`,
+//       to: `/${version}/build/tooling`,
+//     },
+//     {
+//       from: `/${version}/migrations`,
+//       to: `/${version}/build/migrations/intro`,
+//     },
+//     {
+//       from: `/${version}/rfc`,
+//       to: `/${version}/build/rfc`,
+//     },
+//     {
+//       from: `/${version}/spec`,
+//       to: `/${version}/build/spec/addresses`,
+//     },
+//     {
+//       from: `/${version}/run-node`,
+//       to: `/${version}/user/run-node/keyring`,
+//     },
+//   ];
+//
+//   return redirects;
+// }
 
 module.exports = config;
