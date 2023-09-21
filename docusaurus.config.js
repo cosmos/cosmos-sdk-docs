@@ -420,25 +420,24 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/core')) {
+          if (existingPath.includes('/develop/advanced')) {
             return [
-              existingPath.replace("/core", "/develop/advanced"),
+              existingPath.replace("/develop/advanced", "/core"),
             ];
           }
-          return undefined;
-          if (existingPath.includes('/basics')) {
+          if (existingPath.includes('/develop/beginner')) {
             return [
-              existingPath.replace("/basics", "/develop/beginner"),
+              existingPath.replace("/develop/beginner", "/basics"),
             ];
           }
-          if (existingPath.includes('/intro')) {
+          if (existingPath.includes('/develop/intro')) {
             return [
-              existingPath.replace("/intro", "/develop/intro"),
+              existingPath.replace("/develop/intro", "/intro"),
             ];
           }
-          if (existingPath.includes('/architecture')) {
+          if (existingPath.includes('build/architecture')) {
             return [
-              existingPath.replace("/architecture", "/build/architecture/"),
+              existingPath.replace("/build/architecture", "/architecture/"),
             ];
           }
           if (existingPath.includes('/building-apps')) {
@@ -446,49 +445,49 @@ const config = {
               existingPath.replace("/building-apps", "/build/building-apps"),
             ]
           }
-          if (existingPath.includes('/building-modules')) {
+          if (existingPath.includes('/build/building-modules')) {
             return [
-              existingPath.replace("/building-modules", "/build/building-modules"),
+              existingPath.replace("/build/building-modules", "/building-modules"),
             ]
           }
-          if (existingPath.includes('/tooling')) {
+          if (existingPath.includes('/build/libraries')) {
             return [
-              existingPath.replace("/tooling", "/build/libraries"),
+              existingPath.replace("/build/libraries", "/tooling"),
             ]
           }
-          if (existingPath.includes('/migrations')) {
+          if (existingPath.includes('/build/libraries')) {
             return [
-              existingPath.replace("/migrations", "/build/libraries"),
+              existingPath.replace("/build/libraries", "/migrations"),
             ]
           }
-          if (existingPath.includes('/modules')) {
+          if (existingPath.includes('/build/modules')) {
             return [
-              existingPath.replace("/modules", "/build/modules"),
+              existingPath.replace("/build/modules", "/modules"),
             ]
           }
-          if (existingPath.includes('/rfc')) {
+          if (existingPath.includes('/build/rfc')) {
             return [
-              existingPath.replace("/rfc", "/build/rfc"),
+              existingPath.replace("/build/rfc", "/rfc"),
             ]
           }
-          if (existingPath.includes('/spec')) {
+          if (existingPath.includes('/build/spec')) {
             return [
-              existingPath.replace("/spec", "/build/spec"),
+              existingPath.replace("/build/spec", "/build/spec"),
             ]
           }
-          if (existingPath.includes('/tooling')) {
+          if (existingPath.includes('/build/tooling')) {
             return [
-              existingPath.replace("/tooling", "/build/tooling"),
+              existingPath.replace("/build/tooling", "/tooling"),
             ]
           }
-          if (existingPath.includes('/run-node')) {
+          if (existingPath.includes('/user/run-node')) {
             return [
-              existingPath.replace("/run-node", "/user/run-node"),
+              existingPath.replace("/user/run-node", "/run-node"),
             ]
           }
-          if (existingPath.includes('/validate')) {
+          if (existingPath.includes('/user/validate')) {
             return [
-              existingPath.replace("/validate", "/user/validate"),
+              existingPath.replace("/user/validate", "/validate"),
             ];
           }
         },
