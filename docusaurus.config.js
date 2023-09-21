@@ -484,6 +484,7 @@ const config = {
               existingPath.replace("/user/validate", "/validate"),
             ];
           }
+          return undefined;
         },
       },
     ],
