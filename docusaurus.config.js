@@ -83,8 +83,8 @@ const config = {
         items: [
           {
             type: "doc",
-            label: "Develop",
-            docId: "develop/intro/what-is-sdk",
+            label: "Learn",
+            docId: "learn/intro/what-is-sdk",
             position: "left",
           },
           {
@@ -414,19 +414,19 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/develop/advanced')) {
+          if (existingPath.includes('/learn/advanced')) {
             return [
-              existingPath.replace("/develop/advanced", "/core"),
+              existingPath.replace("/learn/advanced", "/core"),
             ];
           }
-          if (existingPath.includes('/develop/beginner')) {
+          if (existingPath.includes('/learn/beginner')) {
             return [
-              existingPath.replace("/develop/beginner", "/basics"),
+              existingPath.replace("/learn/beginner", "/basics"),
             ];
           }
-          if (existingPath.includes('/develop/intro')) {
+          if (existingPath.includes('/learn/intro')) {
             return [
-              existingPath.replace("/develop/intro", "/intro"),
+              existingPath.replace("/learn/intro", "/intro"),
             ];
           }
           if (existingPath.includes('build/architecture')) {
