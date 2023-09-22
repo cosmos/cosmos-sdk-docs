@@ -50,6 +50,9 @@ for version in "${VERSIONS[@]}"; do
     echo "Branch $branch exists, continuing..."
   fi
 
+   # build documentation
+  cd docs && sh ./pre.sh && cd ..
+
   # Find all Markdown files in the 'docs' directory
   if [ "$version" == "main" ]; then # update for 0.51
     # main has a different strucutre then versions
@@ -94,9 +97,9 @@ for version in "${VERSIONS[@]}"; do
             # Replace the local file with the remote file if differences are found
             echo "Differences found for $local_file and $remote_file. Replacing $local_file with remote file..."
             if [ "$version" == "main" ]; then
-              cp "./cosmos-sdk/$remote_file" "$local_file"
+              cp -r "./cosmos-sdk/$remote_file" "$local_file"
             else
-              cp "./cosmos-sdk/docs/$remote_file" "$local_file"
+              cp -r "./cosmos-sdk/docs/$remote_file" "$local_file"
             fi
           fi
         fi
@@ -104,7 +107,7 @@ for version in "${VERSIONS[@]}"; do
     done
   else
     # The file does not exist, so copy the remote file
-    cp "./cosmos-sdk/docs/$remote_file" "$local_file"
+    cp -r "./cosmos-sdk/docs/$remote_file" "$local_file"
     echo "File $local_file created and replaced with ./cosmos-sdk/docs/$remote_file"
   fi
 done
