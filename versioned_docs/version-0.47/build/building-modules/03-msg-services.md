@@ -5,7 +5,7 @@ sidebar_position: 1
 # `Msg` Services
 
 :::note Synopsis
-A Protobuf `Msg` service processes [messages](02-messages-and-queries.md#messages). Protobuf `Msg` services are specific to the module in which they are defined, and only process messages defined within the said module. They are called from `BaseApp` during [`DeliverTx`](../../develop/advanced/00-baseapp.md#delivertx).
+A Protobuf `Msg` service processes [messages](02-messages-and-queries.md#messages). Protobuf `Msg` services are specific to the module in which they are defined, and only process messages defined within the said module. They are called from `BaseApp` during [`DeliverTx`](../../learn/advanced/00-baseapp.md#delivertx).
 :::
 
 :::note
@@ -73,7 +73,7 @@ After the validation is successful, the `msgServer` method uses the [`keeper`](0
 
 ### Events 
 
-Before returning, `msgServer` methods generally emit one or more [events](../../develop/advanced/08-events.md) by using the `EventManager` held in the `ctx`. Use the new `EmitTypedEvent` function that uses protobuf-based event types:
+Before returning, `msgServer` methods generally emit one or more [events](../../learn/advanced/08-events.md) by using the `EventManager` held in the `ctx`. Use the new `EmitTypedEvent` function that uses protobuf-based event types:
 
 ```go
 ctx.EventManager().EmitTypedEvent(
@@ -92,7 +92,7 @@ ctx.EventManager().EmitEvent(
 )
 ```
 
-These events are relayed back to the underlying consensus engine and can be used by service providers to implement services around the application. Click [here](../../develop/advanced/08-events.md) to learn more about events.
+These events are relayed back to the underlying consensus engine and can be used by service providers to implement services around the application. Click [here](../../learn/advanced/08-events.md) to learn more about events.
 
 The invoked `msgServer` method returns a `proto.Message` response and an `error`. These return values are then wrapped into an `*sdk.Result` or an `error` using `sdk.WrapServiceResult(ctx sdk.Context, res proto.Message, err error)`:
 
@@ -112,7 +112,7 @@ This diagram shows a typical structure of a Protobuf `Msg` service, and how the 
 
 ## Telemetry
 
-New [telemetry metrics](../../develop/advanced/11-telemetry.md) can be created from `msgServer` methods when handling messages.
+New [telemetry metrics](../../learn/advanced/11-telemetry.md) can be created from `msgServer` methods when handling messages.
 
 This is an example from the `x/auth/vesting` module:
 
