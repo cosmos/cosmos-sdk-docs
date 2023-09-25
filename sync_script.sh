@@ -8,8 +8,8 @@ REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
 
-# Define the folders to exclude from copying
-EXCLUDE_FOLDERS=("s")
+# Define the folders to protect from deletion
+PROTECTED_PATH=()
 
 # Remove any existing 'cosmos-sdk' directory and clone the remote repository
 rm -rf ./cosmos-sdk
@@ -19,6 +19,13 @@ git clone "$REMOTE_REPO_URL" cosmos-sdk
 VERSIONS=($(jq -r '.[]' versions.json))
 
 VERSIONS+=("main")
+
+# Check if there are protected fils
+if [ -e "$WORK_DIR/docs/$PROTECTED_PATH" ]; then
+  backup_dir="$WORK_DIR/docs_backup"
+  mkdir -p "$backup_dir"
+  cp -r "$WORK_DIR/docs/$PROTECTED_PATH" "$backup_dir/"
+fi
 
 # Iterate over each version
 for version in "${VERSIONS[@]}"; do
@@ -54,23 +61,22 @@ for version in "${VERSIONS[@]}"; do
   fi
 
   # Run the pre.sh script
-  cd docs && sh ./pre.sh && cd ..
+  cd docs && sh ./pre.sh
 
-  # Exclude specified folders from copied documentation
-  for folder in "${EXCLUDE_FOLDERS[@]}"; do
+  for folder in "build" "user" "learn"; do
+    echo $branch
     if [ "$version" == "main" ]; then
-      rm -rf "$WORK_DIR/docs/$folder"
+      echo "$WORK_DIR/cosmos-sdk/docs/$folder"
+      cp -r "$WORK_DIR/cosmos-sdk/docs/$folder" "$WORK_DIR/docs/"
     else
-      rm -rf "$WORK_DIR/versioned_docs/$version_directory/$folder"
+      cp -r "$WORK_DIR/cosmos-sdk/docs/docs/$folder" "$WORK_DIR/versioned_docs/$version_directory/"
     fi
   done
 
-  # Copy the entire 'docs' folder from the SDK repository to the local directory
-  if [ "$version" == "main" ]; then
-    cp -r "$WORK_DIR/cosmos-sdk/docs/docs" "$WORK_DIR/docs"
-  else
-    cp -r "$WORK_DIR/cosmos-sdk/docs/docs" "$WORK_DIR/versioned_docs/$version_directory/"
-    sh $WORK_DIR/cosmos-sdk/docs/post.sh
+  if [ -e "$backup_dir/$PROTECTED_PATH" ]; then
+    mkdir -p "$(dirname "$WORK_DIR/$PROTECTED_PATH")"
+    cp -r "$backup_dir/$PROTECTED_PATH" "$WORK_DIR/$PROTECTED_PATH"
+    rm -rf "$backup_dir"
   fi
 done
 
@@ -78,4 +84,4 @@ done
 cd "$WORK_DIR"
 
 # Remove the 'cosmos-sdk' directory if needed
- rm -rf ./cosmos-sdk
+# rm -rf ./cosmos-sdk
