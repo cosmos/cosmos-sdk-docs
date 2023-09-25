@@ -84,4 +84,4 @@ done
 cd "$WORK_DIR"
 
 # Remove the 'cosmos-sdk' directory if needed
-# rm -rf ./cosmos-sdk
+ rm -rf ./cosmos-sdk
