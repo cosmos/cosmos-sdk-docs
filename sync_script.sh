@@ -8,9 +8,12 @@ REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
 
+# Define the folders to exclude from copying
+EXCLUDE_FOLDERS=("s")
+
 # Remove any existing 'cosmos-sdk' directory and clone the remote repository
-rm -rf ./cosmos-sdk
-git clone "$REMOTE_REPO_URL" cosmos-sdk
+#rm -rf ./cosmos-sdk
+#git clone "$REMOTE_REPO_URL" cosmos-sdk
 
 # Read the versions from a JSON file and remove the 'v' prefix
 VERSIONS=($(jq -r '.[]' versions.json))
@@ -36,7 +39,7 @@ for version in "${VERSIONS[@]}"; do
   fi
 
   # Change to the 'cosmos-sdk' directory
-  cd cosmos-sdk
+  cd $WORK_DIR/cosmos-sdk
 
   # Fetch the branch from the remote repository and switch to it
   git fetch origin "$branch"
@@ -50,67 +53,29 @@ for version in "${VERSIONS[@]}"; do
     echo "Branch $branch exists, continuing..."
   fi
 
-  # build documentation
+  # Run the pre.sh script
   cd docs && sh ./pre.sh && cd ..
 
-  # Find all Markdown files in the 'docs' directory
-  if [ "$version" == "main" ]; then # update for 0.51
-    # main has a different strucutre then versions
-    remote_md_files=$(find "docs" -name "*.md")
-  else
-    cd docs 
-    remote_md_files=$(find "docs" -name "*.md")
-  fi 
+  # Exclude specified folders from copied documentation
+  for folder in "${EXCLUDE_FOLDERS[@]}"; do
+    if [ "$version" == "main" ]; then
+      rm -rf "$WORK_DIR/docs/$folder"
+    else
+      rm -rf "$WORK_DIR/versioned_docs/$version_directory/$folder"
+    fi
+  done
 
-  # Change back to the original working directory
-  cd "$WORK_DIR"
-
+  # Copy the entire 'docs' folder from the SDK repository to the local directory
   if [ "$version" == "main" ]; then
-    local_md_files=$(find "docs" -name "*.md")  # For 'main', the version directory is empty
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs" "$WORK_DIR/docs"
   else
-    # Find all Markdown files in the local versioned_docs directory
-    local_md_files=$(find "versioned_docs/$version_directory" -name "*.md")
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs" "$WORK_DIR/versioned_docs/$version_directory/"
+    sh $WORK_DIR/cosmos-sdk/docs/post.sh
   fi
-
-  if [ "$local_md_files" ]; then
-    echo "There are Markdown files in the directory."
-    # Iterate over each local Markdown file
-    for local_file in $local_md_files; do
-      # Construct the relative path of the local file
-     if [ "$version" != "main" ]; then
-       local_relative_path="${local_file#versioned_docs/$version_directory/}"
-     else
-       local_relative_path="${local_file#docs/}"
-     fi
-      # Iterate over each remote Markdown file
-      for remote_file in $remote_md_files; do
-        # Construct the relative path of the remote file
-        remote_relative_path="${remote_file#docs/}"
-
-
-        # Compare the relative paths to find matching files
-        if [ "$local_relative_path" = "$remote_relative_path" ]; then
-          # Check for differences between the local and remote files
-          if diff "$local_file" "./cosmos-sdk/docs/$remote_file" &>/dev/null; then
-            echo "No differences found for $local_file and $remote_file"
-          else
-            # Replace the local file with the remote file if differences are found
-            echo "Differences found for $local_file and $remote_file. Replacing $local_file with remote file..."
-            if [ "$version" == "main" ]; then
-              cp -r "./cosmos-sdk/$remote_file" "$local_file"
-            else
-              cp -r "./cosmos-sdk/docs/$remote_file" "$local_file"
-            fi
-          fi
-        fi
-      done
-    done
-  else
-    # The file does not exist, so copy the remote file
-    cp -r "./cosmos-sdk/docs/$remote_file" "$local_file"
-    echo "File $local_file created and replaced with ./cosmos-sdk/docs/$remote_file"
-  fi
-  # cd docs && sh ./post.sh && cd ..
 done
 
-rm -rf ./cosmos-sdk
+# Leave the 'cosmos-sdk' directory after processing
+cd "$WORK_DIR"
+
+# Remove the 'cosmos-sdk' directory if needed
+ rm -rf ./cosmos-sdk
