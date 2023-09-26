@@ -63,7 +63,7 @@ Value Renderers describe how values of different Protobuf types should be encode
 
 ### `repeated`
 
-* Applies to all `repeated` fields, except `cosmos.tx.v1beta1.TxBody#Messages`, which has a particular encoding (see [ADR-050](adr-050-sign-mode-textual.md)).
+* Applies to all `repeated` fields, except `cosmos.tx.v1beta1.TxBody#Messages`, which has a particular encoding (see [ADR-050](./adr-050-sign-mode-textual.md)).
 * A repeated type has the following template:
 
 ```
@@ -275,7 +275,7 @@ The number 35 was chosen because it is the longest length where the hashed-and-p
 - byte arrays starting from length 36 will be be hashed to 32 bytes, which is 64 hex characters plus 15 spaces, and with the `SHA-256=` prefix, it takes 87 characters.
 Also, secp256k1 public keys have length 33, so their Textual representation is not their hashed value, which we would like to avoid.
 
-Note: Data longer than 35 bytes are not rendered in a way that can be inverted. See ADR-050's [section about invertability](adr-050-sign-mode-textual.md#invertible-rendering) for a discussion.
+Note: Data longer than 35 bytes are not rendered in a way that can be inverted. See ADR-050's [section about invertability](./adr-050-sign-mode-textual.md#invertible-rendering) for a discussion.
 
 #### Examples
 

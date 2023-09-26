@@ -23,7 +23,7 @@ Accepted
 ## Context
 
 This ADR is a continuation of the motivation, design, and context established in
-[ADR 019](adr-019-protobuf-state-encoding.md), namely, we aim to design the
+[ADR 019](./adr-019-protobuf-state-encoding.md), namely, we aim to design the
 Protocol Buffer migration path for the client-side of the Cosmos SDK.
 
 Specifically, the client-side migration path primarily includes tx generation and
@@ -205,7 +205,7 @@ message SignDoc {
 In order to sign in the default mode, clients take the following steps:
 
 1. Serialize `TxBody` and `AuthInfo` using any valid protobuf implementation.
-2. Create a `SignDoc` and serialize it using [ADR 027](adr-027-deterministic-protobuf-serialization.md).
+2. Create a `SignDoc` and serialize it using [ADR 027](./adr-027-deterministic-protobuf-serialization.md).
 3. Sign the encoded `SignDoc` bytes.
 4. Build a `TxRaw` and serialize it for broadcasting.
 
@@ -221,7 +221,7 @@ Signature verifiers do:
 3. For each required signer:
    * Pull account number and sequence from the state.
    * Obtain the public key either from state or `AuthInfo`'s `signer_infos`.
-   * Create a `SignDoc` and serialize it using [ADR 027](adr-027-deterministic-protobuf-serialization.md).
+   * Create a `SignDoc` and serialize it using [ADR 027](./adr-027-deterministic-protobuf-serialization.md).
    * Verify the signature at the same list position against the serialized `SignDoc`.
 
 #### `SIGN_MODE_LEGACY_AMINO`
@@ -312,7 +312,7 @@ enforce this.
 
 Currently, the REST and CLI handlers encode and decode types and txs via Amino
 JSON encoding using a concrete Amino codec. Being that some of the types dealt with
-in the client can be interfaces, similar to how we described in [ADR 019](adr-019-protobuf-state-encoding.md),
+in the client can be interfaces, similar to how we described in [ADR 019](./adr-019-protobuf-state-encoding.md),
 the client logic will now need to take a codec interface that knows not only how
 to handle all the types, but also knows how to generate transactions, signatures,
 and messages.

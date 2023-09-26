@@ -64,9 +64,9 @@ See the [Storage Discussion](https://github.com/cosmos/cosmos-sdk/discussions/13
 
 ## Alternatives
 
-There was a previous attempt to refactor the storage layer described in [ADR-040](adr-040-storage-and-smt-state-commitments.md).
+There was a previous attempt to refactor the storage layer described in [ADR-040](./adr-040-storage-and-smt-state-commitments.md).
 However, this approach mainly stems on the short comings of IAVL and various performance
-issues around it. While there was a (partial) implementation of [ADR-040](adr-040-storage-and-smt-state-commitments.md),
+issues around it. While there was a (partial) implementation of [ADR-040](./adr-040-storage-and-smt-state-commitments.md),
 it was never adopted for a variety of reasons, such as the reliance on using an
 SMT, which was more in a research phase, and some design choices that couldn't
 be fully agreed upon, such as the snap-shotting mechanism that would result in
@@ -74,7 +74,7 @@ massive state bloat.
 
 ## Decision
 
-We propose to build upon some of the great ideas introduced in [ADR-040](adr-040-storage-and-smt-state-commitments.md),
+We propose to build upon some of the great ideas introduced in [ADR-040](./adr-040-storage-and-smt-state-commitments.md),
 while being a bit more flexible with the underlying implementations and overall
 less intrusive. Specifically, we propose to:
 
