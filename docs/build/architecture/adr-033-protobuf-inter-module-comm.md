@@ -11,8 +11,8 @@ Proposed
 ## Abstract
 
 This ADR introduces a system for permissioned inter-module communication leveraging the protobuf `Query` and `Msg`
-service definitions defined in [ADR 021](adr-021-protobuf-query-encoding.md) and
-[ADR 031](adr-031-msg-service.md) which provides:
+service definitions defined in [ADR 021](./adr-021-protobuf-query-encoding.md) and
+[ADR 031](./adr-031-msg-service.md) which provides:
 
 * stable protobuf based module interfaces to potentially later replace the keeper paradigm
 * stronger inter-module object capabilities (OCAPs) guarantees
@@ -20,7 +20,7 @@ service definitions defined in [ADR 021](adr-021-protobuf-query-encoding.md) and
 
 ## Context
 
-In the current Cosmos SDK documentation on the [Object-Capability Model](../../develop/advanced/10-ocap.md), it is stated that:
+In the current Cosmos SDK documentation on the [Object-Capability Model](../../learn/advanced/10-ocap.md), it is stated that:
 
 > We assume that a thriving ecosystem of Cosmos SDK modules that are easy to compose into a blockchain application will contain faulty or malicious modules.
 
@@ -48,7 +48,7 @@ just a simple string. So the `x/upgrade` module could mint tokens for the `x/sta
 
 ## Decision
 
-Based on [ADR-021](adr-021-protobuf-query-encoding.md) and [ADR-031](adr-031-msg-service.md), we introduce the
+Based on [ADR-021](./adr-021-protobuf-query-encoding.md) and [ADR-031](./adr-031-msg-service.md), we introduce the
 Inter-Module Communication framework for secure module authorization and OCAPs.
 When implemented, this could also serve as an alternative to the existing paradigm of passing keepers between
 modules. The approach outlined here-in is intended to form the basis of a Cosmos SDK v1.0 that provides the necessary
@@ -60,8 +60,8 @@ addressed as amendments to this ADR.
 
 ### New "Keeper" Paradigm
 
-In [ADR 021](adr-021-protobuf-query-encoding.md), a mechanism for using protobuf service definitions to define queriers
-was introduced and in [ADR 31](adr-031-msg-service.md), a mechanism for using protobuf service to define `Msg`s was added.
+In [ADR 021](./adr-021-protobuf-query-encoding.md), a mechanism for using protobuf service definitions to define queriers
+was introduced and in [ADR 31](./adr-031-msg-service.md), a mechanism for using protobuf service to define `Msg`s was added.
 Protobuf service definitions generate two golang interfaces representing the client and server sides of a service plus
 some helper code. Here is a minimal example for the bank `cosmos.bank.Msg/Send` message type:
 
@@ -77,7 +77,7 @@ type MsgServer interface {
 }
 ```
 
-[ADR 021](adr-021-protobuf-query-encoding.md) and [ADR 31](adr-031-msg-service.md) specifies how modules can implement the generated `QueryServer`
+[ADR 021](./adr-021-protobuf-query-encoding.md) and [ADR 31](./adr-031-msg-service.md) specifies how modules can implement the generated `QueryServer`
 and `MsgServer` interfaces as replacements for the legacy queriers and `Msg` handlers respectively.
 
 In this ADR we explain how modules can make queries and send `Msg`s to other modules using the generated `QueryClient`
@@ -161,7 +161,7 @@ denom prefix being restricted to certain modules (as discussed in
 ### `ModuleKey`s and `ModuleID`s
 
 A `ModuleKey` can be thought of as a "private key" for a module account and a `ModuleID` can be thought of as the
-corresponding "public key". From the [ADR 028](adr-028-public-key-addresses.md), modules can have both a root module account and any number of sub-accounts
+corresponding "public key". From the [ADR 028](./adr-028-public-key-addresses.md), modules can have both a root module account and any number of sub-accounts
 or derived accounts that can be used for different pools (ex. staking pools) or managed accounts (ex. group
 accounts). We can also think of module sub-accounts as similar to derived keys - there is a root key and then some
 derivation path. `ModuleID` is a simple struct which contains the module name and optional "derivation" path,
@@ -248,7 +248,7 @@ func (key RootModuleKey) Invoke(ctx context.Context, method string, args, reply 
 
 ### `AppModule` Wiring and Requirements
 
-In [ADR 031](adr-031-msg-service.md), the `AppModule.RegisterService(Configurator)` method was introduced. To support
+In [ADR 031](./adr-031-msg-service.md), the `AppModule.RegisterService(Configurator)` method was introduced. To support
 inter-module communication, we extend the `Configurator` interface to pass in the `ModuleKey` and to allow modules to
 specify their dependencies on other modules using `RequireServer()`:
 
@@ -393,8 +393,8 @@ replacing `Keeper` interfaces altogether.
 
 ## References
 
-* [ADR 021](adr-021-protobuf-query-encoding.md)
-* [ADR 031](adr-031-msg-service.md)
-* [ADR 028](adr-028-public-key-addresses.md)
+* [ADR 021](./adr-021-protobuf-query-encoding.md)
+* [ADR 031](./adr-031-msg-service.md)
+* [ADR 028](./adr-028-public-key-addresses.md)
 * [ADR 030 draft](https://github.com/cosmos/cosmos-sdk/pull/7105)
 * [Object-Capability Model](https://docs.network.com/main/core/ocap)
