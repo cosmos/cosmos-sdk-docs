@@ -7,7 +7,7 @@ const FeatureList = [
   {
     title: `Learn Basics`,
     Svg: require("@site/static/img/innovation.svg").default,
-    to: "/main/learn/intro/what-is-sdk",
+    to: "/main/learn/intro/overview",
     description: (
       <>
         Get a quick introduction to the Cosmos SDK and its key features,

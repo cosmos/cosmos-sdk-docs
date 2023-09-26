@@ -84,7 +84,7 @@ const config = {
           {
             type: "doc",
             label: "Learn",
-            docId: "learn/intro/what-is-sdk",
+            docId: "learn/intro/overview",
             position: "left",
           },
           {
@@ -408,10 +408,10 @@ const config = {
             ],
             to: "/main/build/modules/upgrade/",
           },
-          {
-            from: ["/main/modules/capability", "/main/ecosystem"],
-            to: "/main/build/modules/",
-          },
+          // {
+          //   from: ["/main/modules/capability", "/main/ecosystem"],
+          //   to: "/main/build/modules/",
+          // },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/learn/advanced')) {
