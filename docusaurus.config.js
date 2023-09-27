@@ -449,9 +449,14 @@ const config = {
               existingPath.replace("/build/libraries", "/tooling"),
             ]
           }
-          if (existingPath.includes('/build/libraries')) {
+          if (existingPath.includes('/build/tooling')) {
             return [
-              existingPath.replace("/build/libraries", "/migrations"),
+              existingPath.replace("/build/tooling", "/tooling"),
+            ]
+          }
+          if (existingPath.includes('/build/migrations')) {
+            return [
+              existingPath.replace("/build/migrations", "/migrations"),
             ]
           }
           if (existingPath.includes('/build/modules')) {
@@ -466,7 +471,7 @@ const config = {
           }
           if (existingPath.includes('/build/spec')) {
             return [
-              existingPath.replace("/build/spec", "/build/spec"),
+              existingPath.replace("/build/spec", "/spec"),
             ]
           }
           if (existingPath.includes('/build/tooling')) {
