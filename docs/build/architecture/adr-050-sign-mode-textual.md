@@ -28,7 +28,7 @@ This ADR specifies SIGN_MODE_TEXTUAL, a new string-based sign mode that is targe
 
 ## Context
 
-Protobuf-based SIGN_MODE_DIRECT was introduced in [ADR-020](adr-020-protobuf-transaction-encoding.md) and is intended to replace SIGN_MODE_LEGACY_AMINO_JSON in most situations, such as mobile wallets and CLI keyrings. However, the [Ledger](https://www.ledger.com/) hardware wallet is still using SIGN_MODE_LEGACY_AMINO_JSON for displaying the sign bytes to the user. Hardware wallets cannot transition to SIGN_MODE_DIRECT as:
+Protobuf-based SIGN_MODE_DIRECT was introduced in [ADR-020](./adr-020-protobuf-transaction-encoding.md) and is intended to replace SIGN_MODE_LEGACY_AMINO_JSON in most situations, such as mobile wallets and CLI keyrings. However, the [Ledger](https://www.ledger.com/) hardware wallet is still using SIGN_MODE_LEGACY_AMINO_JSON for displaying the sign bytes to the user. Hardware wallets cannot transition to SIGN_MODE_DIRECT as:
 
 * SIGN_MODE_DIRECT is binary-based and thus not suitable for display to end-users. Technically, hardware wallets could simply display the sign bytes to the user. But this would be considered as blind signing, and is a security concern.
 * hardware cannot decode the protobuf sign bytes due to memory constraints, as the Protobuf definitions would need to be embedded on the hardware device.
@@ -54,7 +54,7 @@ or to introduce or conclude a larger grouping.
 
 The text can contain the full range of Unicode code points, including control characters and nul.
 The device is responsible for deciding how to display characters it cannot render natively.
-See [annex 2](adr-050-sign-mode-textual-annex2.md) for guidance.
+See [annex 2](./adr-050-sign-mode-textual-annex2.md) for guidance.
 
 Screens have a non-negative indentation level to signal composite or nested structures.
 Indentation level zero is the top level.
@@ -299,7 +299,7 @@ where:
 
 This is to prevent transaction hash malleability. The point #1 about invertiblity assures that transaction `body` and `auth_info` values are not malleable, but the transaction hash still might be malleable with point #1 only, because the SIGN_MODE_TEXTUAL strings don't follow the byte ordering defined in `body_bytes` and `auth_info_bytes`. Without this hash, a malicious validator or exchange could intercept a transaction, modify its transaction hash _after_ the user signed it using SIGN_MODE_TEXTUAL (by tweaking the byte ordering inside `body_bytes` or `auth_info_bytes`), and then submit it to Tendermint.
 
-By including this hash in the SIGN_MODE_TEXTUAL signing payload, we keep the same level of guarantees as [SIGN_MODE_DIRECT](adr-020-protobuf-transaction-encoding.md).
+By including this hash in the SIGN_MODE_TEXTUAL signing payload, we keep the same level of guarantees as [SIGN_MODE_DIRECT](./adr-020-protobuf-transaction-encoding.md).
 
 These bytes are only shown in expert mode, hence the leading `*`.
 
@@ -314,13 +314,13 @@ Updates in the 1st category include changes of the `Screen` struct or its corres
 
 Updates in the 2nd category include changes to any of the value renderers or to the transaction envelope. For example, the ordering of fields in the envelope can be swapped, or the timestamp formatting can be modified. Since SIGN_MODE_TEXTUAL sends `Screen`s to the hardware device, this type of change do not need a hardware wallet application update. They are however state-machine-breaking, and must be documented as such. They require the coordination of SDK developers with client-side developers (e.g. CosmJS), so that the updates are released on both sides close to each other in time.
 
-We define a spec version, which is an integer that must be incremented on each update of either category. This spec version will be exposed by the SDK's implementation, and can be communicated to clients. For example, SDK v0.48 might use the spec version 1, and SDK v0.49 might use 2; thanks to this versioning, clients can know how to craft SIGN_MODE_TEXTUAL transactions based on the target SDK version.
+We define a spec version, which is an integer that must be incremented on each update of either category. This spec version will be exposed by the SDK's implementation, and can be communicated to clients. For example, SDK v0.50 might use the spec version 1, and SDK v0.51 might use 2; thanks to this versioning, clients can know how to craft SIGN_MODE_TEXTUAL transactions based on the target SDK version.
 
 The current spec version is defined in the "Status" section, on the top of this document. It is initialized to `0` to allow flexibility in choosing how to define future versions, as it would allow adding a field either in the SignDoc Go struct or in Protobuf in a backwards-compatible way.
 
 ## Additional Formatting by the Hardware Device
 
-See [annex 2](adr-050-sign-mode-textual-annex2.md).
+See [annex 2](./adr-050-sign-mode-textual-annex2.md).
 
 ## Examples
 
@@ -328,9 +328,10 @@ See [annex 2](adr-050-sign-mode-textual-annex2.md).
 2. A transaction with a bit of everything: [see transaction](https://github.com/cosmos/cosmos-sdk/blob/094abcd393379acbbd043996024d66cd65246fb1/tx/textual/internal/testdata/e2e.json#L71-L270).
 
 The examples below are stored in a JSON file with the following fields:
-- `proto`: the representation of the transaction in ProtoJSON,
-- `screens`: the transaction rendered into SIGN_MODE_TEXTUAL screens,
-- `cbor`: the sign bytes of the transaction, which is the CBOR encoding of the screens.
+
+* `proto`: the representation of the transaction in ProtoJSON,
+* `screens`: the transaction rendered into SIGN_MODE_TEXTUAL screens,
+* `cbor`: the sign bytes of the transaction, which is the CBOR encoding of the screens.
 
 ## Consequences
 
@@ -354,14 +355,14 @@ SIGN_MODE_TEXTUAL is purely additive, and doesn't break any backwards compatibil
 
 ## Further Discussions
 
-* Some details on value renderers need to be polished, see [Annex 1](adr-050-sign-mode-textual-annex1.md).
+* Some details on value renderers need to be polished, see [Annex 1](./adr-050-sign-mode-textual-annex1.md).
 * Are ledger apps able to support both SIGN_MODE_LEGACY_AMINO_JSON and SIGN_MODE_TEXTUAL at the same time?
 * Open question: should we add a Protobuf field option to allow app developers to overwrite the textual representation of certain Protobuf fields and message? This would be similar to Ethereum's [EIP4430](https://github.com/ethereum/EIPs/pull/4430), where the contract developer decides on the textual representation.
 * Internationalization.
 
 ## References
 
-* [Annex 1](adr-050-sign-mode-textual-annex1.md)
+* [Annex 1](./adr-050-sign-mode-textual-annex1.md)
 
 * Initial discussion: https://github.com/cosmos/cosmos-sdk/issues/6513
 * Living document used in the working group: https://hackmd.io/fsZAO-TfT0CKmLDtfMcKeA?both
