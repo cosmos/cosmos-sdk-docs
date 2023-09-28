@@ -408,10 +408,10 @@ const config = {
             ],
             to: "/main/build/modules/upgrade/",
           },
-          // {
-          //   from: ["/main/modules/capability", "/main/ecosystem"],
-          //   to: "/main/build/modules/",
-          // },
+          {
+            from: ["/main/modules/capability", "/main/ecosystem"],
+            to: "/main/build/modules/",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/learn/advanced')) {
@@ -444,14 +444,14 @@ const config = {
               existingPath.replace("/build/building-modules", "/building-modules"),
             ]
           }
-          if (existingPath.includes('/build/libraries')) {
+          if (existingPath.includes('/build/tooling')) {
             return [
-              existingPath.replace("/build/libraries", "/tooling"),
+              existingPath.replace("/build/tooling", "/tooling"),
             ]
           }
-          if (existingPath.includes('/build/libraries')) {
+          if (existingPath.includes('/build/migrations')) {
             return [
-              existingPath.replace("/build/libraries", "/migrations"),
+              existingPath.replace("/build/migrations", "/migrations"),
             ]
           }
           if (existingPath.includes('/build/modules')) {
@@ -466,7 +466,7 @@ const config = {
           }
           if (existingPath.includes('/build/spec')) {
             return [
-              existingPath.replace("/build/spec", "/build/spec"),
+              existingPath.replace("/build/spec", "/spec"),
             ]
           }
           if (existingPath.includes('/build/tooling')) {
