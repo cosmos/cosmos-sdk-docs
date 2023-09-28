@@ -444,11 +444,6 @@ const config = {
               existingPath.replace("/build/building-modules", "/building-modules"),
             ]
           }
-          if (existingPath.includes('/build/libraries')) {
-            return [
-              existingPath.replace("/build/libraries", "/tooling"),
-            ]
-          }
           if (existingPath.includes('/build/tooling')) {
             return [
               existingPath.replace("/build/tooling", "/tooling"),
