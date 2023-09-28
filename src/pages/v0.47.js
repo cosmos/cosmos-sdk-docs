@@ -27,7 +27,7 @@ export default function Home() {
             description=" Explore the SDK <head />">
             <HomepageHeader />
             <main>
-                <HomepageFeatures list={FeatureList("main")} />
+                <HomepageFeatures list={FeatureList("v0.47")} />
             </main>
         </Layout>
     );
