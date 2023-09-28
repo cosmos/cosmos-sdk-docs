@@ -241,6 +241,10 @@ const config = {
             to: "/",
           },
           {
+            from: "/",
+            to: "/v0.50",
+          },
+          {
             from: [
               "/main/modules/auth/01_concepts",
               "/main/modules/auth/02_state",
