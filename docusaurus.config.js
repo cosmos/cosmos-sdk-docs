@@ -49,7 +49,7 @@ const config = {
               path: "v0.50",
               label: "v0.50",
             },
-            "0.47": {
+            0.47: {
               path: "v0.47",
               label: "v0.47",
             },
@@ -237,7 +237,7 @@ const config = {
         toExtensions: ["html"],
         redirects: [
           {
-            from: ["/master", "/v0.43", "/v0.44"],
+            from: ["/main", "/master", "/v0.43", "/v0.44"],
             to: "/",
           },
           {
@@ -414,75 +414,54 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/learn/advanced')) {
-            return [
-              existingPath.replace("/learn/advanced", "/core"),
-            ];
+          if (existingPath.includes("/learn/advanced")) {
+            return [existingPath.replace("/learn/advanced", "/core")];
           }
-          if (existingPath.includes('/learn/beginner')) {
-            return [
-              existingPath.replace("/learn/beginner", "/basics"),
-            ];
+          if (existingPath.includes("/learn/beginner")) {
+            return [existingPath.replace("/learn/beginner", "/basics")];
           }
-          if (existingPath.includes('/learn/intro')) {
-            return [
-              existingPath.replace("/learn/intro", "/intro"),
-            ];
+          if (existingPath.includes("/learn/intro")) {
+            return [existingPath.replace("/learn/intro", "/intro")];
           }
-          if (existingPath.includes('build/architecture')) {
+          if (existingPath.includes("build/architecture")) {
             return [
               existingPath.replace("/build/architecture", "/architecture/"),
             ];
           }
-          if (existingPath.includes('/build/building-apps')) {
-            return [
-              existingPath.replace("/building-apps", "/building-apps"),
-            ]
+          if (existingPath.includes("/build/building-apps")) {
+            return [existingPath.replace("/building-apps", "/building-apps")];
           }
-          if (existingPath.includes('/build/building-modules')) {
+          if (existingPath.includes("/build/building-modules")) {
             return [
-              existingPath.replace("/build/building-modules", "/building-modules"),
-            ]
-          }
-          if (existingPath.includes('/build/tooling')) {
-            return [
-              existingPath.replace("/build/tooling", "/tooling"),
-            ]
-          }
-          if (existingPath.includes('/build/migrations')) {
-            return [
-              existingPath.replace("/build/migrations", "/migrations"),
-            ]
-          }
-          if (existingPath.includes('/build/modules')) {
-            return [
-              existingPath.replace("/build/modules", "/modules"),
-            ]
-          }
-          if (existingPath.includes('/build/rfc')) {
-            return [
-              existingPath.replace("/build/rfc", "/rfc"),
-            ]
-          }
-          if (existingPath.includes('/build/spec')) {
-            return [
-              existingPath.replace("/build/spec", "/spec"),
-            ]
-          }
-          if (existingPath.includes('/build/tooling')) {
-            return [
-              existingPath.replace("/build/tooling", "/tooling"),
-            ]
-          }
-          if (existingPath.includes('/user/run-node')) {
-            return [
-              existingPath.replace("/user/run-node", "/run-node"),
-            ]
-          }
-          if (existingPath.includes('/user/validate')) {
-            return [
-              existingPath.replace("/user/validate", "/validate"),
+              existingPath.replace(
+                "/build/building-modules",
+                "/building-modules"
+              ),
             ];
+          }
+          if (existingPath.includes("/build/tooling")) {
+            return [existingPath.replace("/build/tooling", "/tooling")];
+          }
+          if (existingPath.includes("/build/migrations")) {
+            return [existingPath.replace("/build/migrations", "/migrations")];
+          }
+          if (existingPath.includes("/build/modules")) {
+            return [existingPath.replace("/build/modules", "/modules")];
+          }
+          if (existingPath.includes("/build/rfc")) {
+            return [existingPath.replace("/build/rfc", "/rfc")];
+          }
+          if (existingPath.includes("/build/spec")) {
+            return [existingPath.replace("/build/spec", "/spec")];
+          }
+          if (existingPath.includes("/build/tooling")) {
+            return [existingPath.replace("/build/tooling", "/tooling")];
+          }
+          if (existingPath.includes("/user/run-node")) {
+            return [existingPath.replace("/user/run-node", "/run-node")];
+          }
+          if (existingPath.includes("/user/validate")) {
+            return [existingPath.replace("/user/validate", "/validate")];
           }
           return undefined;
         },
