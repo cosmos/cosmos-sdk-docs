@@ -60,6 +60,9 @@ for version in "${VERSIONS[@]}"; do
       cp -r "$WORK_DIR/cosmos-sdk/docs/docs/$folder" "$WORK_DIR/versioned_docs/$version_directory/"
     fi
   done
+  if [ "$version" == "main" ]; then
+      cp -r "$WORK_DIR/cosmos-sdk/client/docs/swagger-ui/swagger.yaml" "$WORK_DIR/openapi/"
+  fi
 done
 
 # Leave the 'cosmos-sdk' directory after processing

@@ -13,7 +13,7 @@ jobs:
           node-version: 16.x
           cache: npm
       - run: |
-          ./build-legacy-docs.sh
+          ./build-vuepress.sh
 
       - run: yarn install --frozen-lockfile
       - run: yarn build
