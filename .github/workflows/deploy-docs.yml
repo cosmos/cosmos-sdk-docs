@@ -31,12 +31,12 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build Docs
+      - name: Build Docusaurus 🏗️
+        run: yarn build
+
+      - name: Build Vuepress Docs
         run: |
           ./build-vuepress.sh
-
-      - name: Build
-        run: yarn build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.4.1
