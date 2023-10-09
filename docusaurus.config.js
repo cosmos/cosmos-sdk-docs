@@ -11,7 +11,7 @@ const config = {
   title: "Explore the SDK",
   tagline:
     "Cosmos SDK is the world's most popular framework for building application-specific blockchains.",
-  url: "http://localhost:3000",
+  url: "https://docs.cosmos.network",
   baseUrl: "/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
