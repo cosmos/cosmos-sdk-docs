@@ -11,7 +11,7 @@ const config = {
   title: "Explore the SDK",
   tagline:
     "Cosmos SDK is the world's most popular framework for building application-specific blockchains.",
-  url: "https://docs.cosmos.network",
+  url: "http://localhost:3000",
   baseUrl: "/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -60,6 +60,23 @@ const config = {
         },
       }),
     ],
+    [
+      'redocusaurus',
+      {
+        // Plugin Options for loading OpenAPI files
+        specs: [
+          {
+            spec: 'openapi/swagger.yaml',
+            route: '/api/',
+          },
+        ],
+        // Theme Options for modifying how redoc renders them
+        theme: {
+          // Change with your site colors
+          primaryColor: '#1890ff',
+        },
+      },
+    ],
   ],
 
   themeConfig:
@@ -98,6 +115,12 @@ const config = {
             label: "User Guides",
             docId: "user/run-node/keyring", // I find it weird that it points to the keyring and not a common page
             position: "left",
+          },
+          {
+            label: "API Reference",
+            page: "api", // I find it weird that it points to the keyring and not a common page
+            position: "left",
+            to: "api"
           },
           {
             href: "https://github.com/cosmos/cosmos-sdk",
