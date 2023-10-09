@@ -35,4 +35,7 @@ sections.
 
 ## Table of Contents
 
-* [RFC-001: Tx Validation](./rfc-001-tx-validation.md)
+<!-- - [RFC-NNN: Title](./rfc-NNN-title.md) -->
+
+* [RFC-002: Zero Copy Encoding](./rfc-002-zero-copy-encoding.md)
+
