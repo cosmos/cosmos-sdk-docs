@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Vuepress Docs
         run: |
-          ./build-vuepress.sh
+          ./vue-docs.sh
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.4.1
