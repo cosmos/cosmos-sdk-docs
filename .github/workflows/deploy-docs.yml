@@ -35,9 +35,7 @@ jobs:
         run: yarn build
 
       - name: Build Vuepress Docs
-        run: |
-          ./vue-docs.sh
-
+        run: sh ./vue-docs.sh
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
