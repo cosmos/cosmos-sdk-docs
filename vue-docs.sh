@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cp -r ./vue-docs/* ./build/sh 
+cp -r ./vue-docs/* ./build/
