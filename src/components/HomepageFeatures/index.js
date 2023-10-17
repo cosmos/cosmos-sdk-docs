@@ -13,9 +13,11 @@ function Feature({ Svg, to, title, description }) {
         </div>
       </Link>
       <div className="text--center padding-horiz--md">
-        <h3 className="py-5">
-          <strong>{title}</strong>
-        </h3>
+        <Link to={to}>
+          <h3 className="py-5">
+            <strong>{title}</strong>
+          </h3>
+        </Link>
         <p className="pb-10">{description}</p>
       </div>
     </div>
