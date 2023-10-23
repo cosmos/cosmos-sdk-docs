@@ -10,7 +10,7 @@ This document describes how to generate an (unsigned) transaction, signing it (w
 
 ## Using the CLI
 
-The easiest way to send transactions is using the CLI, as we have seen in the previous page when [interacting with a node](02-interact-node.md#using-the-cli). For example, running the following command
+The easiest way to send transactions is using the CLI, as we have seen in the previous page when [interacting with a node](./02-interact-node.md#using-the-cli). For example, running the following command
 
 ```bash
 simd tx bank send $MY_VALIDATOR_ADDRESS $RECIPIENT 1000stake --chain-id my-test-chain --keyring-backend test
@@ -20,7 +20,7 @@ will run the following steps:
 
 * generate a transaction with one `Msg` (`x/bank`'s `MsgSend`), and print the generated transaction to the console.
 * ask the user for confirmation to send the transaction from the `$MY_VALIDATOR_ADDRESS` account.
-* fetch `$MY_VALIDATOR_ADDRESS` from the keyring. This is possible because we have [set up the CLI's keyring](00-keyring.md) in a previous step.
+* fetch `$MY_VALIDATOR_ADDRESS` from the keyring. This is possible because we have [set up the CLI's keyring](./00-keyring.md) in a previous step.
 * sign the generated transaction with the keyring's account.
 * broadcast the signed transaction to the network. This is possible because the CLI connects to the node's CometBFT RPC endpoint.
 
@@ -147,7 +147,7 @@ priv3, _, addr3 := testdata.KeyTestPubAddr()
 Populating the `TxBuilder` can be done via its methods:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/client/tx_config.go#L33-L50
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/client/tx_config.go#L33-L50
 ```
 
 ```go
@@ -269,7 +269,7 @@ func sendTx() error {
 
 ### Broadcasting a Transaction
 
-The preferred way to broadcast a transaction is to use gRPC, though using REST (via `gRPC-gateway`) or the CometBFT RPC is also posible. An overview of the differences between these methods is exposed [here](../../develop/advanced/09-grpc_rest.md). For this tutorial, we will only describe the gRPC method.
+The preferred way to broadcast a transaction is to use gRPC, though using REST (via `gRPC-gateway`) or the CometBFT RPC is also posible. An overview of the differences between these methods is exposed [here](../../learn/advanced/06-grpc_rest.md). For this tutorial, we will only describe the gRPC method.
 
 ```go
 import (

@@ -5,14 +5,12 @@ sidebar_position: 1
 # Upgrading Modules
 
 :::note Synopsis
-[In-Place Store Migrations](../../develop/advanced/16-upgrade.md) allow your modules to upgrade to new versions that include breaking changes. This document outlines how to build modules to take advantage of this functionality.
+[In-Place Store Migrations](../../learn/advanced/15-upgrade.md) allow your modules to upgrade to new versions that include breaking changes. This document outlines how to build modules to take advantage of this functionality.
 :::
 
-:::note
+:::note Pre-requisite Readings
 
-### Pre-requisite Readings
-
-* [In-Place Store Migration](../../develop/advanced/16-upgrade.md)
+* [In-Place Store Migration](../../learn/advanced/15-upgrade.md)
 
 :::
 
@@ -48,7 +46,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 Since these migrations are functions that need access to a Keeper's store, use a wrapper around the keepers called `Migrator` as shown in this example:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/x/bank/keeper/migrations.go#L11-L35
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/bank/keeper/migrations.go
 ```
 
 ## Writing Migration Scripts
@@ -62,4 +60,4 @@ func (m Migrator) Migrate1to2(ctx sdk.Context) error {
 }
 ```
 
-To see example code of changes that were implemented in a migration of balance keys, check out [migrateBalanceKeys](https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/x/bank/migrations/v2/store.go#L52-L73). For context, this code introduced migrations of the bank store that updated addresses to be prefixed by their length in bytes as outlined in [ADR-028](../architecture/adr-028-public-key-addresses.md).
+To see example code of changes that were implemented in a migration of balance keys, check out [migrateBalanceKeys](https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/bank/migrations/v2/store.go#L55-L76). For context, this code introduced migrations of the bank store that updated addresses to be prefixed by their length in bytes as outlined in [ADR-028](../architecture/adr-028-public-key-addresses.md).

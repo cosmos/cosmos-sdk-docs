@@ -12,7 +12,7 @@ It is based on the [CometBFT RFC 019](https://github.com/cometbft/cometbft/blob/
 
 ### Add Config Command
 
-To add the confix tool, it's required to add the `ConfigCommand` to your application's root command file (e.g. `simd/cmd/root.go`).
+To add the confix tool, it's required to add the `ConfigCommand` to your application's root command file (e.g. `<appd>/cmd/root.go`).
 
 Import the `confixCmd` package:
 
@@ -46,11 +46,6 @@ To use Confix standalone, without having to add it in your application, install 
 ```bash
 go install cosmossdk.io/tools/confix/cmd/confix@latest
 ```
-
-:::warning
-Currently, due to the replace directive in the Confix go.mod, it is not possible to use `go install`.
-Building from source or importing in an application is required until that replace directive is removed.
-:::
 
 Alternatively, for building from source, simply run `make confix`. The binary will be located in `tools/confix`.
 
@@ -118,6 +113,18 @@ simd config diff v0.47 # gets the diff between defaultHome/config/app.toml and t
 
 ```shell
 confix diff v0.47 ~/.simapp/config/app.toml # gets the diff between ~/.simapp/config/app.toml and the latest v0.47 config
+```
+
+### View
+
+View a configuration file, e.g:
+
+```shell
+simd config view client # views the current app client config
+```
+
+```shell
+confix view ~/.simapp/config/client.toml # views the current app client conf
 ```
 
 ### Maintainer

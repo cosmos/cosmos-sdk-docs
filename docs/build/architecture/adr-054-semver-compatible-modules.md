@@ -37,7 +37,7 @@ In order to achieve this, we need to solve the following problems:
    many modules in the SDK independently
 3. pernicious minor version incompatibilities introduced through correctly
    [evolving protobuf schemas](https://developers.google.com/protocol-buffers/docs/proto3#updating)
-   without correct [unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering)
+   without correct [unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering)
 
 Note that all the following discussion assumes that the proto file versioning and state machine versioning of a module
 are distinct in that:
@@ -145,7 +145,7 @@ with this update and use that for `foo/v2`. But this change is state machine
 breaking for `v1`. It requires changing the `ValidateBasic` method to reject
 the case where `amount` is zero, and it adds the `condition` field which
 should be rejected based
-on [ADR 020 unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering).
+on [ADR 020 unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering).
 So adding these changes as a patch on `v1` is actually incorrect based on semantic
 versioning. Chains that want to stay on `v1` of `foo` should not
 be importing these changes because they are incorrect for `v1.`
@@ -174,9 +174,9 @@ on `v1` or `v2` and dynamically, it could choose to only use `condition` when
 `foo/v2` is available. Even if `bar/v2` were able to perform this check, however,
 how do we know that it is always performing the check properly. Without
 some sort of
-framework-level [unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering),
+framework-level [unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering),
 it is hard to know whether these pernicious hard to detect bugs are getting into
-our app and a client-server layer such as [ADR 033: Inter-Module Communication](adr-033-protobuf-inter-module-comm.md)
+our app and a client-server layer such as [ADR 033: Inter-Module Communication](./adr-033-protobuf-inter-module-comm.md)
 may be needed to do this.
 
 ## Solutions
@@ -265,9 +265,9 @@ of care to avoid these sorts of issues.
 
 This approach in and of itself does little to address any potential minor
 version incompatibilities and the
-requisite [unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering).
+requisite [unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering).
 Likely some sort of client-server routing layer which does this check such as
-[ADR 033: Inter-Module communication](adr-033-protobuf-inter-module-comm.md)
+[ADR 033: Inter-Module communication](./adr-033-protobuf-inter-module-comm.md)
 is required to make sure that this is done properly. We could then allow
 modules to perform a runtime check given a `MsgClient`, ex:
 
@@ -290,7 +290,7 @@ result in an undesirable performance hit depending on how complex this logic is.
 
 An alternate approach to solving the versioning problem is to change how protobuf code is generated and move modules
 mostly or completely in the direction of inter-module communication as described
-in [ADR 033](adr-033-protobuf-inter-module-comm.md).
+in [ADR 033](./adr-033-protobuf-inter-module-comm.md).
 In this paradigm, a module could generate all the types it needs internally - including the API types of other modules -
 and talk to other modules via a client-server boundary. For instance, if `bar` needs to talk to `foo`, it could
 generate its own version of `MsgDoSomething` as `bar/internal/foo/v1.MsgDoSomething` and just pass this to the
@@ -309,7 +309,7 @@ to `foo/internal.MsgDoSomething` would be marshaling and unmarshaling in the ADR
 we needed to expose protobuf types in `Keeper` interfaces because the whole point is to try to keep these types
 `internal/` so that we don't end up with all the import version incompatibilities we've described above. However,
 because of the issue with minor version incompatibilities and the need
-for [unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering),
+for [unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering),
 sticking with the `Keeper` paradigm instead of ADR 033 may be unviable to begin with.
 
 A more performant solution (that could maybe be adapted to work with `Keeper` interfaces) would be to only expose
@@ -383,7 +383,7 @@ and would also need to use special tags and replace directives to make sure that
 versions.
 
 Note, however, that all of these ad-hoc approaches, would be vulnerable to the minor version compatibility issues
-described above unless [unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering)
+described above unless [unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering)
 is properly addressed.
 
 ### Approach D) Avoid protobuf generated code in public APIs
@@ -424,6 +424,7 @@ way that requires duplication and differing sets of design principles (protobuf 
 while golang APIs would forbid it).
 
 Other downsides to this approach are:
+
 * no clear roadmap to supporting modules in other languages like Rust
 * doesn't get us any closer to proper object capability security (one of the goals of ADR 033)
 * ADR 033 needs to be done properly anyway for the set of use cases which do need it
@@ -432,7 +433,7 @@ Other downsides to this approach are:
 
 The latest **DRAFT** proposal is:
 
-1. we are alignment on adopting [ADR 033](adr-033-protobuf-inter-module-comm.md) not just as an addition to the
+1. we are alignment on adopting [ADR 033](./adr-033-protobuf-inter-module-comm.md) not just as an addition to the
    framework, but as a core replacement to the keeper paradigm entirely.
 2. the ADR 033 inter-module router will accommodate any variation of approach (A) or (B) given the following rules:
    a. if the client type is the same as the server type then pass it directly through,
@@ -446,7 +447,8 @@ languages, possibly executed within a WASM VM.
 ### Minor API Revisions
 
 To declare minor API revisions of proto files, we propose the following guidelines (which were already documented
-in [cosmos.app.v1alpha module options](../proto/cosmos/app/v1alpha1/module.proto)):
+in [cosmos.app.v1alpha module options](../../proto/cosmos/app/v1alpha1/module.proto)):
+
 * proto packages which are revised from their initial version (considered revision `0`) should include a `package`
 * comment in some .proto file containing the test `Revision N` at the start of a comment line where `N` is the current
 revision number.
@@ -489,7 +491,7 @@ type MsgClient interface {
 
 ### Unknown Field Filtering
 
-To correctly perform [unknown field filtering](adr-020-protobuf-transaction-encoding.md#unknown-field-filtering),
+To correctly perform [unknown field filtering](./adr-020-protobuf-transaction-encoding.md#unknown-field-filtering),
 the inter-module router can do one of the following:
 
 * use the `protoreflect` API for messages which support that
@@ -522,6 +524,7 @@ func ProtoImage(protoImage []byte) Option {}
 ```
 
 This approach allows us to support several ways protobuf files might be generated:
+
 * proto files generated internally to a module (use `ProtoFiles`)
 * the API module approach with pinned file descriptors (use `ProtoImage`)
 * gogo proto (use `GzippedProtoFiles`)
@@ -541,7 +544,7 @@ We propose defining these dependencies in the proto options of the module config
 
 We will also need to define how interface methods are defined on types that are serialized as `google.protobuf.Any`'s.
 In light of the desire to support modules in other languages, we may want to think of solutions that will accommodate
-other languages such as plugins described briefly in [ADR 033](adr-033-protobuf-inter-module-comm.md#internal-methods).
+other languages such as plugins described briefly in [ADR 033](./adr-033-protobuf-inter-module-comm.md#internal-methods).
 
 ### Testing
 
@@ -724,5 +727,5 @@ Key outstanding discussions if we do adopt that direction are:
 * https://github.com/cosmos/cosmos-sdk/discussions/10368
 * https://github.com/cosmos/cosmos-sdk/pull/11340
 * https://github.com/cosmos/cosmos-sdk/issues/11899
-* [ADR 020](adr-020-protobuf-transaction-encoding.md)
-* [ADR 033](adr-033-protobuf-inter-module-comm.md)
+* [ADR 020](./adr-020-protobuf-transaction-encoding.md)
+* [ADR 033](./adr-033-protobuf-inter-module-comm.md)

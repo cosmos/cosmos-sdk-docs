@@ -8,12 +8,10 @@ sidebar_position: 1
 Now that the application is ready and the keyring populated, it's time to see how to run the blockchain node. In this section, the application we are running is called [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/main/simapp), and its corresponding CLI binary `simd`.
 :::
 
-:::note
+:::note Pre-requisite Readings
 
-### Pre-requisite Readings
-
-* [Anatomy of a Cosmos SDK Application](../../develop/beginner/00-overview-app.md)
-* [Setting up the keyring](00-keyring.md)
+* [Anatomy of a Cosmos SDK Application](../../learn/beginner/00-app-anatomy.md)
+* [Setting up the keyring](./00-keyring.md)
 
 :::
 
@@ -30,7 +28,12 @@ Before actually running the node, we need to initialize the chain, and most impo
 simd init <moniker> --chain-id my-test-chain
 ```
 
-The command above creates all the configuration files needed for your node to run, as well as a default genesis file, which defines the initial state of the network. All these configuration files are in `~/.simapp` by default, but you can overwrite the location of this folder by passing the `--home` flag.
+The command above creates all the configuration files needed for your node to run, as well as a default genesis file, which defines the initial state of the network.
+
+:::tip
+All these configuration files are in `~/.simapp` by default, but you can overwrite the location of this folder by passing the `--home` flag to each commands,
+or set an `$APPD_HOME` environment variable (where `APPD` is the name of the binary).
+:::
 
 The `~/.simapp` folder has the following structure:
 
@@ -74,7 +77,7 @@ A commonly used tool for this is [nginx](https://nginx.org).
 
 ## Adding Genesis Accounts
 
-Before starting the chain, you need to populate the state with at least one account. To do so, first [create a new account in the keyring](00-keyring.md#adding-keys-to-the-keyring) named `my_validator` under the `test` keyring backend (feel free to choose another name and another backend).
+Before starting the chain, you need to populate the state with at least one account. To do so, first [create a new account in the keyring](./00-keyring.md#adding-keys-to-the-keyring) named `my_validator` under the `test` keyring backend (feel free to choose another name and another backend).
 
 Now that you have created a local account, go ahead and grant it some `stake` tokens in your chain's genesis file. Doing so will also make sure your chain is aware of this account's existence:
 
@@ -82,9 +85,9 @@ Now that you have created a local account, go ahead and grant it some `stake` to
 simd genesis add-genesis-account $MY_VALIDATOR_ADDRESS 100000000000stake
 ```
 
-Recall that `$MY_VALIDATOR_ADDRESS` is a variable that holds the address of the `my_validator` key in the [keyring](00-keyring.md#adding-keys-to-the-keyring). Also note that the tokens in the Cosmos SDK have the `{amount}{denom}` format: `amount` is is a 18-digit-precision decimal number, and `denom` is the unique token identifier with its denomination key (e.g. `atom` or `uatom`). Here, we are granting `stake` tokens, as `stake` is the token identifier used for staking in [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/main/simapp). For your own chain with its own staking denom, that token identifier should be used instead.
+Recall that `$MY_VALIDATOR_ADDRESS` is a variable that holds the address of the `my_validator` key in the [keyring](./00-keyring.md#adding-keys-to-the-keyring). Also note that the tokens in the Cosmos SDK have the `{amount}{denom}` format: `amount` is is a 18-digit-precision decimal number, and `denom` is the unique token identifier with its denomination key (e.g. `atom` or `uatom`). Here, we are granting `stake` tokens, as `stake` is the token identifier used for staking in [`simapp`](https://github.com/cosmos/cosmos-sdk/tree/main/simapp). For your own chain with its own staking denom, that token identifier should be used instead.
 
-Now that your account has some tokens, you need to add a validator to your chain. Validators are special full-nodes that participate in the consensus process (implemented in the [underlying consensus engine](../../develop/intro/02-sdk-app-architecture.md#cometbft)) in order to add new blocks to the chain. Any account can declare its intention to become a validator operator, but only those with sufficient delegation get to enter the active set (for example, only the top 125 validator candidates with the most delegation get to be validators in the Cosmos Hub). For this guide, you will add your local node (created via the `init` command above) as a validator of your chain. Validators can be declared before a chain is first started via a special transaction included in the genesis file called a `gentx`:
+Now that your account has some tokens, you need to add a validator to your chain. Validators are special full-nodes that participate in the consensus process (implemented in the [underlying consensus engine](../../learn/intro/02-sdk-app-architecture.md#cometbft)) in order to add new blocks to the chain. Any account can declare its intention to become a validator operator, but only those with sufficient delegation get to enter the active set (for example, only the top 125 validator candidates with the most delegation get to be validators in the Cosmos Hub). For this guide, you will add your local node (created via the `init` command above) as a validator of your chain. Validators can be declared before a chain is first started via a special transaction included in the genesis file called a `gentx`:
 
 ```bash
 # Create a gentx.
@@ -124,6 +127,22 @@ One example config to tweak is the `minimum-gas-prices` field inside `app.toml`,
  minimum-gas-prices = "0stake"
 ```
 
+:::tip
+When running a node (not a validator!) and not wanting to run the application mempool, set the `max-txs` field to `-1`.
+
+```toml
+[mempool]
+# Setting max-txs to 0 will allow for a unbounded amount of transactions in the mempool.
+# Setting max_txs to negative 1 (-1) will disable transactions from being inserted into the mempool.
+# Setting max_txs to a positive number (> 0) will limit the number of transactions in the mempool, by the specified amount.
+#
+# Note, this configuration only applies to SDK built-in app-side mempool
+# implementations.
+max-txs = "-1"
+```
+
+:::
+
 ## Run a Localnet
 
 Now that everything is set up, you can finally start your node:
@@ -136,7 +155,7 @@ You should see blocks come in.
 
 The previous command allow you to run a single node. This is enough for the next section on interacting with this node, but you may wish to run multiple nodes at the same time, and see how consensus happens between them.
 
-The naive way would be to run the same commands again in separate terminal windows. This is possible, however in the Cosmos SDK, we leverage the power of [Docker Compose](https://docs.docker.com/compose/) to run a localnet. If you need inspiration on how to set up your own localnet with Docker Compose, you can have a look at the Cosmos SDK's [`docker-compose.yml`](https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/docker-compose.yml).
+The naive way would be to run the same commands again in separate terminal windows. This is possible, however in the Cosmos SDK, we leverage the power of [Docker Compose](https://docs.docker.com/compose/) to run a localnet. If you need inspiration on how to set up your own localnet with Docker Compose, you can have a look at the Cosmos SDK's [`docker-compose.yml`](https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/docker-compose.yml).
 
 ## Logging
 
@@ -149,3 +168,44 @@ In config.toml:
 ```toml
 log_level: "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*error"
 ```
+
+## State Sync
+
+State sync is the act in which a node syncs the latest or close to the latest state of a blockchain. This is useful for users who don't want to sync all the blocks in history. Read more in [CometBFT documentation](https://docs.cometbft.com/v0.37/core/state-sync).
+
+State sync works thanks to snapshots. Read how the SDK handles snapshots [here](https://github.com/cosmos/cosmos-sdk/blob/825245d/store/snapshots/README.md).
+
+### Local State Sync
+
+Local state sync work similar to normal state sync except that it works off a local snapshot of state instead of one provided via the p2p network. The steps to start local state sync are similar to normal state sync with a few different designs. 
+
+1. As mentioned in https://docs.cometbft.com/v0.37/core/state-sync, one must set a height and hash in the config.toml along with a few rpc servers (the afromentioned link has instructions on how to do this). 
+2. Run `<appd snapshot restore <height> <format>` to restore a local snapshot (note: first load it from a file with the *load* command). 
+3. Bootsrapping Comet state in order to start the node after the snapshot has been ingested. This can be done with the bootstrap command `<app> comet bootstrap-state`
+
+### Snapshots Commands
+
+The Cosmos SDK provides commands for managing snapshots.
+These commands can be added in an app with the following snippet in `cmd/<app>/root.go`:
+
+```go
+import (
+  "github.com/cosmos/cosmos-sdk/client/snapshot"
+)
+
+func initRootCmd(/* ... */) {
+  // ...
+  rootCmd.AddCommand(
+    snapshot.Cmd(appCreator),
+  )
+}
+```
+
+Then following commands are available at `<appd> snapshots [command]`:
+
+* **list**: list local snapshots
+* **load**: Load a snapshot archive file into snapshot store
+* **restore**: Restore app state from local snapshot
+* **export**:  Export app state to snapshot store
+* **dump**: Dump the snapshot as portable archive format
+* **delete**: Delete a local snapshot

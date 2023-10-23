@@ -1,9 +1,6 @@
 name: Test deployment
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
 
 jobs:
@@ -15,8 +12,6 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
-      - run: |
-          ./build-legacy-docs.sh
-
       - run: yarn install --frozen-lockfile
       - run: yarn build
+      - run: sh ./vue-docs.sh
