@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref: sync-docs
+          fetch-depth: 0
 
       - name: Set Up Node.js
         uses: actions/setup-node@v3
@@ -34,10 +37,10 @@ jobs:
         with:
           message: 'Updated MD File Changes from cosmos-sdk/docs'
 
-      - name: Push To Sync-Docs-Branch
+      - name: Push To Sync-Docs
         uses: ad-m/github-push-action@master
         with:
-          branch: sync-docs-branch
+          branch: sync-docs
         
   sims-notify-failure:
     permissions:
