@@ -68,6 +68,7 @@ done
 # Leave the 'cosmos-sdk' directory after processing
 cd "$WORK_DIR"
 
+# This is copied to ensure main and 0.50 are up to date with one another
 cp -a "docs/user" "versioned_docs/version-0.50"
 
 wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/cosmos/rosetta/main/README.md"
