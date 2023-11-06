@@ -8,12 +8,10 @@ sidebar_position: 1
 There are multiple ways to interact with a node: using the CLI, using gRPC or using the REST endpoints.
 :::
 
-:::note
+:::note Pre-requisite Readings
 
-### Pre-requisite Readings
-
-* [gRPC, REST and CometBFT Endpoints](../../learn/advanced/09-grpc_rest.md)
-* [Running a Node](01-run-node.md)
+* [gRPC, REST and CometBFT Endpoints](../../learn/advanced/06-grpc_rest.md)
+* [Running a Node](./01-run-node.md)
 
 :::
 
@@ -56,7 +54,7 @@ You should see two delegations, the first one made from the `gentx`, and the sec
 
 ## Using gRPC
 
-The Protobuf ecosystem developed tools for different use cases, including code-generation from `*.proto` files into various languages. These tools allow the building of clients easily. Often, the client connection (i.e. the transport) can be plugged and replaced very easily. Let's explore one of the most popular transport: [gRPC](../../learn/advanced/09-grpc_rest.md).
+The Protobuf ecosystem developed tools for different use cases, including code-generation from `*.proto` files into various languages. These tools allow the building of clients easily. Often, the client connection (i.e. the transport) can be plugged and replaced very easily. Let's explore one of the most popular transport: [gRPC](../../learn/advanced/06-grpc_rest.md).
 
 Since the code generation library largely depends on your own tech stack, we will only present three alternatives:
 
@@ -68,7 +66,7 @@ Since the code generation library largely depends on your own tech stack, we wil
 
 [grpcurl](https://github.com/fullstorydev/grpcurl) is like `curl` but for gRPC. It is also available as a Go library, but we will use it only as a CLI command for debugging and testing purposes. Follow the instructions in the previous link to install it.
 
-Assuming you have a local node running (either a localnet, or connected a live network), you should be able to run the following command to list the Protobuf services available (you can replace `localhost:9000` by the gRPC server endpoint of another node, which is configured under the `grpc.address` field inside [`app.toml`](01-run-node.md#configuring-the-node-using-apptoml-and-configtoml)):
+Assuming you have a local node running (either a localnet, or connected a live network), you should be able to run the following command to list the Protobuf services available (you can replace `localhost:9000` by the gRPC server endpoint of another node, which is configured under the `grpc.address` field inside [`app.toml`](../run-node/01-run-node.md#configuring-the-node-using-apptoml-and-configtoml)):
 
 ```bash
 grpcurl -plaintext localhost:9090 list
@@ -250,7 +248,7 @@ CosmJS documentation can be found at [https://cosmos.github.io/cosmjs](https://c
 
 ## Using the REST Endpoints
 
-As described in the [gRPC guide](../../learn/advanced/09-grpc_rest.md), all gRPC services on the Cosmos SDK are made available for more convenient REST-based queries through gRPC-gateway. The format of the URL path is based on the Protobuf service method's full-qualified name, but may contain small customizations so that final URLs look more idiomatic. For example, the REST endpoint for the `cosmos.bank.v1beta1.Query/AllBalances` method is `GET /cosmos/bank/v1beta1/balances/{address}`. Request arguments are passed as query parameters.
+As described in the [gRPC guide](../../learn/advanced/06-grpc_rest.md), all gRPC services on the Cosmos SDK are made available for more convenient REST-based queries through gRPC-gateway. The format of the URL path is based on the Protobuf service method's full-qualified name, but may contain small customizations so that final URLs look more idiomatic. For example, the REST endpoint for the `cosmos.bank.v1beta1.Query/AllBalances` method is `GET /cosmos/bank/v1beta1/balances/{address}`. Request arguments are passed as query parameters.
 
 Note that the REST endpoints are not enabled by default. To enable them, edit the `api` section of your  `~/.simapp/config/app.toml` file:
 
@@ -270,7 +268,7 @@ curl \
 
 Make sure to replace `localhost:1317` with the REST endpoint of your node, configured under the `api.address` field.
 
-The list of all available REST endpoints is available as a Swagger specification file, it can be viewed at `localhost:1317/swagger`. Make sure that the `api.swagger` field is set to true in your [`app.toml`](01-run-node.md#configuring-the-node-using-apptoml) file.
+The list of all available REST endpoints is available as a Swagger specification file, it can be viewed at `localhost:1317/swagger`. Make sure that the `api.swagger` field is set to true in your [`app.toml`](../run-node/01-run-node.md#configuring-the-node-using-apptoml-and-configtoml) file.
 
 ### Query for historical state using REST
 
@@ -288,4 +286,4 @@ Assuming the state at that block has not yet been pruned by the node, this query
 
 ### Cross-Origin Resource Sharing (CORS)
 
-[CORS policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) are not enabled by default to help with security. If you would like to use the rest-server in a public environment we recommend you provide a reverse proxy, this can be done with [nginx](https://www.nginx.com/). For testing and development purposes there is an `enabled-unsafe-cors` field inside [`app.toml`](01-run-node.md#configuring-the-node-using-apptoml).
+[CORS policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) are not enabled by default to help with security. If you would like to use the rest-server in a public environment we recommend you provide a reverse proxy, this can be done with [nginx](https://www.nginx.com/). For testing and development purposes there is an `enabled-unsafe-cors` field inside [`app.toml`](../run-node/01-run-node.md#configuring-the-node-using-apptoml-and-configtoml).
