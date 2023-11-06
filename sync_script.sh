@@ -72,7 +72,6 @@ cd "$WORK_DIR"
 cp -a "docs/user" "versioned_docs/version-0.50"
 
 wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/cosmos/rosetta/main/README.md"
-cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-0.47/user/run-node/04-rosetta.md"
 cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-0.50/user/run-node/04-rosetta.md"
 
 # Remove the 'cosmos-sdk' directory if needed
