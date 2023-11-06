@@ -68,8 +68,6 @@ done
 # Leave the 'cosmos-sdk' directory after processing
 cd "$WORK_DIR"
 
-echo $(pwd)
-cp -a "docs/user" "versioned_docs/version-0.47"
 cp -a "docs/user" "versioned_docs/version-0.50"
 
 wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/cosmos/rosetta/main/README.md"
