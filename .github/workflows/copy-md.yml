@@ -8,7 +8,6 @@ on:
 jobs:
   sync-docs-and-create-pr:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
@@ -16,12 +15,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: sync-docs-branch
-
-      - name: Checkout Sync-Branch
-        run: |
-          git fetch --all
-          git checkout sync-docs-branch
+          ref: sync-docs
+          fetch-depth: 0
 
       - name: Set Up Node.js
         uses: actions/setup-node@v3
@@ -42,7 +37,25 @@ jobs:
         with:
           message: 'Updated MD File Changes from cosmos-sdk/docs'
 
-      - name: Push To Sync-Docs-Branch
+      - name: Push To Sync-Docs
         uses: ad-m/github-push-action@master
         with:
-          branch: sync-docs-branch
+          branch: sync-docs
+        
+  sims-notify-failure:
+    permissions:
+      contents: none
+    needs: sync-docs-and-create-pr
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    steps:
+      - name: Notify Slack on failure
+        uses: rtCamp/action-slack-notify@v2.2.1
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: sdk-sims
+          SLACK_USERNAME: Failed to copy docs from Cosmos SDK to Docs repo
+          SLACK_ICON_EMOJI: ":skull:"
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: Copying docs is failing
+          SLACK_FOOTER: ""
