@@ -25,7 +25,7 @@ Once you have a transaction with the necessary signatures, it can be broadcasted
 This tutorial will use the test keyring which will store the keys in the default home directory `~/.simapp` unless otherwise specified.
 Verify which keys are available in the test keyring by running `--keyring-backend test`.
 
-Prior to this tutorial set the keyring backend to "test" in `~/.simapp/client.toml` to always the test keyring which will specify a consistent keyring for the entirety of the tutorial. Additionally, set the default keyring by running `simd config set client keyring-backend test`.
+In order to specify a consistent keyring for the entirety of the tutorial, set the default keyring by running `simd config keyring-backend test`.
 
 ```shell
 simd keys list --keyring-backend test
