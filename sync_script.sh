@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 set -e -o pipefail
 
 # Set the remote repository URL to clone from
@@ -51,7 +51,9 @@ for version in "${VERSIONS[@]}"; do
   fi
 
   # Run the pre.sh script
-  cd docs && sh ./pre.sh
+  cd docs
+  chmod 777 pre.sh
+  sh ./pre.sh
 
   for folder in "build" "learn"; do
     if [ "$version" == "main" ]; then
