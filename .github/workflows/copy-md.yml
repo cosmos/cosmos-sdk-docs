@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: sync-docs
+          ref: sam/test-workflow
           fetch-depth: 0
 
       - name: Set Up Node.js
