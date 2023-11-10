@@ -53,7 +53,7 @@ for version in "${VERSIONS[@]}"; do
   # Run the pre.sh script
   cd docs && sh ./pre.sh
 
-  for folder in "build" "user" "learn"; do
+  for folder in "build" "learn"; do
     if [ "$version" == "main" ]; then
       cp -r "$WORK_DIR/cosmos-sdk/docs/$folder" "$WORK_DIR/docs/"
     else
@@ -67,6 +67,12 @@ done
 
 # Leave the 'cosmos-sdk' directory after processing
 cd "$WORK_DIR"
+
+# This is copied to ensure main and 0.50 are up to date with one another
+cp -a "docs/user" "versioned_docs/version-0.50"
+
+wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/cosmos/rosetta/main/README.md"
+cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-0.50/user/run-node/04-rosetta.md"
 
 # Remove the 'cosmos-sdk' directory if needed
  rm -rf ./cosmos-sdk
