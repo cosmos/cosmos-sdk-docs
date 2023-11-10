@@ -1,6 +1,7 @@
 name: Copy MD Files
 
 on:
+  pull_request:
   workflow_dispatch:
   schedule:
     - cron: '0 0,12 * * *'
