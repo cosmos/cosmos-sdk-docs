@@ -72,4 +72,4 @@ wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/co
 cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-0.50/user/run-node/04-rosetta.md"
 
 # Remove the 'cosmos-sdk' directory if needed
- rm -rf ./cosmos-sdk
+rm -rf ./cosmos-sdk
