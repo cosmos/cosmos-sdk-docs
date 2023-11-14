@@ -105,10 +105,20 @@ const config = {
             position: "left",
           },
           {
-            type: "doc",
-            label: "Build",
-            docId: "build/building-modules/intro",
-            position: "left",
+            type: 'dropdown',
+            label: 'Build',
+            position: 'left',
+            items: [
+              {
+                type: "doc",
+                label: "Build a Module",
+                docId: "build/building-modules/intro",
+              },
+              {
+                label: "Cosmos SDK API",
+                to: "api",
+              },
+            ],
           },
           {
             type: "doc",
