@@ -61,19 +61,19 @@ const config = {
       }),
     ],
     [
-      'redocusaurus',
+      "redocusaurus",
       {
         // Plugin Options for loading OpenAPI files
         specs: [
           {
-            spec: 'openapi/swagger.yaml',
-            route: '/api/',
+            spec: "openapi/swagger.yaml",
+            route: "/api/",
           },
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
           // Change with your site colors
-          primaryColor: '#1890ff',
+          primaryColor: "#1890ff",
         },
       },
     ],
@@ -115,12 +115,6 @@ const config = {
             label: "User Guides",
             docId: "user/run-node/keyring", // I find it weird that it points to the keyring and not a common page
             position: "left",
-          },
-          {
-            label: "API Reference",
-            page: "api", // I find it weird that it points to the keyring and not a common page
-            position: "left",
-            to: "api"
           },
           {
             href: "https://github.com/cosmos/cosmos-sdk",
@@ -172,6 +166,10 @@ const config = {
               {
                 label: "IBC Go",
                 href: "https://ibc.cosmos.network",
+              },
+              {
+                label: "Cosmos SDK API",
+                to: "api",
               },
             ],
           },
