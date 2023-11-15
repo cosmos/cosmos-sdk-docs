@@ -3,7 +3,7 @@ set -x
 set -e -o pipefail
 
 # Set the remote repository URL to clone from
-REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
+REMOTE_REPO_URL="https://github.com/samricotta/cosmos-sdk.git"
 
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
