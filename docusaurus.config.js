@@ -61,19 +61,19 @@ const config = {
       }),
     ],
     [
-      'redocusaurus',
+      "redocusaurus",
       {
         // Plugin Options for loading OpenAPI files
         specs: [
           {
-            spec: 'openapi/swagger.yaml',
-            route: '/api/',
+            spec: "openapi/swagger.yaml",
+            route: "/api/",
           },
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
           // Change with your site colors
-          primaryColor: '#1890ff',
+          primaryColor: "#1890ff",
         },
       },
     ],
@@ -105,22 +105,26 @@ const config = {
             position: "left",
           },
           {
-            type: "doc",
-            label: "Build",
-            docId: "build/building-modules/intro",
-            position: "left",
+            type: 'dropdown',
+            label: 'Build',
+            position: 'left',
+            items: [
+              {
+                type: "doc",
+                label: "Build a Module",
+                docId: "build/building-modules/intro",
+              },
+              {
+                label: "Cosmos SDK API",
+                to: "api",
+              },
+            ],
           },
           {
             type: "doc",
             label: "User Guides",
             docId: "user/run-node/keyring", // I find it weird that it points to the keyring and not a common page
             position: "left",
-          },
-          {
-            label: "API Reference",
-            page: "api", // I find it weird that it points to the keyring and not a common page
-            position: "left",
-            to: "api"
           },
           {
             href: "https://github.com/cosmos/cosmos-sdk",
@@ -172,6 +176,10 @@ const config = {
               {
                 label: "IBC Go",
                 href: "https://ibc.cosmos.network",
+              },
+              {
+                label: "Cosmos SDK API",
+                to: "api",
               },
             ],
           },
