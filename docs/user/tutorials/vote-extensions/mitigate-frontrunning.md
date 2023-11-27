@@ -1,14 +1,14 @@
-# Mitigate auction front running
+# Mitigate Auction Front-Running
 
 ## What are Vote extensions?
 
-Vote extensions is arbitrary information which can be inserted into a block. This feature is part of ABCI 2.0 methods, which is available for use in the SDK 0.50 release and 0.38 CometBFT release. 
+Vote extensions is arbitrary information which can be inserted into a block. This feature is part of ABCI 2.0, which is available for use in the SDK 0.50 release and part of the 0.38 CometBFT release. 
 
 More information about vote extensions can be seen [here](../../../build/building-apps/vote-extensions).
 
 ## Context
 
-For this tutorial we are using an example of an application that is mitigating auction front running. 
+For this tutorial we are using an example of an application that is mitigating auction front-running. 
 
 Please checkout https://github.com/fatal-fruit/abci-workshop to see the example.
 
@@ -21,7 +21,7 @@ Please checkout `part 1` of the example and then run:
 ./scripts/single_node/setup.sh
 ```
 
-In another window run :
+In another window run:
 
 ```shell
 ./scripts/single_node/frontrun.sh
@@ -29,8 +29,7 @@ In another window run :
 
 Here we can see alice attempts to reserve the namespace `bob.cosmos`
 
-To ensure the front-running happened go back to the logs and search for  `Found a Bid to Snipe`
-
+To verify the occurrence of front-running, navigate to the logs and search for instances of `Found a Bid to Snipe`. This specific message indicates the desired behavior, demonstrating that front-running has occurred.
 
 Below we query the namespace `bob.cosmos` to see if alice managed to successfully reserve `bob.cosmos`
 
@@ -50,21 +49,19 @@ name:
   resolve_address: cosmos185gc7c296w0xjlq9kjdt6gghnqvdmyckv64e7a
 ```
 
-List the keys and check to see who successfully reserved `bob.cosmos`
+List the keys with the below command and check to see who successfully reserved `bob.cosmos`
 
 ```shell
 ./build/cosmappd keys list --home $HOME/.cosmappd --keyring backend test
 ```
 
-Match the two addresses and the owner should be `val1`
+Match the two addresses from the query and keys. The owner should be `val1`
 
 
 ## Mitigating Front-running with Vote Extensions Steps
 
 
-1.	Create new types in `abci/types.go`
-
-Think about what exactly we will need for each `Type`. Keep in mind we are also using our own mempool for the ordering of transactions. 
+To initiate the process, we introduce new types within the `abci/types.go` file. Carefully consider the specific requirements for each Type, bearing in mind that we utilise our own mempool for transaction ordering.
 
 ```go
 package abci
@@ -116,8 +113,7 @@ type SpecialTransaction struct {
 }
 ```
 
-
-2.	Create Vote Extension Handler In `/abci/proposal.go` here we peek into the mempool and submit a list of all unconfirmed bids. We proceed to verify that we can access the list of unconfirmed transactions in the `abci.RequestPrepareProposal` during the following block. Vote Extensions can be found in `LocalLastCommit`.
+To establish the `VoteExtensionHandler`, we turn to `/abci/proposal.go`. Within this file, we inspect the mempool and submit a list of all pending bids. Subsequently, we verify that the list of unconfirmed transactions can be accessed in the `abci.RequestPrepareProposal` during the ensuing block. The `VoteExtensions` are located in `LocalLastCommit`.
    
 ```go
 func NewVoteExtensionHandler(lg log.Logger, mp *mempool.ThresholdMempool, cdc codec.Codec) *VoteExtHandler {  
@@ -184,8 +180,7 @@ return &abci.ResponseExtendVote{VoteExtension: bz}, nil
 ```
 
 
-3. Configure Handler in `app/app.go` 
-Next we configure the handler app in `app.go`
+We then configure Handler in `app/app.go`, seen below.
 
 ```go
 bApp := baseapp.NewBaseApp(AppName, logger, db, txConfig.TxDecoder(), baseAppOptions...)
@@ -197,7 +192,7 @@ bApp.SetExtendVoteHandler(voteExtHandler.ExtendVoteHandler())
 ```
 
 
-4. Validate Vote Extensions propagated We want to add the following to the `PrepareProposalHandler` to print out and test our vote extensions have entered
+`ValidateVoteExtensions` is then propagated and now we want to add the following to the `PrepareProposalHandler` to print out and test our vote extensions have entered.
 
 ```go
 if req.Height > 2 {  
@@ -207,7 +202,6 @@ if req.Height > 2 {
 ```
 
 
-5. Process Vote Extensions in Prepare Proposal
 Within `processVoteExtensions` method, all of the vote extensions are retrieved from the last commit and are turned into a special transaction. The special transaction is appended to the proposal.
 
 ```go
@@ -235,9 +229,7 @@ func (h *PrepareProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHan
 }
 ```
 
-6. Create Process Proposal Handler
-Within the `ProcessProposalHandler` we are taking the special transaction and validating it. Within the `validateBids` method we check how many times a bid has been submitted. The threshold count for valid bids is calculated based on the total number of votes. This ensures that only bids that have been submitted by a significant number of voters are considered valid. This helps to prevent manipulation of the special transaction process.
-
+Next, we implement the `ProcessProposalHandler`, which encapsulates the logic for processing proposals. Within this handler, we validate the special transaction and its associated bids. The `validateBids`` method scrutinises each bid to determine its validity. To ensure that only bids with sufficient support are considered valid, we calculate a threshold count based on the total number of votes.
 
 ```go
 func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHandler {
@@ -286,7 +278,7 @@ func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHan
 }
 ```
 
-3. **Create ProcessVoteExtensions** 
+The implementation of `ProcessVoteExtensions` is straightforward. We retrieve the Vote Extensions, iterate through them, and append any associated bids to the special transaction.
 
 ```go
 func processVoteExtensions(req *abci.RequestPrepareProposal, log log.Logger) (SpecialTransaction, error) {
@@ -327,7 +319,7 @@ func processVoteExtensions(req *abci.RequestPrepareProposal, log log.Logger) (Sp
 ```
 
 
-**3. Configure Process Proposal Handler in App** In `/app/app.go`
+Next we configure `ProcessProposal` Handler in App in `/app/app.go`
 
 ```go
 processPropHandler := abci2.ProcessProposalHandler{app.txConfig, appCodec, logger}
@@ -343,7 +335,7 @@ If you want to validate the bids such as we have in this example you must ensure
 
 Be sure to include:
 
-```
+```shell
 	req.ConsensusParams = &cmtproto.ConsensusParams{
 		Abci: &cmtproto.ABCIParams{
 			VoteExtensionsEnableHeight: 2,
@@ -351,11 +343,15 @@ Be sure to include:
 	}
 ```
 
-for the rc within this tutorial but this can be removed when upgrading to the final 0.50 release.
+**For the rc within this tutorial but this can be removed when upgrading to the final 0.50 release.**
 
 ## Demo of Mitigating Front-Running with Vote Extensions
 
-Here we are using a 3 validator network. The Beacon validator has a custom transaction provider enabled. 
+Here we are using a 3 validator network. The Beacon validator has a custom transaction provider enabled. Below we bootstrap the validator network. 
+
+```shell
+./scripts/configure.sh "bob.cosmos"
+```
 
 Here we have `alice` attempt to reserve `bob.cosmos`
 
@@ -386,7 +382,7 @@ It should return
 }
 ```
 
-If the Beacon attempts to front run the bid, we will see the following logs during `ProcessProposal`.
+To detect front-running attempts by the beacon, scrutinise the logs during the `ProcessProposal` stage. Open the logs for each validator, including the beacon, `val1`, and `val2`, to observe the following behavior:
 
 ```shell
 2:47PM ERR ❌️:: Detected invalid proposal bid :: name:"bob.cosmos" resolveAddress:"cosmos1wmuwv38pdur63zw04t0c78r2a8dyt08hf9tpvd" owner:"cosmos1wmuwv38pdur63zw04t0c78r2a8dyt08hf9tpvd" amount:<denom:"uatom" amount:"2000" >  module=server
@@ -397,10 +393,10 @@ If the Beacon attempts to front run the bid, we will see the following logs duri
 If we run:  
 
 ```shell
-list-beacon-keys.sh
+./scripts/list-beacon-keys.sh
 ```
 
-We should receive:
+We should receive something similar to the following:
 
 ```shell
 [
