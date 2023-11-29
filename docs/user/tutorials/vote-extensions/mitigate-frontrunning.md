@@ -4,7 +4,7 @@
 
 Vote extensions is arbitrary information which can be inserted into a block. This feature is part of ABCI 2.0, which is available for use in the SDK 0.50 release and part of the 0.38 CometBFT release. 
 
-More information about vote extensions can be seen [here](../../../build/building-apps/vote-extensions).
+More information about vote extensions can be seen [here](../../../build/building-apps/04-vote-extensions).
 
 ## Context
 
@@ -15,7 +15,7 @@ Please checkout https://github.com/fatal-fruit/abci-workshop to see the example.
 
 ## Simulation of Auction Front-Running
 
-Please checkout `part 1` of the example and then run:
+Please checkout the branch `part-1` of the example and then run:
 
 ```shell
 ./scripts/single_node/setup.sh
@@ -49,19 +49,12 @@ name:
   resolve_address: cosmos185gc7c296w0xjlq9kjdt6gghnqvdmyckv64e7a
 ```
 
-List the keys with the below command and check to see who successfully reserved `bob.cosmos`
-
-```shell
-./build/cosmappd keys list --home $HOME/.cosmappd --keyring backend test
-```
-
-Match the two addresses from the query and keys. The owner should be `val1`
-
+The owner address corresponds to Alice (`val1` in the keyring)
 
 ## Mitigating Front-running with Vote Extensions Steps
 
 
-To initiate the process, we introduce new types within the `abci/types.go` file. Carefully consider the specific requirements for each Type, bearing in mind that we utilise our own mempool for transaction ordering.
+To initiate the process, we introduce new types within the `abci/types.go` file. Carefully consider the specific requirements for each type, bearing in mind that we utilise our own mempool for transaction ordering.
 
 ```go
 package abci
@@ -128,54 +121,53 @@ func (h *VoteExtHandler) ExtendVoteHandler() sdk.ExtendVoteHandler {
 	return func(ctx sdk.Context, req *abci.RequestExtendVote) (*abci.ResponseExtendVote, error) {
       h.logger.Info(fmt.Sprintf("Extending votes at block height : %v", req.Height))
 
-voteExtBids := [][]byte{}
+	voteExtBids := [][]byte{}
 
-// Get mempool txs
-itr := h.mempool.SelectPending(context.Background(), nil)
-for itr != nil {
-	tmptx := itr.Tx()
-	sdkMsgs := tmptx.GetMsgs()
+	// Get mempool txs
+	itr := h.mempool.SelectPending(context.Background(), nil)
+	for itr != nil {
+		tmptx := itr.Tx()
+		sdkMsgs := tmptx.GetMsgs()
 
-	// Iterate through msgs, check for any bids
-	for _, msg := range sdkMsgs {
-		switch msg := msg.(type) {
-		case *nstypes.MsgBid:
-		// Marshal sdk bids to []byte
-			bz, err := h.cdc.Marshal(msg)
-			if err != nil {
-				h.logger.Error(fmt.Sprintf("Error marshalling VE Bid : %v", err))
-				break
+		// Iterate through msgs, check for any bids
+		for _, msg := range sdkMsgs {
+			switch msg := msg.(type) {
+			case *nstypes.MsgBid:
+			// Marshal sdk bids to []byte
+				bz, err := h.cdc.Marshal(msg)
+				if err != nil {
+					h.logger.Error(fmt.Sprintf("Error marshalling VE Bid : %v", err))
+					break
+				}
+				voteExtBids = append(voteExtBids, bz)
+			default:
 			}
-			voteExtBids = append(voteExtBids, bz)
-		default:
 		}
+
+		// Move tx to ready pool
+		err := h.mempool.Update(context.Background(), tmptx)
+		
+		// Remove tx from app side mempool
+		if err != nil {
+			h.logger.Info(fmt.Sprintf("Unable to update mempool tx: %v", err))
+		}
+		
+		itr = itr.Next()
 	}
 
-	// Move tx to ready pool
-	err := h.mempool.Update(context.Background(), tmptx)
-	
-	// Remove tx from app side mempool
-	if err != nil {
-		h.logger.Info(fmt.Sprintf("Unable to update mempool tx: %v", err))
+	// Create vote extension
+	voteExt := AppVoteExtension{
+	Height: req.Height,
+	Bids: voteExtBids,
 	}
-	
-	itr = itr.Next()
 
-}
+	// Encode Vote Extension
+	bz, err := json.Marshal(voteExt)
+		if err != nil {
+		return nil, fmt.Errorf("Error marshalling VE: %w", err)
+	}
 
-// Create vote extension
-voteExt := AppVoteExtension{
-Height: req.Height,
-Bids: voteExtBids,
-}
-
-// Encode Vote Extension
-bz, err := json.Marshal(voteExt)
-if err != nil {
-	return nil, fmt.Errorf("Error marshalling VE: %w", err)
-}
-
-return &abci.ResponseExtendVote{VoteExtension: bz}, nil
+	return &abci.ResponseExtendVote{VoteExtension: bz}, nil
 }
 ```
 
@@ -208,8 +200,7 @@ Within `processVoteExtensions` method, all of the vote extensions are retrieved 
 func (h *PrepareProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 	return func(ctx sdk.Context, req *abci.RequestPrepareProposal) (*abci.ResponsePrepareProposal, error) {
 
-      if req.Height > 2 {
-
+       cp := ctx.ConsensusParams()
 			// Get Special Transaction
 			ve, err := processVoteExtensions(req, h.logger)
 			if err != nil {
@@ -224,12 +215,13 @@ func (h *PrepareProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHan
 
 			// Append Special Transaction to proposal
 			proposalTxs = append(proposalTxs, bz)
-		}
 
 }
 ```
 
-Next, we implement the `ProcessProposalHandler`, which encapsulates the logic for processing proposals. Within this handler, we validate the special transaction and its associated bids. The `validateBids`` method scrutinises each bid to determine its validity. To ensure that only bids with sufficient support are considered valid, we calculate a threshold count based on the total number of votes.
+Next, we implement the `ProcessProposalHandler`, which encapsulates the logic for processing proposals. Within this handler, we validate the special transaction and its associated bids. The `validateBids` method scrutinises each bid to determine its validity. To ensure that only bids with sufficient support are considered valid, we calculate a threshold count based on the total number of votes.
+
+The implementation of `ProcessVoteExtensions` is straightforward. We retrieve the Vote Extensions, iterate through them, and append any associated bids to the special transaction.
 
 ```go
 func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHandler {
@@ -238,12 +230,10 @@ func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHan
 
 		// The first transaction will always be the Special Transaction
 		numTxs := len(req.Txs)
-		if numTxs == 1 {
-			h.Logger.Info(fmt.Sprintf("⚙️:: Number of transactions :: %v", numTxs))
-		}
+		
+		h.Logger.Info(fmt.Sprintf("⚙️:: Number of transactions :: %v", numTxs))
 
 		if numTxs >= 1 {
-			h.Logger.Info(fmt.Sprintf("⚙️:: Number of transactions :: %v", numTxs))
 			var st SpecialTransaction
 			err = json.Unmarshal(req.Txs[0], &st)
 			if err != nil {
@@ -277,8 +267,6 @@ func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHan
 	}
 }
 ```
-
-The implementation of `ProcessVoteExtensions` is straightforward. We retrieve the Vote Extensions, iterate through them, and append any associated bids to the special transaction.
 
 ```go
 func processVoteExtensions(req *abci.RequestPrepareProposal, log log.Logger) (SpecialTransaction, error) {
@@ -332,18 +320,6 @@ If you want to validate the bids such as we have in this example you must ensure
 * Map bid frequencies, where the number of times the bid appears in the VE is stored
 * Figure out how many votes are needed for a bid to be considered valid
 * Iterate over the bids in the proposal and check if each bid appears in the VE at least as many times as the threshold count (for the threshold count we will need to implement the `ThresholdMempool`)
-
-Be sure to include:
-
-```shell
-	req.ConsensusParams = &cmtproto.ConsensusParams{
-		Abci: &cmtproto.ABCIParams{
-			VoteExtensionsEnableHeight: 2,
-		},
-	}
-```
-
-**For the rc within this tutorial but this can be removed when upgrading to the final 0.50 release.**
 
 ## Demo of Mitigating Front-Running with Vote Extensions
 
