@@ -12,16 +12,16 @@ We’ll go through the creation of a simple price oracle module focusing on the 
 
 We’ll go through the implementation of:
 
-* ExtendVote to get information from external price APIs.
-* VerifyVoteExtension to check that the format of the provided votes is correct.
-* PrepareProposal to process the vote extensions from the previous block and include them into the proposal as a transaction.
-* ProcessProposal to check that the first transaction in the proposal is actually a “special tx” that contains the price information.
-* PreBlocker to make price information available during FinalizeBlock.
+* `ExtendVote` to get information from external price APIs.
+* `VerifyVoteExtension` to check that the format of the provided votes is correct.
+* `PrepareProposal` to process the vote extensions from the previous block and include them into the proposal as a transaction.
+* `ProcessProposal` to check that the first transaction in the proposal is actually a “special tx” that contains the price information.
+* `PreBlocker` to make price information available during FinalizeBlock.
 
 
 ## Implement ExtendVote
 
-First we’ll create the actual Vote Extension struct, this is the object that will be marshaled as bytes and signed by the validator.
+First we’ll create the `OracleVoteExtension` struct, this is the object that will be marshaled as bytes and signed by the validator.
 
 In our example we’ll use JSON to marshal the vote extension for simplicity but we recommend to find an encoding that produces a smaller output, given that large vote extensions could impact CometBFT’s performance. Custom encodings and compressed bytes can be used out of the box.
 
@@ -33,7 +33,7 @@ type OracleVoteExtension struct {
 }
 ```
 
-Then we’ll create a VoteExtensionsHandler struct that contains everything we need to query for prices.
+Then we’ll create a `VoteExtensionsHandler` struct that contains everything we need to query for prices.
 
 ```go
 type VoteExtHandler struct {
@@ -48,7 +48,7 @@ type VoteExtHandler struct {
 }
 ```
 
-Finally, a function that returns sdk.ExtendVoteHandler is needed too, and this is where our vote extension logic will live.
+Finally, a function that returns `sdk.ExtendVoteHandler` is needed too, and this is where our vote extension logic will live.
 
 ```go
 func (h *VoteExtHandler) ExtendVoteHandler() sdk.ExtendVoteHandler {
@@ -75,9 +75,9 @@ As you can see above, the creation of a vote extension is pretty simple and we j
 
 Here we’ll do some simple checks like:
 
-is the vote extension unmarshaled correctly?
-is the vote extension for the right height?
-some other validation, for example, are the prices from this extension too deviated from my own prices? Or maybe checks that can detect malicious behavior.
+* Is the vote extension unmarshaled correctly?
+* Is the vote extension for the right height?
+* Some other validation, for example, are the prices from this extension too deviated from my own prices? Or maybe checks that can detect malicious behavior.
 
 
 ```go
@@ -117,7 +117,6 @@ type ProposalHandler struct {
 
 And we create the struct for our “special tx”, that will contain the prices and the votes so validators can later re-check in ProcessPRoposal that they get the same result than the block’s proposer. With this we could also check if all the votes have been used by comparing the votes received in ProcessProposal.
 
-TODO: Ask CometBFT team if this is valid. Check if the ExtendedVotes from PrepareProposal are from the same validators from ProcessProposal
 
 ```go
 type StakeWeightedPrices struct {
@@ -126,7 +125,7 @@ type StakeWeightedPrices struct {
 }
 ```
 
-Now we create the PrepareProposalHandler. In this step we’ll first check if the vote extensions’ signatures are correct using a helper function called ValidateVoteExtensions from the baseapp pacakge.
+Now we create the `PrepareProposalHandler`. In this step we’ll first check if the vote extensions’ signatures are correct using a helper function called ValidateVoteExtensions from the baseapp pacakge.
 
 ```go 
 func (h *ProposalHandler) PrepareProposal() sdk.PrepareProposalHandler {
@@ -239,3 +238,4 @@ func (h *ProposalHandler) PreBlocker(ctx sdk.Context, req *abci.RequestFinalizeB
 
 ## Conclusion
 
+In this tutorial, we've created a simple price oracle module that incorporates vote extensions. We've seen how to implement `ExtendVote`, `VerifyVoteExtension`, `PrepareProposal`, `ProcessProposal`, and `PreBlocker` to handle the voting and verification process of vote extensions, as well as how to make use of the results during the block execution.
