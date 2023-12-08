@@ -2,10 +2,10 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import FeatureList from '@site/src/components/featurelist';
+import HomepageFeatures from '@site/src/components/HomepageFeatures/v0.47';
+import FeatureList from '@site/src/components/featurelist/v0.47';
 
-import styles from './index.module.css';
+import styles from '../index.module.css';
 
 function HomepageHeader() {
     const {siteConfig: {tagline, title: title}} = useDocusaurusContext();

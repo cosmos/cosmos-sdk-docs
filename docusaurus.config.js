@@ -6,6 +6,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 const lastVersion = "0.50";
 
+const lastVersion = "v0.50";
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Explore the SDK",
@@ -44,12 +46,13 @@ const config = {
             current: {
               path: "main",
               banner: "unreleased",
+              label: "Main",
             },
-            "0.50": {
+            "v0.50": {
               path: "v0.50",
               label: "v0.50",
             },
-            0.47: {
+            "v0.47": {
               path: "v0.47",
               label: "v0.47",
             },
@@ -83,9 +86,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       image: "img/banner.jpg",
+      exclude: "docs/learn/learn.md",
       docs: {
         sidebar: {
           autoCollapseCategories: true,
+
         },
       },
       navbar: {
@@ -98,11 +103,32 @@ const config = {
           target: "_self",
         },
         items: [
-          {
-            type: "doc",
+          { 
+            type: "dropdown",
             label: "Learn",
-            docId: "learn/intro/overview",
             position: "left",
+            items: [
+              {
+                type: "doc",
+                label: "Home",
+                docId: "learn/learn",
+              },
+              {
+                type: "doc",
+                label: "Introduction",
+                docId: "learn/intro/overview",
+              },
+              {
+                type: "doc",
+                label: "Beginner",
+                docId: "learn/beginner/app-anatomy",
+              },
+              {
+                type: "doc",
+                label: "Advanced",
+                docId: "learn/advanced/baseapp",
+              },
+            ]
           },
           {
             type: 'dropdown',
@@ -111,9 +137,49 @@ const config = {
             items: [
               {
                 type: "doc",
+                label: "Home",
+                docId: "build/build",
+              },
+              {
+                type: "doc",
+                label: "Build Apps",
+                docId: "build/building-apps/app-go",
+              },
+              {
+                type: "doc",
                 label: "Build a Module",
                 docId: "build/building-modules/intro",
               },
+              {
+                type: "doc",
+                label: "Migrations",
+                docId: "build/migrations/intro",
+              },
+              {
+                type: "doc",
+                label: "Packages",
+                docId: "build/packages/README",
+              },
+              {
+                type: "doc",
+                label: "Tooling",
+                docId: "build/tooling/README",
+              },
+              {
+                type: "doc",
+                label: "ADR's",
+                docId: "build/architecture/README",
+              }, 
+              {
+                type: "doc",
+                label: "RFC",
+                docId: "build/rfc/README",
+              },
+              {
+                type: "doc",
+                label: "Specifications",
+                docId: "build/spec/README",
+              }, 
               {
                 label: "Cosmos SDK API",
                 to: "api",
@@ -121,10 +187,31 @@ const config = {
             ],
           },
           {
-            type: "doc",
+            type: "dropdown",
             label: "User Guides",
-            docId: "user/run-node/keyring", // I find it weird that it points to the keyring and not a common page
             position: "left",
+            items: [
+              {
+                type: "doc",
+                label: "Home",
+                docId: "user/user",
+              },
+              {
+                type: "doc",
+                label: "Setting up Keys",
+                docId: "user/run-node/keyring",
+              },
+              {
+                type: "doc",
+                label: "Running a Node",
+                docId: "user/run-node/run-node",
+              },
+              {
+                type: "doc",
+                label: "CLI",
+                docId: "user/run-node/interact-node",
+              },
+            ]
           },
           {
             href: "https://github.com/cosmos/cosmos-sdk",

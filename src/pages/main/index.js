@@ -2,10 +2,10 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import FeatureList from '@site/src/components/featurelist';
+import HomepageFeatures from '@site/src/components/HomepageFeatures/main';
+import FeatureList from '@site/src/components/featurelist/main';
 
-import styles from './index.module.css';
+import styles from '../index.module.css';
 
 function HomepageHeader() {
     const {siteConfig: {tagline, title: title}} = useDocusaurusContext();
@@ -27,7 +27,7 @@ export default function Home() {
             description=" Explore the SDK <head />">
             <HomepageHeader />
             <main>
-                <HomepageFeatures list={FeatureList("v0.50")} />
+                <HomepageFeatures list={FeatureList("main")} />
             </main>
         </Layout>
     );
