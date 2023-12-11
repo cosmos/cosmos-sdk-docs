@@ -24,8 +24,7 @@ for version in "${VERSIONS[@]}"; do
     branch="main"  # Set the branch to 'main'
     version_directory=""  # For 'main', the version directory is empty
   else
-    version="${version#v}"  # Remove the 'v' prefix from the version number
-    branch="release/v$version.x"  # Determine the branch name
+    branch="release/$version.x"  # Determine the branch name
     version_directory="version-$version"  # Create a directory name based on the version
   fi
 
@@ -51,7 +50,7 @@ for version in "${VERSIONS[@]}"; do
   fi
 
   # Run the pre.sh script
-  cd docs && sh ./pre.sh
+  # cd docs && sh ./pre.sh
 
   for folder in "build" "learn"; do
     if [ "$version" == "main" ]; then
@@ -69,10 +68,10 @@ done
 cd "$WORK_DIR"
 
 # This is copied to ensure main and 0.50 are up to date with one another
-cp -a "docs/user" "versioned_docs/version-0.50"
+cp -a "docs/user" "versioned_docs/version-v0.50"
 
 wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/cosmos/rosetta/main/README.md"
-cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-0.50/user/run-node/04-rosetta.md"
+cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-v0.50/user/run-node/04-rosetta.md"
 
 # Remove the 'cosmos-sdk' directory if needed
  rm -rf ./cosmos-sdk
