@@ -3,11 +3,6 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 
 export default function FeatureList(url) {
-  const {siteConfig, siteMetadata} = useDocusaurusContext();
-  const url2 = window.location.href;
-  const parsedURL = new URL(url2);
-  const path = parsedURL.pathname;
-  const cleanedURL = path.slice(0, path.lastIndexOf('/'))
   return [
     {
        title: `Setting up keys`,

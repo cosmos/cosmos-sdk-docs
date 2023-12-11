@@ -29,7 +29,7 @@ export default function Home() {
             <Layout>
                 <HomepageHeader />
                 <main>
-                    <HomepageFeatures list={FeatureList("learn")} />
+                    <HomepageFeatures list={FeatureList("user")} />
                 </main>
             </Layout>
         </html>

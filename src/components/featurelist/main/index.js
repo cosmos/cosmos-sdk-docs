@@ -5,7 +5,7 @@ export default function FeatureList(url) {
      {
        title: `Learn`,
        Svg: require("@site/static/img/innovation.svg").default,
-       to: `${url}/learn/intro/overview`,
+       to: 'learn/intro/overview',
        description: (
          <>
            Get a quick introduction to the Cosmos SDK and its key features,
@@ -15,7 +15,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Build a Chain`,
-       to: `${url}/build/building-apps/app-go`,
+       to: 'build/building-apps/app-go',
        Svg: require("@site/static/img/link.svg").default,
        description: (
          <>
@@ -27,7 +27,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Build a Module`,
-       to: `${url}/build/building-modules/intro`,
+       to: 'build/building-modules/intro',
        Svg: require("@site/static/img/cube.svg").default,
        description: (
          <>
@@ -38,7 +38,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Node Operation`,
-       to: `${url}/user/run-node/run-node`,
+       to: 'user/run-node/run-node',
        Svg: require("@site/static/img/node.svg").default,
        description: (
          <>

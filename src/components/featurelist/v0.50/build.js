@@ -3,11 +3,6 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 
 export default function FeatureList(url) {
-  const {siteConfig, siteMetadata} = useDocusaurusContext();
-  const url2 = window.location.href;
-  const parsedURL = new URL(url2);
-  const path = parsedURL.pathname;
-  const cleanedURL = path.slice(0, path.lastIndexOf('/'))
   return [
 
     {
@@ -34,7 +29,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Migrations`,
-       to: "learn/advanced/baseapp",
+       to: "build/migrations/intro",
        Svg: require("@site/static/img/migration.svg").default,
        description: (
          <>
@@ -44,7 +39,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Packages`,
-       to: "learn/advanced/baseapp",
+       to: "build/packages",
        Svg: require("@site/static/img/packaging.svg").default,
        description: (
          <>
@@ -55,7 +50,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Tooling`,
-       to: "learn/advanced/baseapp",
+       to: "build/tooling",
        Svg: require("@site/static/img/tools.svg").default,
        description: (
          <>
@@ -66,7 +61,7 @@ export default function FeatureList(url) {
      },
      {
        title: `ADR's`,
-       to: "learn/advanced/baseapp",
+       to: "build/architecture",
        Svg: require("@site/static/img/diagram.svg").default,
        description: (
          <>
@@ -77,7 +72,7 @@ export default function FeatureList(url) {
      },
      {
        title: `RFC`,
-       to: "learn/advanced/baseapp",
+       to: "build/rfc",
        Svg: require("@site/static/img/chat.svg").default,
        description: (
          <>
@@ -89,7 +84,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Specifications`,
-       to: "learn/advanced/baseapp",
+       to: "build/spec",
        Svg: require("@site/static/img/list.svg").default,
        description: (
          <>
@@ -99,7 +94,7 @@ export default function FeatureList(url) {
      },
      {
        title: `Cosmos SDK API`,
-       to: "learn/advanced/baseapp",
+       to: "/api",
        Svg: require("@site/static/img/list.svg").default,
        description: (
          <>
