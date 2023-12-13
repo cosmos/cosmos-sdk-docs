@@ -101,7 +101,7 @@ const config = {
           {
             type: "doc",
             label: "Learn",
-            docId: "learn/intro/overview",
+            docId: "learn/learn",
             position: "left",
           },
           {
