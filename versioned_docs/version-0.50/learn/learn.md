@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Learn
 
 *   [Introduction](../intro/00-overview.md) -  Dive into the fundamentals of Cosmos SDK with an insightful introduction,
