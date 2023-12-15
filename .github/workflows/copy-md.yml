@@ -46,7 +46,7 @@ jobs:
         with:
           commit-message: "chore: Sync docs from cosmos-sdk/docs"
           title: "chore: upate documenation from cosmos-sdk/docs"
-          branch: "sync-docs"
+          branch: "sam/fix-pr"
           delete-branch: false
           body: |
             This PR updates the documentation from cosmos-sdk/docs
