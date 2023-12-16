@@ -44,7 +44,6 @@ jobs:
 
       - uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.PRBOT_PAT }}
           commit-message: "chore: Sync docs from cosmos-sdk/docs"
           title: "chore: upate documenation from cosmos-sdk/docs"
           branch: "sync-docs"
