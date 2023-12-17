@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: sync-docs
           fetch-depth: 0
 
       - name: Set Up Node.js
@@ -46,6 +46,7 @@ jobs:
         with:
           commit-message: "chore: Sync docs from cosmos-sdk/docs"
           title: "chore: upate documenation from cosmos-sdk/docs"
+          base: main
           branch: "sync-docs"
           delete-branch: false
           body: |
