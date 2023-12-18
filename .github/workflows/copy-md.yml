@@ -42,6 +42,16 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           branch: sync-docs
+
+      - uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "chore: Sync docs from cosmos-sdk/docs"
+          title: "chore: upate documenation from cosmos-sdk/docs"
+          base: main
+          branch: "sync-docs"
+          delete-branch: false
+          body: |
+            This PR updates the documentation from cosmos-sdk/docs
         
   sims-notify-failure:
     permissions:
