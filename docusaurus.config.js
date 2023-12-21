@@ -123,7 +123,7 @@ const config = {
           {
             type: "doc",
             label: "User Guides",
-            docId: "user/run-node/keyring", // I find it weird that it points to the keyring and not a common page
+            docId: "user/user", // I find it weird that it points to the keyring and not a common page
             position: "left",
           },
           {
