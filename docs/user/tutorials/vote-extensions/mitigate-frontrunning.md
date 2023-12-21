@@ -1,37 +1,72 @@
 # Mitigate Auction Front-Running
 
+In this tutorial, we will be covering:
+
+* [What are Vote extensions?](#what-are-vote-extensions)
+* [Context](#context)
+* [Simulation of Auction Front-Running](#simulation-of-auction-front-running)
+* [Mitigating Front-running with Vote Extensions](#mitigating-front-running-with-vote-extensions)
+* [Demo of Mitigating Front-Running with Vote Extensions](#demo-of-mitigating-front-running-with-vote-extensions)
+
 ## What are Vote extensions?
 
 Vote extensions is arbitrary information which can be inserted into a block. This feature is part of ABCI 2.0, which is available for use in the SDK 0.50 release and part of the 0.38 CometBFT release. 
 
-More information about vote extensions can be seen [here](../../../build/building-apps/04-vote-extensions).
+More information about vote extensions can be seen [here](../../../build/abci/03-vote-extensions.md).
 
 ## Context
 
 For this tutorial we are using an example of an application that is mitigating auction front-running. 
 
-Please checkout https://github.com/fatal-fruit/abci-workshop to see the example.
+Front-running is a potential issue in blockchain systems where a participant gains an advantage by being able to perform actions or transactions ahead of others. In the context of this application, front-running can occur when a validator, who is also a proposer, spots a bid in the mempool and replaces it with their own higher bid. This is also known as "bid sniping".
 
+Please checkout https://github.com/fatal-fruit/abci-workshop to see the example.
 
 ## Simulation of Auction Front-Running
 
-Please checkout the branch `part-1` of the example and then run:
+To verify an occurrence of front-running, you can navigate to the logs and search for instances of `💨 :: Found a Bid to Snipe`. This specific log message indicates that the validator has identified a bid to potentially front-run.
+
+Before we start, we need to set up a single node blockchain for local testing. This can be done by running the `setup.sh` script located in the `scripts/single_node` directory. This script initialises a new blockchain and creates three accounts (val1, alice, bob) with initial balances.
+
+Please switch to the `part-1` branch of the example repository. To run the script, use the following command:
 
 ```shell
 ./scripts/single_node/setup.sh
 ```
 
-In another window run:
+Following running this script, your local testing environment should be ready and you can proceed with the next steps.
+
+Here's how you can do it:
+
+1. Run the front-running script: 
 
 ```shell
-./scripts/single_node/frontrun.sh
+scripts/single_node/frontrun.sh.
+``` 
+
+This script simulates a transaction where a user tries to reserve a namespace before another user does. When running the script we see alice attempts to reserve the namespace `bob.cosmos`.
+
+2. Open the log file of the validator node. The location of this file can vary depending on your setup, but it's typically located in a directory like `$HOME/cosmos/nodes/#{validator}/logs`. The directory in this case will be under the validator so, `beacon` `val1` or `val2`.
+
+```shell
+tail -f $HOME/cosmos/nodes/#{validator}/logs
 ```
 
-Here we can see alice attempts to reserve the namespace `bob.cosmos`
+3. Search for the log message `💨 :: Found a Bid to Snipe`. You can do this manually or use a command like grep if you're using a Unix-like operating system.
 
-To verify the occurrence of front-running, navigate to the logs and search for instances of `Found a Bid to Snipe`. This specific message indicates the desired behavior, demonstrating that front-running has occurred.
+If you find instances of `💨 :: Found a Bid to Snipe`, it indicates that the validator has identified a bid to potentially front-run. This is the desired behavior in this scenario, demonstrating that front-running has occurred.
 
-Below we query the namespace `bob.cosmos` to see if alice managed to successfully reserve `bob.cosmos`
+Remember, this is a demonstration of potential malicious behavior by a validator and is not a recommended practice in a real-world application. The purpose of this exercise is to understand the potential issues and how to mitigate them.
+
+An example of what you might see in the logs is:
+
+```shell
+5:46PM INF 💨 :: Found a Bid to Snipe module=server
+```
+
+If the log message `💨 :: Found a Bid to Snipe` is not present after running the front-running script, ensure there are bid transactions in the mempool and that your logging level includes Info messages. If these conditions are met and the message is still absent, it indicates that no bids were identified for potential front-running during the proposal building process.
+
+Next, to verify the status of the namespace `bob.cosmos`, we perform the following command:
 
 ```shell 
 ./build/cosmappd query ns whois bob.cosmos
@@ -51,10 +86,13 @@ name:
 
 The owner address corresponds to Alice (`val1` in the keyring)
 
-## Mitigating Front-running with Vote Extensions Steps
+## Mitigating Front-running with Vote Extensions
 
+In this section, we will discuss the steps to mitigate front-running using vote extensions. We will introduce new types within the `abci/types.go` file. These types will be used to handle the process of preparing proposals, processing proposals, and handling vote extensions.
 
-To initiate the process, we introduce new types within the `abci/types.go` file. Carefully consider the specific requirements for each type, bearing in mind that we utilise our own mempool for transaction ordering.
+### Implementing Structs for Vote Extensions
+
+First, copy the following structs into the `abci/types.go` file during `part-1` of the tutorial and each of these structs serves a specific purpose in the process of mitigating front-running using vote extensions:
 
 ```go
 package abci
@@ -72,20 +110,32 @@ type PrepareProposalHandler struct {
 	keyname     string
 	runProvider bool
 }
+```
 
+The `PrepareProposalHandler` struct is used to handle the preparation of a proposal in the consensus process. It contains several fields: logger for logging information and errors, txConfig for transaction configuration, cdc (Codec) for encoding and decoding transactions, mempool for referencing the set of unconfirmed transactions, txProvider for building the proposal with transactions, keyname for the name of the key used for signing transactions, and runProvider, a boolean flag indicating whether the provider should be run to build the proposal.
+
+```go
 type ProcessProposalHandler struct {
 	TxConfig client.TxConfig
 	Codec    codec.Codec
 	Logger   log.Logger
 }
+```
 
+After the proposal has been prepared and vote extensions have been included, the ProcessProposalHandler is used to process the proposal. This includes validating the proposal and the included vote extensions. The `ProcessProposalHandler` allows you to access the transaction configuration and codec, which are necessary for processing the vote extensions.
+
+```go
 type VoteExtHandler struct {
 	logger       log.Logger
 	currentBlock int64
 	mempool      *mempool.ThresholdMempool
 	cdc          codec.Codec
 }
+```
 
+This struct is used to handle vote extensions. It contains a logger for logging events, the current block number, a mempool for storing transactions, and a codec for encoding and decoding. Vote extensions are a key part of the process to mitigate front-running, as they allow for additional information to be included with each vote.
+
+```go
 type InjectedVoteExt struct {
 	VoteExtSigner []byte
 	Bids          [][]byte
@@ -94,20 +144,37 @@ type InjectedVoteExt struct {
 type InjectedVotes struct {
 	Votes []InjectedVoteExt
 }
+```
 
+These structs are used to handle injected vote extensions. They include the signer of the vote extension and the bids associated with the vote extension. Each byte array in Bids is a serialised form of a bid transaction. Injected vote extensions are used to add additional information to a vote after it has been created, which can be useful for adding context or additional data to a vote. The serialised bid transactions provide a way to include complex transaction data in a compact, efficient format.
+
+```go
 type AppVoteExtension struct {
 	Height int64
 	Bids   [][]byte
 }
+```
 
+This struct is used for application vote extensions. It includes the height of the block and the bids associated with the vote extension. Application vote extensions are used to add additional information to a vote at the application level, which can be useful for adding context or additional data to a vote that is specific to the application.
+
+```go
 type SpecialTransaction struct {
 	Height int
 	Bids   [][]byte
 }
 ```
 
-To establish the `VoteExtensionHandler`, we turn to `/abci/proposal.go`. Within this file, we inspect the mempool and submit a list of all pending bids. Subsequently, we verify that the list of unconfirmed transactions can be accessed in the `abci.RequestPrepareProposal` during the ensuing block. The `VoteExtensions` are located in `LocalLastCommit`.
-   
+This struct is used for special transactions. It includes the height of the block and the bids associated with the transaction. Special transactions are used for transactions that need to be handled differently from regular transactions, such as transactions that are part of the process to mitigate front-running.
+
+
+### Implementing Handlers
+
+To establish the `VoteExtensionHandler`, follow these steps:
+
+1. Navigate to the `abci/proposal.go` file. This is where we will implement the `VoteExtensionHandler``.
+
+2. Implement the `NewVoteExtensionHandler` function. This function is a constructor for the `VoteExtHandler` struct. It takes a logger, a mempool, and a codec as parameters and returns a new instance of `VoteExtHandler`.
+
 ```go
 func NewVoteExtensionHandler(lg log.Logger, mp *mempool.ThresholdMempool, cdc codec.Codec) *VoteExtHandler {  
    return &VoteExtHandler{  
@@ -116,7 +183,11 @@ func NewVoteExtensionHandler(lg log.Logger, mp *mempool.ThresholdMempool, cdc co
       cdc:     cdc,  
    }  
 }
+```
 
+3. Implement the `ExtendVoteHandler()` method. This method should handle the logic of extending votes, including inspecting the mempool and submitting a list of all pending bids. This will allow you to access the list of unconfirmed transactions in the abci.`RequestPrepareProposal` during the ensuing block.
+
+```go
 func (h *VoteExtHandler) ExtendVoteHandler() sdk.ExtendVoteHandler {
 	return func(ctx sdk.Context, req *abci.RequestExtendVote) (*abci.ResponseExtendVote, error) {
       h.logger.Info(fmt.Sprintf("Extending votes at block height : %v", req.Height))
@@ -171,20 +242,17 @@ func (h *VoteExtHandler) ExtendVoteHandler() sdk.ExtendVoteHandler {
 }
 ```
 
-
-We then configure Handler in `app/app.go`, seen below.
+4. Configure the handler in `app/app.go` as shown below
 
 ```go
 bApp := baseapp.NewBaseApp(AppName, logger, db, txConfig.TxDecoder(), baseAppOptions...)
-
-...
-
 voteExtHandler := abci2.NewVoteExtensionHandler(logger, mempool, appCodec)
 bApp.SetExtendVoteHandler(voteExtHandler.ExtendVoteHandler())
 ```
 
+To give a bit of context on what is happening above, we first create a new instance of `VoteExtensionHandler` with the necessary dependencies (logger, mempool, and codec). Then, we set this handler as the `ExtendVoteHandler` for our application. This means that whenever a vote needs to be extended, our custom `ExtendVoteHandler()` method will be called.
 
-`ValidateVoteExtensions` is then propagated and now we want to add the following to the `PrepareProposalHandler` to print out and test our vote extensions have entered.
+To test if vote extensions have been propagated, add the following to the `PrepareProposalHandler`:
 
 ```go
 if req.Height > 2 {  
@@ -193,35 +261,57 @@ if req.Height > 2 {
 }
 ```
 
-
-Within `processVoteExtensions` method, all of the vote extensions are retrieved from the last commit and are turned into a special transaction. The special transaction is appended to the proposal.
+This is how the whole function should look:
 
 ```go
 func (h *PrepareProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 	return func(ctx sdk.Context, req *abci.RequestPrepareProposal) (*abci.ResponsePrepareProposal, error) {
+		h.logger.Info(fmt.Sprintf("🛠️ :: Prepare Proposal"))
+		var proposalTxs [][]byte
 
-       cp := ctx.ConsensusParams()
-			// Get Special Transaction
-			ve, err := processVoteExtensions(req, h.logger)
+		var txs []sdk.Tx
+
+		// Get Vote Extensions
+		if req.Height > 2 {
+			voteExt := req.GetLocalLastCommit()
+			h.logger.Info(fmt.Sprintf("🛠️ :: Get vote extensions: %v", voteExt))
+		}
+
+		itr := h.mempool.Select(context.Background(), nil)
+		for itr != nil {
+			tmptx := itr.Tx()
+
+			txs = append(txs, tmptx)
+			itr = itr.Next()
+		}
+		h.logger.Info(fmt.Sprintf("🛠️ :: Number of Transactions available from mempool: %v", len(txs)))
+
+		if h.runProvider {
+			tmpMsgs, err := h.txProvider.BuildProposal(ctx, txs)
 			if err != nil {
-				h.logger.Error(fmt.Sprintf("❌️ :: Unable to process Vote Extensions: %v", err))
+				h.logger.Error(fmt.Sprintf("❌️ :: Error Building Custom Proposal: %v", err))
 			}
+			txs = tmpMsgs
+		}
 
-			// Marshal Special Transaction
-			bz, err := json.Marshal(ve)
+		for _, sdkTxs := range txs {
+			txBytes, err := h.txConfig.TxEncoder()(sdkTxs)
 			if err != nil {
-				h.logger.Error(fmt.Sprintf("❌️ :: Unable to marshal Vote Extensions: %v", err))
+				h.logger.Info(fmt.Sprintf("❌~Error encoding transaction: %v", err.Error()))
 			}
+			proposalTxs = append(proposalTxs, txBytes)
+		}
 
-			// Append Special Transaction to proposal
-			proposalTxs = append(proposalTxs, bz)
+		h.logger.Info(fmt.Sprintf("🛠️ :: Number of Transactions in proposal: %v", len(proposalTxs)))
 
+		return &abci.ResponsePrepareProposal{Txs: proposalTxs}, nil
+	}
 }
 ```
 
-Next, we implement the `ProcessProposalHandler`, which encapsulates the logic for processing proposals. Within this handler, we validate the special transaction and its associated bids. The `validateBids` method scrutinises each bid to determine its validity. To ensure that only bids with sufficient support are considered valid, we calculate a threshold count based on the total number of votes.
+As mentioned above, we check if vote extensions have been propagated, you can do this by checking the logs for any relevant messages such as `🛠️ :: Get vote extensions:`. If the logs do not provide enough information, you can also reinitialise your local testing environment by running the `./scripts/single_node/setup.sh` script again. 
 
-The implementation of `ProcessVoteExtensions` is straightforward. We retrieve the Vote Extensions, iterate through them, and append any associated bids to the special transaction.
+5. Implement the `ProcessProposalHandler()`. This function is responsible for processing the proposal. It should handle the logic of processing vote extensions, including inspecting the proposal and validating the bids.
 
 ```go
 func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHandler {
@@ -230,7 +320,7 @@ func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHan
 
 		// The first transaction will always be the Special Transaction
 		numTxs := len(req.Txs)
-		
+
 		h.Logger.Info(fmt.Sprintf("⚙️:: Number of transactions :: %v", numTxs))
 
 		if numTxs >= 1 {
@@ -267,6 +357,8 @@ func (h *ProcessProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHan
 	}
 }
 ```
+
+6. Implement the `ProcessVoteExtensions()` function. This function should handle the logic of processing vote extensions, including validating the bids.
 
 ```go
 func processVoteExtensions(req *abci.RequestPrepareProposal, log log.Logger) (SpecialTransaction, error) {
@@ -306,42 +398,42 @@ func processVoteExtensions(req *abci.RequestPrepareProposal, log log.Logger) (Sp
 }
 ```
 
-
-Next we configure `ProcessProposal` Handler in App in `/app/app.go`
+7. Configure the `ProcessProposalHandler()` in app/app.go:
 
 ```go
 processPropHandler := abci2.ProcessProposalHandler{app.txConfig, appCodec, logger}
 bApp.SetProcessProposal(processPropHandler.ProcessProposalHandler())
 ```
 
-If you want to validate the bids such as we have in this example you must ensure you do the following:
+This sets the `ProcessProposalHandler()` for our application. This means that whenever a proposal needs to be processed, our custom `ProcessProposalHandler()` method will be called.
 
-* Decode the proposal transactions and extract the bids
-* Map bid frequencies, where the number of times the bid appears in the VE is stored
-* Figure out how many votes are needed for a bid to be considered valid
-* Iterate over the bids in the proposal and check if each bid appears in the VE at least as many times as the threshold count (for the threshold count we will need to implement the `ThresholdMempool`)
+To test if the proposal processing and vote extensions are working correctly, you can check the logs for any relevant messages. If the logs do not provide enough information, you can also reinitialize your local testing environment by running the `./scripts/single_node/setup.sh` script again.
 
 ## Demo of Mitigating Front-Running with Vote Extensions
 
-Here we are using a 3 validator network. The Beacon validator has a custom transaction provider enabled. Below we bootstrap the validator network. 
+The purpose of this demo is to test the implementation of the `VoteExtensionHandler` and `PrepareProposalHandler` that we have just added to the codebase. These handlers are designed to mitigate front-running by ensuring that all validators have a consistent view of the mempool when preparing proposals.
+
+In this demo, we are using a 3 validator network. The Beacon validator is special because it has a custom transaction provider enabled. This means that it can potentially manipulate the order of transactions in a proposal to its advantage (i.e., front-running).
+
+1. Bootstrap the validator network: This sets up a network with 3 validators. The script `./scripts/configure.sh "bob.cosmos"` is used to configure the network and the validators.
 
 ```shell
 ./scripts/configure.sh "bob.cosmos"
 ```
 
-Here we have `alice` attempt to reserve `bob.cosmos`
+2. Have alice attempt to reserve `bob.cosmos`: This is a normal transaction that alice wants to execute. The script ``./scripts/reserve.sh "bob.cosmos"` is used to send this transaction.
 
 ```shell
 ./scripts/reserve.sh "bob.cosmos"
 ```
 
-Query to verify the name has been reserved
+3. Query to verify the name has been reserved: This is to check the result of the transaction. The script `./scripts/whois.sh "bob.cosmos"` is used to query the state of the blockchain.
 
 ```shell
 ./scripts/whois.sh "bob.cosmos"
 ```
 
-It should return 
+It should return:
 
 ```{
   "name":  {
@@ -366,7 +458,7 @@ To detect front-running attempts by the beacon, scrutinise the logs during the `
 2:47PM ERR prevote step: state machine rejected a proposed block; this should not happen:the proposer may be misbehaving; prevoting nil err=null height=142 module=consensus round=0
 ```
 
-If we run:  
+5. List the Beacon's keys: This is to verify the addresses of the validators. The script `./scripts/list-beacon-keys.sh` is used to list the keys. 
 
 ```shell
 ./scripts/list-beacon-keys.sh
@@ -403,5 +495,6 @@ We should receive something similar to the following:
 ]
 ```
 
-
 This allows us to match up the addresses and see that the bid was not front run by the beacon due as the resolve address is Alice's address and not the beacons address.
+
+By running this demo, we can verify that the `VoteExtensionHandler` and `PrepareProposalHandler` are working as expected and that they are able to prevent front-running.
