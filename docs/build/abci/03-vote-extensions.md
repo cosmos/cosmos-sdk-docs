@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Vote Extensions
 
 :::note Synopsis
@@ -13,7 +9,7 @@ defined in ABCI++.
 
 ABCI++ allows an application to extend a pre-commit vote with arbitrary data. This
 process does NOT have to be deterministic, and the data returned can be unique to the
-validator process. The Cosmos SDK defines `baseapp.ExtendVoteHandler`:
+validator process. The Cosmos SDK defines [`baseapp.ExtendVoteHandler`](https://github.com/cosmos/cosmos-sdk/blob/v0.50.1/types/abci.go#L26-L27):
 
 ```go
 type ExtendVoteHandler func(Context, *abci.RequestExtendVote) (*abci.ResponseExtendVote, error)
@@ -33,14 +29,17 @@ to consider the size of the vote extensions as they could increase latency in bl
 production. See [here](https://github.com/cometbft/cometbft/blob/v0.38.0-rc1/docs/qa/CometBFT-QA-38.md#vote-extensions-testbed)
 for more details.
 
+Click [here](https://docs.cosmos.network/main/user/tutorials/vote-extensions) if you would like a walkthrough of how to implement vote extensions.
+
+
 ## Verify Vote Extension
 
 Similar to extending a vote, an application can also verify vote extensions from
 other validators when validating their pre-commits. For a given vote extension,
-this process MUST be deterministic. The Cosmos SDK defines `sdk.VerifyVoteExtensionHandler`:
+this process MUST be deterministic. The Cosmos SDK defines [`sdk.VerifyVoteExtensionHandler`](https://github.com/cosmos/cosmos-sdk/blob/v0.50.1/types/abci.go#L29-L31):
 
-```go reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/types/abci.go#L26-L27
+```go
+type VerifyVoteExtensionHandler func(Context, *abci.RequestVerifyVoteExtension) (*abci.ResponseVerifyVoteExtension, error)
 ```
 
 An application can set this handler in `app.go` via the `baseapp.SetVerifyVoteExtensionHandler`
@@ -50,6 +49,9 @@ extension handler, it should also define a verification handler. Note, not all
 validators will share the same view of what vote extensions they verify depending
 on how votes are propagated. See [here](https://github.com/cometbft/cometbft/blob/v0.38.0-rc1/spec/abci/abci++_methods.md#verifyvoteextension)
 for more details.
+
+Additionally, please keep in mind that performance can be degraded if vote extensions are too big (https://docs.cometbft.com/v0.38/qa/cometbft-qa-38#vote-extensions-testbed), so we highly recommend a size validation in `VerifyVoteExtensions`.
+
 
 ## Vote Extension Propagation
 
