@@ -123,7 +123,14 @@ const config = {
           {
             type: "doc",
             label: "User Guides",
-            docId: "user/user", // I find it weird that it points to the keyring and not a common page
+            docId: "user/user",
+            position: "left",
+          },
+          {
+            type: "doc",
+            label: "Tutorials",
+            collapsed: false,
+            docId: "tutorials/vote-extensions/auction-frontrunning/getting-started",
             position: "left",
           },
           {
