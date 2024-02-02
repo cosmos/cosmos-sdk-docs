@@ -1,7 +1,9 @@
 ---
 sidebar_position: 0
 ---
-# Advanced Tutorials
+# Tutorials
+
+## Advanced Tutorials 
 
 This section provides a concise overview of tutorials focused on implementing vote extensions in the Cosmos SDK. Vote extensions are a powerful feature for enhancing the security and fairness of blockchain applications, particularly in scenarios like implementing oracles and mitigating auction front-running.
 
