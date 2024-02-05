@@ -12,4 +12,4 @@ sidebar_position: 0
 *   [ADR's](./architecture/README.md) - Provides a structured repository of key decisions made during the development process, which have been documented and offers rationale behind key decisions being made.
 *   [RFC](./rfc/README.md) - A Request for Comments (RFC) is a record of discussion on an open-ended topic related to the design and implementation of the Cosmos SDK, for which no immediate decision is required.
 *   [Specifications](./spec/README.md) - A detailed reference for the specifications of various components and features.
-*   [Cosmos SDK API](https://docs.cosmos.network/api) - A comprehensive reference for the application programming interfaces (APIs) provided by the SDK. 
+*   [REST API](https://docs.cosmos.network/api) - A comprehensive reference for the application programming interfaces (APIs) provided by the SDK. 
