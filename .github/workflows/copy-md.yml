@@ -31,6 +31,8 @@ jobs:
         run: |
           chmod +x sync_script.sh
           ./sync_script.sh
+          chmod +x tutorials-script.sh
+          ./tutorials-script.sh
 
       - name: Add And Commit
         uses: EndBug/add-and-commit@v9
@@ -69,3 +71,4 @@ jobs:
           SLACK_COLOR: danger
           SLACK_MESSAGE: Copying docs is failing
           SLACK_FOOTER: ""
+
