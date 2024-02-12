@@ -115,7 +115,7 @@ const config = {
                 docId: "build/building-modules/intro",
               },
               {
-                label: "Cosmos SDK API",
+                label: "REST API",
                 to: "api",
               },
             ],
@@ -185,7 +185,7 @@ const config = {
                 href: "https://ibc.cosmos.network",
               },
               {
-                label: "Cosmos SDK API",
+                label: "REST API",
                 to: "api",
               },
             ],
