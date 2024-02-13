@@ -38,4 +38,4 @@ The CosmWasm module enables smart contracts, learn more by going to their [docum
 
 ## EVM
 
-Read more about writing smart contracts with solidity at the official [`evm` documentation page](https://docs.evmos.org/modules/evm/).
+Read more about writing smart contracts with solidity at the official [`evm` documentation page](https://docs.evmos.org/protocol/modules/evm).
