@@ -29,3 +29,7 @@ for dir in $WORK_DIR/docs/tutorials/*/*; do
     fi
   done
 done
+
+cd $WORK_DIR
+rm -rf ./sdk-tutorials
+
