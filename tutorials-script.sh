@@ -2,6 +2,9 @@ REMOTE_REPO_URL="https://github.com/cosmos/sdk-tutorials.git"
 
 WORK_DIR=$(pwd)
 
+rm -rf ./sdk-tutorials
+git clone "$REMOTE_REPO_URL" sdk-tutorials
+
 cd $WORK_DIR/sdk-tutorials
 
 mv "$WORK_DIR/sdk-tutorials/tutorials/nameservice" "$WORK_DIR/sdk-tutorials/tutorials/auction-frontrunning"
