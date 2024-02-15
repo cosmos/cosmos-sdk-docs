@@ -26,11 +26,14 @@ jobs:
       - name: Install Dependencies
         run: |
           yarn install --frozen-lockfile
-
+          
       - name: Run Sync Script
         run: |
           chmod +x sync_script.sh
           ./sync_script.sh
+
+      - name: Run Tutorials Script
+        run: |
           chmod +x tutorials-script.sh
           ./tutorials-script.sh
 
