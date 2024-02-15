@@ -7,8 +7,6 @@
 * [Mitigating Front-running with Vote Extensions](02-mitigating-front-running-with-vote-extensions)
 * [Demo of Mitigating Front-Running](03-demo-of-mitigating-front-running)
 
-## Getting Started
-
 ### Overview of the Project
 
 This tutorial outlines the development of a module designed to mitigate front-running in nameservice auctions. The following functions are central to this module:
