@@ -60,7 +60,7 @@ jobs:
           delete-branch: false
           body: |
             This PR updates the documentation from cosmos-sdk/docs
-        
+
   # sims-notify-failure:
   #   permissions:
   #     contents: none
