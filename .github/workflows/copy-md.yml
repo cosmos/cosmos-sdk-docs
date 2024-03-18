@@ -25,6 +25,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+    
+    - name: Create new branch
+        run: git checkout -b ${{ env.PR_BRANCH_NAME }}
 
       - name: Install Dependencies
         run: |
