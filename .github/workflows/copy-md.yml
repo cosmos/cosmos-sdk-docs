@@ -27,7 +27,7 @@ jobs:
           node-version: 18
     
     - name: Create new branch
-        run: git checkout -b ${{ env.PR_BRANCH_NAME }}
+        run: git checkout -b $PR_BRANCH_NAME
 
       - name: Install Dependencies
         run: |
