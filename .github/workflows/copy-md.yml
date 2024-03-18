@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 0,12 * * *'
 
+env:
+  PR_BRANCH_NAME: "sync-docs/" + ${{ github.sha }}
+
 jobs:
   sync-docs-and-create-pr:
     runs-on: ubuntu-latest
@@ -12,63 +15,69 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Run TEST
+        run: echo $PR_BRANCH_NAME
 
-      - name: Set Up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: sync-docs
+  #         fetch-depth: 0
 
-      - name: Install Dependencies
-        run: |
-          yarn install --frozen-lockfile
+  #     - name: Set Up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+
+  #     - name: Install Dependencies
+  #       run: |
+  #         yarn install --frozen-lockfile
           
-      - name: Run Sync Script
-        run: |
-          chmod +x sync_script.sh
-          ./sync_script.sh
+  #     - name: Run Sync Script
+  #       run: |
+  #         chmod +x sync_script.sh
+  #         ./sync_script.sh
 
-      - name: Run Tutorials Script
-        run: |
-          chmod +x tutorials-script.sh
-          ./tutorials-script.sh
+  #     - name: Run Tutorials Script
+  #       run: |
+  #         chmod +x tutorials-script.sh
+  #         ./tutorials-script.sh
 
-      - name: Add And Commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'Updated MD File Changes from cosmos-sdk/docs'
+  #     - name: Add And Commit
+  #       uses: EndBug/add-and-commit@v9
+  #       with:
+  #         message: 'Updated MD File Changes from cosmos-sdk/docs'
 
-      - name: Push To Sync-Docs
-        uses: ad-m/github-push-action@master
-        with:
-          branch: sync-docs
+  #     - name: Push To Sync-Docs
+  #       uses: ad-m/github-push-action@master
+  #       with:
+  #         branch: sync-docs
 
-      - uses: peter-evans/create-pull-request@v5
-        with:
-          commit-message: "chore: Sync docs from cosmos-sdk/docs"
-          title: "chore: upate documenation from cosmos-sdk/docs"
-          base: main
-          branch: "sync-docs"
-          delete-branch: false
-          body: |
-            This PR updates the documentation from cosmos-sdk/docs
+  #     - uses: peter-evans/create-pull-request@v5
+  #       with:
+  #         commit-message: "chore: Sync docs from cosmos-sdk/docs"
+  #         title: "chore: upate documenation from cosmos-sdk/docs"
+  #         base: main
+  #         branch: "sync-docs"
+  #         delete-branch: false
+  #         body: |
+  #           This PR updates the documentation from cosmos-sdk/docs
         
-  sims-notify-failure:
-    permissions:
-      contents: none
-    needs: sync-docs-and-create-pr
-    runs-on: ubuntu-latest
-    if: ${{ failure() }}
-    steps:
-      - name: Notify Slack on failure
-        uses: rtCamp/action-slack-notify@v2.2.1
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: sdk-sims
-          SLACK_USERNAME: Failed to copy docs from Cosmos SDK to Docs repo
-          SLACK_ICON_EMOJI: ":skull:"
-          SLACK_COLOR: danger
-          SLACK_MESSAGE: Copying docs is failing
-          SLACK_FOOTER: ""
+  # sims-notify-failure:
+  #   permissions:
+  #     contents: none
+  #   needs: sync-docs-and-create-pr
+  #   runs-on: ubuntu-latest
+  #   if: ${{ failure() }}
+  #   steps:
+  #     - name: Notify Slack on failure
+  #       uses: rtCamp/action-slack-notify@v2.2.1
+  #       env:
+  #         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #         SLACK_CHANNEL: sdk-sims
+  #         SLACK_USERNAME: Failed to copy docs from Cosmos SDK to Docs repo
+  #         SLACK_ICON_EMOJI: ":skull:"
+  #         SLACK_COLOR: danger
+  #         SLACK_MESSAGE: Copying docs is failing
+  #         SLACK_FOOTER: ""
 
