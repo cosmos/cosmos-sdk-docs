@@ -43,11 +43,11 @@ jobs:
           chmod +x tutorials-script.sh
           ./tutorials-script.sh
 
-      - name: Add And Commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          new_branch: ${{ env.PR_BRANCH_NAME }}
-          message: 'Updated MD File Changes from cosmos-sdk/docs'
+      # - name: Add And Commit
+      #   uses: EndBug/add-and-commit@v9
+      #   with:
+      #     new_branch: ${{ env.PR_BRANCH_NAME }}
+      #     message: 'Updated MD File Changes from cosmos-sdk/docs'
 
       # - name: Push To Sync-Docs
       #   uses: ad-m/github-push-action@master
@@ -60,7 +60,7 @@ jobs:
           title: "chore: upate documenation from cosmos-sdk/docs"
           base: main
           branch: ${{ env.PR_BRANCH_NAME }}
-          delete-branch: true
+          delete-branch: false
           body: |
             This PR updates the documentation from cosmos-sdk/docs
         
