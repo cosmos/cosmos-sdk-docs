@@ -43,20 +43,20 @@ jobs:
       - name: Add And Commit
         uses: EndBug/add-and-commit@v9
         with:
-          new_branch: $PR_BRANCH_NAME
+          new_branch: ${{ env.PR_BRANCH_NAME }}
           message: 'Updated MD File Changes from cosmos-sdk/docs'
 
       - name: Push To Sync-Docs
         uses: ad-m/github-push-action@master
         with:
-          branch: $PR_BRANCH_NAME
+          branch: ${{ env.PR_BRANCH_NAME }}
 
       - uses: peter-evans/create-pull-request@v5
         with:
           commit-message: "chore: Sync docs from cosmos-sdk/docs"
           title: "chore: upate documenation from cosmos-sdk/docs"
           base: main
-          branch: $PR_BRANCH_NAME
+          branch: ${{ env.PR_BRANCH_NAME }}
           delete-branch: false
           body: |
             This PR updates the documentation from cosmos-sdk/docs
