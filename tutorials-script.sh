@@ -1,3 +1,6 @@
+echo "test"
+return "test 2"
+
 REMOTE_REPO_URL="https://github.com/cosmos/sdk-tutorials.git"
 
 WORK_DIR=$(pwd)

@@ -12,6 +12,10 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
+      - name: Run Tutorials Script
+        run: |
+          chmod +x tutorials-script.sh
+          ./tutorials-script.sh
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: sh ./vue-docs.sh
