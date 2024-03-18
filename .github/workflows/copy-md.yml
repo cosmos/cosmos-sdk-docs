@@ -6,7 +6,7 @@ on:
     - cron: '0 0,12 * * *'
 
 env:
-  PR_BRANCH_NAME: "sync-docs/" + ${{ github.sha }}
+  PR_BRANCH_NAME: "sync-docs/"${{ github.sha }}
 
 jobs:
   sync-docs-and-create-pr:
