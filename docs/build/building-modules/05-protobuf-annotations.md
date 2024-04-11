@@ -40,6 +40,12 @@ Example of validator address string scalar:
 https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/distribution/v1beta1/query.proto#L87
 ```
 
+Example of pubkey scalar: 
+
+```proto reference 
+https://github.com/cosmos/cosmos-sdk/blob/11068bfbcd44a7db8af63b6a8aa079b1718f6040/proto/cosmos/staking/v1beta1/tx.proto#L94
+```
+
 Example of Decimals scalar: 
 
 ```proto reference
@@ -119,3 +125,22 @@ Encoding instructs the amino json marshaler how to encode certain fields that ma
 ```proto reference
 https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/bank/v1beta1/genesis.proto#L23
 ```
+
+Another example is a protobuf `bytes` that contains a valid JSON document.
+The `inline_json` option tells the json marshaler to embed the JSON bytes into the wrapping document without escaping.
+
+```proto
+(amino.encoding)         = "inline_json",
+```
+
+E.g. the bytes containing `{"foo":123}` in the `envelope` field would lead to the following JSON:
+
+```json
+{
+  "envelope": {
+    "foo": 123
+  }
+}
+```
+
+If the bytes are not valid JSON, this leads to JSON broken documents. Thus a JSON validity check needs to be in place at some point of the process.
