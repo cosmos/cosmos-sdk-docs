@@ -5,16 +5,23 @@ on:
   schedule:
     - cron: '0 0,12 * * *'
 
+env:
+  PR_BRANCH_NAME: "sync-docs-${{ github.sha }}"
+
 jobs:
   sync-docs-and-create-pr:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
+      - name: Run TEST
+        run: echo $PR_BRANCH_NAME
+
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+  
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
@@ -34,26 +41,27 @@ jobs:
           chmod +x tutorials-script.sh
           ./tutorials-script.sh
 
-      - name: Add And Commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'Updated MD File Changes from cosmos-sdk/docs'
+      # - name: Add And Commit
+      #   uses: EndBug/add-and-commit@v9
+      #   with:
+      #     new_branch: ${{ env.PR_BRANCH_NAME }}
+      #     message: 'Updated MD File Changes from cosmos-sdk/docs'
 
-      - name: Push To Sync-Docs
-        uses: ad-m/github-push-action@master
-        with:
-          branch: sync-docs
+      # - name: Push To Sync-Docs
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     branch: ${{ env.PR_BRANCH_NAME }}
 
-      - uses: peter-evans/create-pull-request@v5
+      - uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "chore: Sync docs from cosmos-sdk/docs"
           title: "chore: upate documenation from cosmos-sdk/docs"
           base: main
-          branch: "sync-docs"
+          branch: ${{ env.PR_BRANCH_NAME }}
           delete-branch: false
           body: |
             This PR updates the documentation from cosmos-sdk/docs
-        
+
   sims-notify-failure:
     permissions:
       contents: none
