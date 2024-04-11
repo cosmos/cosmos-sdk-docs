@@ -18,7 +18,7 @@ Install Rosetta standalone server with the following command:
 go install github.com/cosmos/rosetta
 ```
 
-Alternatively, for building from source, simply run `make rosetta`. The binary will be located in the root folder.
+Alternatively, for building from source, simply run `make build`. The binary will be located in the root folder.
 
 ### Native - As a node command
 
