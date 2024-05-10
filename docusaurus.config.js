@@ -105,20 +105,9 @@ const config = {
             position: "left",
           },
           {
-            type: 'dropdown',
-            label: 'Build',
-            position: 'left',
-            items: [
-              {
-                type: "doc",
-                label: "Build a Module",
-                docId: "build/building-modules/intro",
-              },
-              {
-                label: "REST API",
-                to: "api",
-              },
-            ],
+            type: "doc",
+            label: "Build",
+            docId: "build/building-modules/intro",
           },
           {
             type: "doc",
@@ -132,6 +121,10 @@ const config = {
             collapsed: false,
             docId: "tutorials/vote-extensions/auction-frontrunning/getting-started",
             position: "left",
+          },
+          {
+            label: "REST API",
+            to: "api",
           },
           {
             href: "https://github.com/cosmos/cosmos-sdk",
