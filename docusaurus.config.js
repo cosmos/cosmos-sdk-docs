@@ -105,20 +105,9 @@ const config = {
             position: "left",
           },
           {
-            type: 'dropdown',
-            label: 'Build',
-            position: 'left',
-            items: [
-              {
-                type: "doc",
-                label: "Build a Module",
-                docId: "build/building-modules/intro",
-              },
-              {
-                label: "REST API",
-                to: "api",
-              },
-            ],
+            type: "doc",
+            label: "Build a Module",
+            docId: "build/building-modules/intro",
           },
           {
             type: "doc",
