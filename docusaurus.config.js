@@ -106,7 +106,7 @@ const config = {
           },
           {
             type: "doc",
-            label: "Build a Module",
+            label: "Build",
             docId: "build/building-modules/intro",
           },
           {
@@ -121,6 +121,10 @@ const config = {
             collapsed: false,
             docId: "tutorials/vote-extensions/auction-frontrunning/getting-started",
             position: "left",
+          },
+          {
+            label: "REST API",
+            to: "api",
           },
           {
             href: "https://github.com/cosmos/cosmos-sdk",
