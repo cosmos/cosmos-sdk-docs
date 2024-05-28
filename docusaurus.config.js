@@ -240,7 +240,10 @@ const config = {
         contextualSearch: false,
       },
     }),
-  themes: ["@you54f/theme-github-codeblock"],
+    markdown: {
+      mermaid: true,
+    },
+  themes: ["@you54f/theme-github-codeblock",'@docusaurus/theme-mermaid'],
   plugins: [
     async function myPlugin(context, options) {
       return {
