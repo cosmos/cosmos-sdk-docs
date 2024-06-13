@@ -33,7 +33,6 @@ Now that the [collections](./adr-062-collections-state-layer.md) and [orm](./adr
 In considering the design of built-in support, in discussions we have considered the needs of UI application developers, node operators and application and module developers. The following user stories have been identified as _ideal_ features, with the understanding that the SDK can likely only provide a subset of these features, but should aim for the best balance.
 
 When considering the needs of developers building UI applications, the following desirable features have been identified:
-
 * U1: quickly querying the current on-chain state with any sort of filtering, sorting and pagination the client desires with the ability to optimize queries with custom indexes.
 * U2: data should be available in client friendly formats, for instance even if addresses are stored as bytes in state, clients should be available to view and query bech32 encoded addresses.
 * U3: state that was pruned from on-chain state to save space but is still otherwise valid (such as completed proposals and votes) should be queryable.
