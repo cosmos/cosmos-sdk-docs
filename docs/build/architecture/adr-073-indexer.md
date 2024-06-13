@@ -6,7 +6,7 @@
 
 ## Status
 
-Accepted Not Implemented
+PROPOSED Not Implemented
 
 ## Abstract
 
@@ -44,8 +44,7 @@ When considering the needs of developers building UI applications, the following
 * U5: the query index should be consistent, meaning that UI applications should not need to be concerned with the possibility that the index has missed indexing some blocks or events
 
 When considering the needs of node operators, the following desirable features have been identified:
-
-* N1: nodes shouldn't _need_ to store indexes or events that are only needed for client queries, i.e. it should be possible to run a lean node
+* N1: nodes shouldn't *need* to store indexes or events that are only needed for client queries, i.e. it should be possible to run a lean node
 * N2: it should be possible to quickly spin up a node with the query index without tons of custom infrastructure and coding, i.e. this should be strictly configuration change and a bit of devops. It should be possible to configure the index to contain just state, just events, or both.
 * N3: it should be possible to build up an almost complete query index starting from any point in time without necessarily needing to replay a full chain's history (with the understanding that some historical data may be missing)
 
@@ -90,8 +89,7 @@ Blocks, transactions and events should be stored as rows in PostgreSQL tables wh
 
 For a full batteries included, client friendly query experience, a GraphQL endpoint should be exposed in the HTTP server for any PostgreSQL database that has the [Supabase pg_graphql](https://github.com/supabase/pg_graphql) extension enabled. `pg_graphql` will expose rich GraphQL queries for all PostgreSQL tables with zero code that support filtering, pagination, sorting and traversing foreign key references. (Support for defining foreign keys with `collections` and `orm` could be added in the future to take advantage of this). In addition, a [GraphiQL](https://github.com/graphql/graphiql) query explorer endpoint can be exposed to simplify client development.
 
-With this setup, a node operator would only need to 1) setup a PostgreSQL database with the `pg_graphql` extension and 2) enable the query indexer in the configuration in order to provide a full-featured query experience to clients. Because PostgreSQL is a full-featured database, node operators can enable any sort of custom indexes or views that are needed for their specific application with no need for this to affect the state machine or any other nodes.
-
+With this setup, a node operator would only need to 1) setup a PostgresSQL database with the `pg_graphql` extension and 2) enable the query indexer in the configuration in order to provide a full-featured query experience to clients. Because PostgreSQL is a full-featured database, node operators can enable any sort of custom indexes or views that are needed for their specific application with no need for this to affect the state machine or any other nodes.
 
 ## Alternatives
 
