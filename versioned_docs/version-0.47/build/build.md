@@ -11,5 +11,5 @@ sidebar_position: 0
 *   [Tooling](./tooling/README.md) - A suite of utilities designed to enhance the development workflow, optimizing the efficiency of Cosmos SDK-based projects.
 *   [ADR's](./architecture/README.md) - Provides a structured repository of key decisions made during the development process, which have been documented and offers rationale behind key decisions being made.
 *   [RFC](./rfc/README.md) - A Request for Comments (RFC) is a record of discussion on an open-ended topic related to the design and implementation of the Cosmos SDK, for which no immediate decision is required.
-*   [Specifications](./spec/README.md) - A detailed reference for the specifications of various components and features.
+*   [Specifications](../build/spec/SPEC_STANDARD.md) - A detailed reference for the specifications of various components and features.
 *   [REST API](https://docs.cosmos.network/api) - A comprehensive reference for the application programming interfaces (APIs) provided by the SDK. 
