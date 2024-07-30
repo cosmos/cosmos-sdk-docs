@@ -23,7 +23,6 @@ Here are some production-grade modules that can be used in Cosmos SDK applicatio
 * [Protocolpool](./protocolpool/README.md) - Functionalities handling community pool funds.
 * [Slashing](./slashing/README.md) - Validator punishment mechanisms.
 * [Staking](./staking/README.md) - Proof-of-Stake layer for public blockchains.
-* [tx](./tx/README.md) - Tx utilities for the Cosmos SDK.
 * [Upgrade](./upgrade/README.md) - Software upgrades handling and coordination.
 
 To learn more about the process of building modules, visit the [building modules reference documentation](https://docs.cosmos.network/main/building-modules/intro).
