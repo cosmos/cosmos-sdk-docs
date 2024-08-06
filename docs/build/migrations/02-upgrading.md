@@ -42,7 +42,7 @@ app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
 In this section we describe the changes made in Cosmos SDK' SimApp.
 **These changes are directly applicable to your application wiring.**
-
+Please read this section first, but for an exhaustive list of changes, refer to the [CHANGELOG](./simapp/CHANGELOG.md).
 
 #### Client (`root.go`)
 
