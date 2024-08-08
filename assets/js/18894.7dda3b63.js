@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkcosmos_sdk_docs=self.webpackChunkcosmos_sdk_docs||[]).push([[18894],{18894:(s,c,k)=>{k.r(c)}}]);
