@@ -36,4 +36,4 @@ For more information on SDK tooling, see the [Tooling](https://docs.cosmos.netwo
 
 ## Example
 
-* [SimApp](https://pkg.go.dev/cosmossdk.io/simapp) - is **the** sample Cosmos SDK chain. This package should not be imported in your application.
+* [SimApp](https://pkg.go.dev/cosmossdk.io/simapp) - SimApp is **the** sample Cosmos SDK chain. This package should not be imported in your application.
