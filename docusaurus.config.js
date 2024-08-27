@@ -196,7 +196,7 @@ const config = {
               },
               {
                 label: "Discord",
-                href: "https://discord.gg/cosmosnetwork",
+                href: "https://discord.gg/interchain",
               },
               {
                 label: "Reddit",
@@ -209,7 +209,7 @@ const config = {
             items: [
               {
                 label: "Discord",
-                href: "https://discord.gg/cosmosnetwork",
+                href: "https://discord.gg/interchain",
               },
               {
                 label: "Twitter",
