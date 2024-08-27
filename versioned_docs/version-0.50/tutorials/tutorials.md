@@ -3,6 +3,12 @@ sidebar_position: 0
 ---
 # Tutorials
 
+## Interchain Ecosystem Tutorials 
+
+The Interchain Ecosystem Tutorials platform presents a variety of tutorials from Beginner to Advanced Cosmos SDK blockchain building.
+Ignite is a powerful tool that simplifies the journey of building, testing, and launching diverse blockchain applications. Visit Ignite Tutorials for educational resources to help you build Cosmos chains with Ignite.
+Join the Interchain and build Cosmos Chains with Ignite on [tutorials.ignite.com](https://tutorials.ignite.com).
+
 ## Advanced Tutorials 
 
 This section provides a concise overview of tutorials focused on implementing vote extensions in the Cosmos SDK. Vote extensions are a powerful feature for enhancing the security and fairness of blockchain applications, particularly in scenarios like implementing oracles and mitigating auction front-running.
