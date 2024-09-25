@@ -3,7 +3,7 @@ name: Copy MD Files
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0,12 * * *'
+    - cron: "0 0,12 * * *"
 
 env:
   PR_BRANCH_NAME: "sync-docs-${{ github.sha }}"
@@ -21,7 +21,7 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
-  
+
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
@@ -30,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: |
           yarn install --frozen-lockfile
-          
+
       - name: Run Sync Script
         run: |
           chmod +x sync_script.sh
@@ -41,21 +41,10 @@ jobs:
           chmod +x tutorials-script.sh
           ./tutorials-script.sh
 
-      # - name: Add And Commit
-      #   uses: EndBug/add-and-commit@v9
-      #   with:
-      #     new_branch: ${{ env.PR_BRANCH_NAME }}
-      #     message: 'Updated MD File Changes from cosmos-sdk/docs'
-
-      # - name: Push To Sync-Docs
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     branch: ${{ env.PR_BRANCH_NAME }}
-
       - uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "chore: Sync docs from cosmos-sdk/docs"
-          title: "chore: update documenation from cosmos-sdk/docs"
+          title: "chore: update documentation from cosmos-sdk/docs"
           base: main
           branch: ${{ env.PR_BRANCH_NAME }}
           delete-branch: false
@@ -79,4 +68,3 @@ jobs:
           SLACK_COLOR: danger
           SLACK_MESSAGE: Copying docs is failing
           SLACK_FOOTER: ""
-
