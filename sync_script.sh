@@ -50,10 +50,14 @@ for version in "${VERSIONS[@]}"; do
     mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
+    # add main tutorials on versioned_docs
+    cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
   else
     mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
+     # add main tutorials on versioned_docs
+    cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
   fi
 
   git checkout -- .  # Discard changes to the repository
