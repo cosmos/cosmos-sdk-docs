@@ -56,8 +56,10 @@ for version in "${VERSIONS[@]}"; do
   for folder in "build" "learn"; do
     if [ "$version" == "main" ]; then
       cp -r "$WORK_DIR/cosmos-sdk/docs/$folder" "$WORK_DIR/docs/"
-    else
+    elif [[ -d "$WORK_DIR/cosmos-sdk/docs/docs/" ]]; then # 0.50 and 0.47
       cp -r "$WORK_DIR/cosmos-sdk/docs/docs/$folder" "$WORK_DIR/versioned_docs/$version_directory/"
+    else 
+      cp -r "$WORK_DIR/cosmos-sdk/docs/$folder" "$WORK_DIR/versioned_docs/$version_directory/"
     fi
   done
   if [ "$version" == "main" ]; then
