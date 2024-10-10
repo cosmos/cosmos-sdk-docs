@@ -166,25 +166,15 @@ and set `rpc.laddr` in `config.toml` to the CometBFT node's RPC address.
 
 ## Logging
 
-Logging provides a way to see what is going on with a node. By default the `info` level is set. This is a global level and all info logs will be outputted to the terminal.
+Logging provides a way to see what is going on with a node. By default the info level is set. This is a global level and all info logs will be outputted to the terminal. If you would like to filter specific logs to the terminal instead of all, then setting `module:log_level` is how this can work. 
 
-If you would like to filter specific logs to the terminal instead of all, then setting `<module>:<log_level>` is how this can work. 
 Example: 
 
-In `config.toml`:
+In config.toml:
 
 ```toml
-log_level: "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*:error"
+log_level: "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*error"
 ```
-
-Or directly in the command line:
-
-```bash
-<appd> start --log_level "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*:error"
-```
-
-The above will show info logs for the state, p2p, consensus, staking, and ibc modules, and error logs for all other modules.
-When no log filtering is required, simply use one of the supported global log levels: `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic` or `disabled`.
 
 ## State Sync
 
