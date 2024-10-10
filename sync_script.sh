@@ -2,19 +2,15 @@
 
 set -e -o pipefail
 
-# Set the remote repository URL to clone from
-REMOTE_REPO_URL="https://github.com/cosmos/cosmos-sdk.git"
-
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
 
 # Remove any existing 'cosmos-sdk' directory and clone the remote repository
 rm -rf ./cosmos-sdk
-git clone "$REMOTE_REPO_URL" cosmos-sdk
+git clone https://github.com/cosmos/cosmos-sdk.git cosmos-sdk
 
-# Read the versions from a JSON file and remove the 'v' prefix
+# Read the versions from a JSON file
 VERSIONS=($(jq -r '.[]' versions.json))
-
 VERSIONS+=("main")
 
 # Iterate over each version
@@ -24,7 +20,6 @@ for version in "${VERSIONS[@]}"; do
     branch="main"  # Set the branch to 'main'
     version_directory=""  # For 'main', the version directory is empty
   else
-    version="${version#v}"  # Remove the 'v' prefix from the version number
     branch="release/v$version.x"  # Determine the branch name
     version_directory="version-$version"  # Create a directory name based on the version
   fi
@@ -42,39 +37,37 @@ for version in "${VERSIONS[@]}"; do
   git fetch origin "$branch"
   git checkout "$branch"
 
-  # Check if the branch exists in the remote repository
-  if ! git show-ref --verify "refs/remotes/origin/$branch" &>/dev/null; then
-    echo "Branch $branch does not exist in the remote repository."
-    continue
-  else
-    echo "Branch $branch exists, continuing..."
-  fi
-
   # Run the pre.sh script
   cd docs && sh ./pre.sh
 
-  for folder in "build" "learn"; do
-    if [ "$version" == "main" ]; then
-      cp -r "$WORK_DIR/cosmos-sdk/docs/$folder" "$WORK_DIR/docs/"
-    elif [[ -d "$WORK_DIR/cosmos-sdk/docs/docs/" ]]; then # 0.50 and 0.47
-      cp -r "$WORK_DIR/cosmos-sdk/docs/docs/$folder" "$WORK_DIR/versioned_docs/$version_directory/"
-    else 
-      cp -r "$WORK_DIR/cosmos-sdk/docs/$folder" "$WORK_DIR/versioned_docs/$version_directory/"
-    fi
-  done
+  # Copy the 'build', 'learn' and 'user' directories to the 'docs' directory
   if [ "$version" == "main" ]; then
-      cp -r "$WORK_DIR/cosmos-sdk/client/docs/swagger-ui/swagger.yaml" "$WORK_DIR/openapi/"
+    mkdir -p "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/user" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/client/docs/swagger-ui/swagger.yaml" "$WORK_DIR/openapi/"
+  elif [ "$version" == "0.50" ] || [ "$version" == "0.47" ]; then
+    mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/user" "$WORK_DIR/versioned_docs/$version_directory"
+    # add main tutorials on versioned_docs
+    cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
+  else
+    mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/user" "$WORK_DIR/versioned_docs/$version_directory"
+     # add main tutorials on versioned_docs
+    cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
   fi
+
+  git checkout -- .  # Discard changes to the repository
 done
 
 # Leave the 'cosmos-sdk' directory after processing
 cd "$WORK_DIR"
 
-# This is copied to ensure main and 0.50 are up to date with one another
-cp -a "docs/user" "versioned_docs/version-0.50"
-
-wget -O "docs/user/run-node/04-rosetta.md" "https://raw.githubusercontent.com/cosmos/rosetta/main/README.md"
-cp -r "docs/user/run-node/04-rosetta.md" "versioned_docs/version-0.50/user/run-node/04-rosetta.md"
-
-# Remove the 'cosmos-sdk' directory if needed
- rm -rf ./cosmos-sdk
+# Remove the 'cosmos-sdk' directory
+rm -rf ./cosmos-sdk

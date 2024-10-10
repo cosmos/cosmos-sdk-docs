@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Implementing Structs for Vote Extensions](#implementing-structs-for-vote-extensions)
-- [Implementing Handlers and Configuring Handlers](#implementing-handlers-and-configuring-handlers)
+* [Prerequisites](#prerequisites)
+* [Implementing Structs for Vote Extensions](#implementing-structs-for-vote-extensions)
+* [Implementing Handlers and Configuring Handlers](#implementing-handlers-and-configuring-handlers)
 
 ## Prerequisites
 
