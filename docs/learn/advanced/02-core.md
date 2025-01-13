@@ -113,7 +113,7 @@ https://github.com/cosmos/cosmos-sdk/blob/489aaae40234f1015a7bbcfa9384a89dc8de81
 
 ## Query and Message Router Service
 
-Both the query and message router services are implementation of the same interface, `router.Service`.
+Both the query and message router services are implementations of the same interface, `router.Service`.
 
 ```go reference
 https://github.com/cosmos/cosmos-sdk/blob/core/v1.0.0-alpha.4/core/router/service.go#L11-L16
