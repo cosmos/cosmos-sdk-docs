@@ -1,7 +1,7 @@
 # Process Proposal
 
 `ProcessProposal` handles the validation of a proposal from `PrepareProposal`,
-which also includes a block header. Meaning, that after a block has been proposed
+which also includes a block header. Meaning, that after a block has been proposed,
 the other validators have the right to accept or reject that block. The validator in the
 default implementation of `PrepareProposal` runs basic validity checks on each
 transaction.
