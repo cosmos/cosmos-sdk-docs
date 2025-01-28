@@ -2,7 +2,7 @@
 
 ## Context
 
-There is a need for a scalable structure of the Cosmos SDK documentation. Current documentation includes a lot of non-related Cosmos SDK material, is difficult to maintain and hard to follow as a user.
+There is a need for a scalable structure of the Cosmos SDK documentation. Current documentation includes a lot of unrelated Cosmos SDK material, is difficult to maintain and hard to follow as a user.
 
 Ideally, we would have:
 
@@ -37,7 +37,7 @@ docs/
 └── architecture/
 ```
 
-The files in each sub-folders do not matter and will likely change. What matters is the sectioning:
+The files in each subfolders do not matter and will likely change. What matters is the sectioning:
 
 * `README`: Landing page of the docs.
 * `intro`: Introductory material. Goal is to have a short explainer of the Cosmos SDK and then channel people to the resources they need. The [Cosmos SDK tutorial](https://github.com/cosmos/sdk-application-tutorial/) will be highlighted, as well as the `godocs`.
