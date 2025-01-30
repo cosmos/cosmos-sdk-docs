@@ -5,7 +5,7 @@ Note, always read the **SimApp** section for more information on application wir
 
 ## [Unreleased]
 
-### BaseApp
+<!-- ### BaseApp
 
 #### Nested Messages Simulation
 
@@ -42,9 +42,18 @@ app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 To be able to simulate nested messages within a transaction, message types containing nested messages must implement the
 `HasNestedMsgs` interface. This interface requires a single method: `GetMsgs() ([]sdk.Msg, error)`, which should return
 the nested messages. By implementing this interface, the BaseApp can simulate these nested messages during
-transaction simulation. 
+transaction simulation. -->
 
-## [v0.52.x](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.52.0-alpha.0)
+### Modules
+
+#### `x/params`
+
+The `x/params` module has been removed from the Cosmos SDK.  The following [migration](https://github.com/cosmos/cosmos-sdk/blob/828fcf2f05db0c4759ed370852b6dacc589ea472/x/mint/migrations/v2/migrate.go) 
+and [PR](https://github.com/cosmos/cosmos-sdk/pull/12363) can be used as a reference for migrating a legacy params module to the supported module-managed params paradigm.
+
+More information can be found in the [deprecation notice](https://github.com/cosmos/cosmos-sdk/blob/main/UPGRADING.md#xparams).
+
+## [v0.52.x](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.52.0-beta.1)
 
 Documentation to migrate an application from v0.50.x to server/v2 is available elsewhere.
 It is additional to the changes described here.
@@ -53,7 +62,7 @@ It is additional to the changes described here.
 
 In this section we describe the changes made in Cosmos SDK' SimApp.
 **These changes are directly applicable to your application wiring.**
-Please read this section first, but for an exhaustive list of changes, refer to the [CHANGELOG](./simapp/CHANGELOG.md).
+Please read this section first, but for an exhaustive list of changes, refer to the [CHANGELOG](https://github.com/cosmos/cosmos-sdk/blob/release/v0.52.x/simapp/CHANGELOG.md).
 
 #### Client (`root.go`)
 
@@ -106,7 +115,7 @@ For non depinject users, simply call `RegisterLegacyAminoCodec` and `RegisterInt
 
 Additionally, thanks to the genesis simplification, as explained in [the genesis interface update](#genesis-interface), the module manager `InitGenesis` and `ExportGenesis` methods do not require the codec anymore.
 
-##### GRPC WEB
+##### gRPC Web
 
 Grpc-web embedded client has been removed from the server. If you would like to use grpc-web, you can use the [envoy proxy](https://www.envoyproxy.io/docs/envoy/latest/start/start). Here's how to set it up:
 
@@ -195,7 +204,9 @@ Grpc-web embedded client has been removed from the server. If you would like to 
 
    This indicates that Envoy has started and is ready to proxy requests.
 
+	<!-- markdown-link-check-disable -->
 6. Update your client applications to connect to Envoy (http://localhost:8080 by default).
+	<!-- markdown-link-check-enable -->
 
 </details>
 
@@ -277,6 +288,20 @@ If you are still using the legacy wiring, you must enable unordered transactions
 	}
 	```
 
+* Create or update the App's `Preblocker()` method to call the unordered tx
+  manager's `OnNewBlock()` method.
+
+	```go
+	...
+	app.SetPreblocker(app.PreBlocker)
+	...
+
+	func (app *SimApp) PreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+		app.UnorderedTxManager.OnNewBlock(ctx.BlockTime())
+		return app.ModuleManager.PreBlock(ctx, req)
+	}
+	```
+
 * Create or update the App's `Close()` method to close the unordered tx manager.
   Note, this is critical as it ensures the manager's state is written to file
   such that when the node restarts, it can recover the state to provide replay
@@ -303,10 +328,15 @@ used as a TTL for the transaction and is used to provide replay protection. See
 [ADR-070](https://github.com/cosmos/cosmos-sdk/blob/main/docs/architecture/adr-070-unordered-transactions.md)
 for more details.
 
+#### Sign Mode Textual
+
+With the split of `x/auth/tx/config` in two (x/auth/tx/config as depinject module for txconfig and tx options) and `x/validate`, sign mode textual is no more automatically configured when using runtime (it was previously the case).
+For the same instructions than for legacy app wiring to enable sign mode textual (see in v0.50 UPGRADING documentation).
+
 ### Depinject `app_config.go` / `app.yml`
 
 With the introduction of [environment in modules](#core-api), depinject automatically creates the environment for all modules.
-Learn more about environment [here](https://example.com) <!-- TODO -->. Given the fields of environment, this means runtime creates a kv store service for all modules by default. It can happen that some modules do not have a store necessary (such as `x/auth/tx` for instance). In this case, the store creation should be skipped in `app_config.go`:
+The 'Environment struct provides essential services](https://docs.cosmos.network/main/learn/advanced/core#environment) to modules including logging, event handling, gas metering, header access, routing, and both KV and memory store services. Given the fields of environment, this means runtime creates a kv store service for all modules by default. It can happen that some modules do not have a store necessary (such as `x/auth/tx` for instance). In this case, the store creation should be skipped in `app_config.go`:
 
 ```diff
 InitGenesis: []string{
@@ -394,6 +424,8 @@ been added to avoid the use of the Accounts.String() method.
 +type MsgSimulatorFn func(r *rand.Rand, accs []Account, cdc address.Codec) (sdk.Msg, error)
 ```
 
+The interface `HasProposalMsgs` has been renamed to `HasLegacyProposalMsgs`, as we've introduced a new simulation framework, simpler and easier to use, named [simsx](https://github.com/cosmos/cosmos-sdk/blob/main/simsx/README.md).
+
 ##### Depinject
 
 Previously `cosmossdk.io/core` held functions `Invoke`, `Provide` and `Register` were moved to `cosmossdk.io/depinject/appconfig`.
@@ -425,6 +457,11 @@ Most of Cosmos SDK modules have migrated to [collections](https://docs.cosmos.ne
 Many functions have been removed due to this changes as the API can be smaller thanks to collections.
 For modules that have migrated, verify you are checking against `collections.ErrNotFound` when applicable.
 
+#### `x/auth`
+
+Vesting accounts messages (and CLIs) have been removed. Existing vesting accounts will keep working but no new vesting accounts can be created.
+Use `x/accounts` lockup accounts or implement an `x/accounts` vesting account instead.
+
 #### `x/accounts`
 
 Accounts's AccountNumber will be used as a global account number tracking replacing Auth legacy AccountNumber. Must set accounts's AccountNumber with auth's AccountNumber value in upgrade handler. This is done through auth keeper MigrateAccountNumber function.
@@ -432,13 +469,44 @@ Accounts's AccountNumber will be used as a global account number tracking replac
 ```go
 import authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper" 
 ...
-err := authkeeper.MigrateAccountNumberUnsafe(ctx, &app.AuthKeeper)
-if err != nil {
-	return nil, err
+app.UpgradeKeeper.SetUpgradeHandler(planName,
+	func(ctx context.Context, _ upgradetypes.Plan, fromVM appmodule.VersionMap) (appmodule.VersionMap, error) {
+		if err := authkeeper.MigrateAccountNumberUnsafe(ctx, &app.AuthKeeper); err != nil {
+			return nil, err
+		}
+		return app.ModuleManager.RunMigrations(ctx, app.configurator, fromVM)
+	},
+)
+```
+
+Add `x/accounts` store while upgrading to v0.52.x:
+
+```go
+storetypes.StoreUpgrades{
+	Added: []string{
+		accounts.StoreKey,
+	},
 }
 ```
 
-### `x/crisis`
+##### TX Decoder
+
+In order to support x/accounts properly we need to init a `TxDecoder`, modify your `app.go`:
+
+```diff
+import (
++ 	txdecode "cosmossdk.io/x/tx/decode"
+)
++	txDecoder, err := txdecode.NewDecoder(txdecode.Options{
++		SigningContext: signingCtx,
++		ProtoCodec:     appCodec,
++	})
++	if err != nil {
++		panic(err)
++	}
+```
+
+#### `x/crisis`
 
 The `x/crisis` module was removed due to it not being supported or functional any longer. 
 
@@ -452,6 +520,16 @@ Gov v1beta1 proposal handler has been changed to take in a `context.Context` ins
 This change was made to allow legacy proposals to be compatible with server/v2.
 If you wish to migrate to server/v2, you should update your proposal handler to take in a `context.Context` and use services.
 On the other hand, if you wish to keep using baseapp, simply unwrap the sdk context in your proposal handler.
+
+#### `x/mint`
+
+The `x/mint` module has been updated to work with a mint function [`MintFn`](https://docs.cosmos.network/v0.52/build/modules/mint#mintfn).
+
+When using the default inflation calculation function and runtime, no change is required. The depinject configuration of mint automatically sets it if none is provided. However, when not using runtime, the mint function must be set in on the mint keeper:
+
+```diff
++ mintKeeper.SetMintFn(keeper.DefaultMintFn(types.DefaultInflationCalculationFn, stakingKeeper, mintKeeper))
+```
 
 #### `x/protocolpool`
 
@@ -481,6 +559,15 @@ storetypes.StoreUpgrades{
 			},
 }
 ```
+
+#### `x/validate`
+
+Introducing `x/validate` a module that is solely used for registering default ante/post handlers and global tx validators when using runtime and runtime/v2. If you wish to set your custom ante/post handlers, no need to use this module.
+You can however always extend them by adding extra tx validators (see `x/validate` documentation).
+
+#### `tools/benchmark`
+
+Introducing [`tools/benchmark`](https://github.com/cosmos/cosmos-sdk/tree/main/tools/benchmark) a Cosmos SDK module for benchmarking your chain. It is a standalone module that can be added to your chain to stress test it. This module should NOT be added in a production environment.
 
 ## [v0.50.x](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.50.0-alpha.0)
 
@@ -607,7 +694,7 @@ simd config migrate v0.50
 
 If you were using `<appd> config [key]` or `<appd> config [key] [value]` to set and get values from the `client.toml`, replace it with `<appd> config get client [key]` and `<appd> config set client [key] [value]`. The extra verbosity is due to the extra functionalities added in config.
 
-More information about [confix](https://docs.cosmos.network/main/tooling/confix) and how to add it in your application binary in the [documentation](https://docs.cosmos.network/main/tooling/confix).
+More information about [confix](https://docs.cosmos.network/main/build/tooling/confix) and how to add it in your application binary in the [documentation](https://docs.cosmos.network/main/build/tooling/confix).
 
 #### gRPC-Web
 
@@ -915,6 +1002,55 @@ To find out more please read the [signer field](https://github.com/cosmos/cosmos
 
 For ante handler construction via `ante.NewAnteHandler`, the field `ante.HandlerOptions.SignModeHandler` has been updated to `x/tx/signing/HandlerMap` from `x/auth/signing/SignModeHandler`. Callers typically fetch this value from `client.TxConfig.SignModeHandler()` (which is also changed) so this change should be transparent to most users.
 
+##### Account Migration Guide: x/auth to x/accounts
+
+Users can now migrate accounts from `x/auth` to `x/accounts` using the `auth.MsgMigrateAccount` message. Currently, this migration is only supported for `BaseAccount` due to security considerations.
+
+###### Migration Process
+
+The migration process allows an auth BaseAccount to migrate to any kind of x/accounts supported account type, here we will show how to migrate from a legacy x/auth `BaseAccount` to a `x/accounts` `BaseAccount`
+
+####### Migrating to x/accounts/defaults/base
+
+To migrate to the `BaseAccount` in `x/accounts`, follow these steps:
+
+1. Send a `basev1.MsgInit` message.
+2. This process allows you to:
+    * Switch to a new public key
+    * Reset your sequence number
+
+> **Important**: If you intend to keep the same public key, ensure you use your current sequence number.
+
+###### Example: x/auth.MsgMigrateAccount
+
+Here's an example of the `x/auth.MsgMigrateAccount` message structure:
+
+```json
+{
+  "signer": "cosmos1w43tr39v3lzvxz969e4ty9a74rq9nw7563tqvy",
+  "account_type": "base",
+  "account_init_msg": {
+    "@type": "/cosmos.accounts.defaults.base.v1.MsgInit",
+    "pub_key": {
+      "@type": "/cosmos.crypto.secp256k1.PubKey",
+      "key": "AkeoE1z32tlQyE7xpx3v+JE9XJL0trVQBFoDCn0pGl3w"
+    },
+    "init_sequence": "100"
+  }
+}
+```
+
+**Field Descriptions**
+
+* `signer`: The address of the account you want to migrate from.
+* `account_type`: The new account type you want to migrate to (depends on what's installed on the chain).
+* `account_init_msg`: The custom initialization message for the new account.
+    * `@type`: Specifies the type of account (in this case, x/accounts base account).
+    * `pub_key`: The public key for the account. You can migrate to a different public key if desired.
+    * `init_sequence`: The new sequence number for the account.
+
+> **Warning**: If you're keeping the same public key, make sure to use your current sequence number to prevent potential replay attacks.
+
 #### `x/capability`
 
 Capability has been moved to [IBC Go](https://github.com/cosmos/ibc-go). IBC v8 will contain the necessary changes to incorporate the new module location.
@@ -1040,7 +1176,7 @@ The `simapp` package **should not be imported in your own app**. Instead, you sh
 
 #### App Wiring
 
-SimApp's `app_v2.go` is using [App Wiring](https://docs.cosmos.network/main/build/building-apps/app-go-v2), the dependency injection framework of the Cosmos SDK.
+SimApp's `app_di.go` is using [App Wiring](https://docs.cosmos.network/main/build/building-apps/app-go-di), the dependency injection framework of the Cosmos SDK.
 This means that modules are injected directly into SimApp thanks to a [configuration file](https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/simapp/app_config.go).
 The previous behavior, without the dependency injection framework, is still present in [`app.go`](https://github.com/cosmos/cosmos-sdk/blob/v0.47.0-rc1/simapp/app.go) and is not going anywhere.
 
@@ -1163,7 +1299,7 @@ The `params` module was deprecated since v0.46. The Cosmos SDK has migrated away
 Cosmos SDK modules now store their parameters directly in its respective modules.
 The `params` module will be removed in `v0.50`, as mentioned [in v0.46 release](https://github.com/cosmos/cosmos-sdk/blob/v0.46.1/UPGRADING.md#xparams). It is strongly encouraged to migrate away from `x/params` before `v0.50`.
 
-When performing a chain migration, the params table must be initizalied manually. This was done in the modules keepers in previous versions.
+When performing a chain migration, the params table must be initialized manually. This was done in the modules keepers in previous versions.
 Have a look at `simapp.RegisterUpgradeHandlers()` for an example.
 
 #### `x/crisis`

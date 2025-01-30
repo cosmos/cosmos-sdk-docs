@@ -10,7 +10,7 @@ The Cosmos SDK has a very powerful and flexible module system that has been test
 and proven to be very good in production. The design of how messages are handled
 is built around Protobuf services and gRPC. This design was proposed and implemented
 during a time when we migrated from Amino to Protocol Buffers. This design has
-fulfilled the needs of users today. While this design is useful it has caused a
+fulfilled the needs of users today. While this design is useful it has caused an
 elevated learning curve to be adopted by users. Today, these services are the
 only way to write a module. This RFC proposes a new design that simplifies the
 design and enables new use cases we are seeing today.
@@ -24,7 +24,7 @@ This has led us to look at a design which would allow the usage of TinyGo and
 other technologies.
 
 We looked at TinyGo for our first target in order to compile down to a 32 bit environment which could be used with
-things like [Risc-0](https://www.risczero.com/), [Fluent](https://fluentlabs.xyz/) and other technologies. When speaking with the teams behind these technologies
+things like [Risc-0](https://www.risczero.com/), [Fluent](https://fluent.xyz/) and other technologies. When speaking with the teams behind these technologies
 we found that they were interested in using the Cosmos SDK but were unable to due to being unable to use TinyGo or the
 Cosmos SDK go code in a 32 bit environment.
 
