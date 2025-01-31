@@ -15,13 +15,13 @@ export default function FeatureList(url) {
     },
     {
       title: `Build a Chain`,
-      to: `${url}/build/building-apps/app-go`,
+      to: `${url}/build/building-apps/runtime`,
       Svg: require("@site/static/img/link.svg").default,
       description: (
         <>
-          Learn how to build a customized blockchain application using the Cosmos
-          SDK, with support for various programming languages and consensus
-          algorithms.
+          Learn how to build a customized blockchain application using the
+          Cosmos SDK, with support for various programming languages and
+          consensus algorithms.
         </>
       ),
     },
@@ -54,9 +54,9 @@ export default function FeatureList(url) {
       Svg: require("@site/static/img/public-service.svg").default,
       description: (
         <>
-          Connect with other developers, validators, and enthusiasts in the Cosmos
-          ecosystem, and collaborate on building the future of decentralized
-          applications.
+          Connect with other developers, validators, and enthusiasts in the
+          Cosmos ecosystem, and collaborate on building the future of
+          decentralized applications.
         </>
       ),
     },
