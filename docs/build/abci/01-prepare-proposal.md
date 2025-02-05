@@ -12,7 +12,7 @@ effect on CometBFT's mempool.
 Note, that the application defines the semantics of the `PrepareProposal` and it
 MAY be non-deterministic and is only executed by the current block proposer.
 
-Now, reading mempool twice in the previous sentence is confusing, lets break it down.
+Now, reading mempool twice in the previous sentence is confusing, let's break it down.
 CometBFT has a mempool that handles gossiping transactions to other nodes
 in the network. The order of these transactions is determined by CometBFT's mempool,
 using FIFO as the sole ordering mechanism. It's worth noting that the priority mempool
