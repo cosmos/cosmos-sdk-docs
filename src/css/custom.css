@@ -127,6 +127,9 @@ html {
       @media (min-width: 997px) {
         @apply w-auto justify-between;
       }
+      @media (max-width: 996px) {
+        @apply mr-7;
+      }
       .DocSearch-Search-Icon {
         @apply text-docusaurusColorBase;
       }
