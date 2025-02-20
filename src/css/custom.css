@@ -124,6 +124,7 @@ html {
     }
     &-Button {
       @apply text-inactive rounded-sm h-8 w-8 bg-card justify-center mr-3;
+      @apply transition-all duration-300 ease-in-out;
       @media (min-width: 997px) {
         @apply w-auto justify-between;
       }
