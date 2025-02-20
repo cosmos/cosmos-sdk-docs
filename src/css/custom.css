@@ -127,7 +127,10 @@ html {
       @media (min-width: 997px) {
         @apply w-auto justify-between;
       }
-      @media (max-width: 996px) {
+      @media (min-width: 769px) and (max-width: 996px) {
+        @apply w-[80%] mr-7;
+      }
+      @media (max-width: 768px) {
         @apply mr-7;
       }
       .DocSearch-Search-Icon {
@@ -137,7 +140,7 @@ html {
         @apply hidden;
       }
       .DocSearch-Button-Placeholder {
-        @apply pr-10;
+        @apply pr-6 mr-5 ml-2; 
       }
     }
 
