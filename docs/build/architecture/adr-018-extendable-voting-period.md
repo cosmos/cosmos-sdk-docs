@@ -27,7 +27,7 @@ There is a new `Msg` type called `MsgExtendVotingPeriod`, which can be sent by a
 
 So for example, if the `MaxVotingPeriodExtension` is set to 100 Days, then anyone with 1% of voting power can extend the voting power by 1 day.  If 33% of voting power has sent the message, the voting period will be extended by 33 days.  Thus, if absolutely everyone chooses to extend the voting period, the absolute maximum voting period will be `MinVotingPeriod + MaxVotingPeriodExtension`.
 
-This system acts as a sort of distributed coordination, where individual stakers choosing to extend or not, allows the system the gauge the conentiousness/complexity of the proposal.  It is extremely unlikely that many stakers will choose to extend at the exact same time, it allows stakers to view how long others have already extended thus far, to decide whether or not to extend further.
+This system acts as a sort of distributed coordination, where individual stakers choosing to extend or not, allows the system to gauge the contentiousness/complexity of the proposal.  It is extremely unlikely that many stakers will choose to extend at the exact same time, it allows stakers to view how long others have already extended thus far, to decide whether or not to extend further.
 
 ### Dealing with Unbonding/Redelegation
 
@@ -40,7 +40,7 @@ There is one thing that needs to be addressed.  How to deal with redelegation/un
 
 ### Delegators
 
-Just like votes in the actual voting period, delegators automatically inherit the extension of their validators.  If their validator chooses to extend, their voting power will be used in the validator's extension.  However, the delegator is unable to override their validator and "unextend" as that would contradict the "voting power length can only be ratcheted up" principle described in the previous section.  However, a delegator may choose the extend using their personal voting power, if their validator has not done so.
+Just like votes in the actual voting period, delegators automatically inherit the extension of their validators.  If their validator chooses to extend, their voting power will be used in the validator's extension.  However, the delegator is unable to override their validator and "unextend" as that would contradict the "voting power length can only be ratcheted up" principle described in the previous section.  However, a delegator may choose to extend using their personal voting power, if their validator has not done so.
 
 ## Status
 
