@@ -41,25 +41,12 @@ for version in "${VERSIONS[@]}"; do
   cd docs && sh ./pre.sh
 
   # Copy the 'build', 'learn' and 'user' directories to the 'docs' directory
-  if [ "$version" == "main" ]; then
-    mkdir -p "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/user" "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/client/docs/swagger-ui/swagger.yaml" "$WORK_DIR/openapi/"
-  elif [ "$version" == "0.50" ] || [ "$version" == "0.47" ]; then
+  if [ "$version" == "0.50" ] || [ "$version" == "0.47" ] || [ "$version" == "0.53" ]; then
     mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/user" "$WORK_DIR/versioned_docs/$version_directory"
     # add main tutorials on versioned_docs
-    cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
-  else
-    mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/user" "$WORK_DIR/versioned_docs/$version_directory"
-     # add main tutorials on versioned_docs
     cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
   fi
 
