@@ -7,9 +7,9 @@ sidebar_position: 1
 The Cosmos SDK contains different types of [tests](https://martinfowler.com/articles/practical-test-pyramid.html).
 These tests have different goals and are used at different stages of the development cycle.
 We advice, as a general rule, to use tests at all stages of the development cycle.
-It is advised, as a chain developer, to test your application and modules in a similar way than the SDK.
+It is adviced, as a chain developer, to test your application and modules in a similar way than the SDK.
 
-The rationale behind testing can be found in [ADR-59](https://docs.cosmos.network/main/build/architecture/adr-059-test-scopes.html).
+The rationale behind testing can be found in [ADR-59](https://docs.cosmos.network/main/architecture/adr-059-test-scopes.html).
 
 ## Unit Tests
 
@@ -22,7 +22,7 @@ The SDK uses `mockgen` to generate mocks for keepers:
 https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/scripts/mockgen.sh#L3-L6
 ```
 
-You can read more about mockgen [here](https://github.com/golang/mock).
+You can read more about mockgen [here](https://go.uber.org/mock).
 
 ### Example
 
@@ -59,9 +59,9 @@ In the SDK, we locate our integration tests under [`/tests/integrations`](https:
 
 The goal of these integration tests is to test how a component interacts with other dependencies. Compared to unit tests, integration tests do not mock dependencies. Instead, they use the direct dependencies of the component. This differs as well from end-to-end tests, which test the component with a full application.
 
-Integration tests interact with the tested module via the defined `Msg` and `Query` services. The result of the test can be verified by checking the state of the application, by checking the emitted events or the response. It is advised to combine two of these methods to verify the result of the test.
+Integration tests interact with the tested module via the defined `Msg` and `Query` services. The result of the test can be verified by checking the state of the application, by checking the emitted events or the response. It is adviced to combine two of these methods to verify the result of the test.
 
-The SDK provides small helpers for quickly setting up an integration tests. These helpers can be found at <https://github.com/cosmos/cosmos-sdk/blob/main/testutil>.
+The SDK provides small helpers for quickly setting up an integration tests. These helpers can be found at <https://github.com/cosmos/cosmos-sdk/blob/main/testutil/integration>.
 
 ### Example
 
@@ -86,27 +86,39 @@ https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/tests/integration/bank
 
 ## Simulations
 
-Simulations fuzz tests for deterministic message execution. They use a minimal application, built with [`depinject`](../packages/01-depinject.md):
+Simulations uses as well a minimal application, built with [`depinject`](../packages/01-depinject.md):
 
 :::note
-Simulations have been refactored to message factories
+You can as well use the `AppConfig` `configurator` for creating an `AppConfig` [inline](https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/slashing/app_test.go#L54-L62). There is no difference between those two ways, use whichever you prefer.
 :::
 
-An example for `x/bank/` simulations:
+Following is an example for `x/gov/` simulations:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/release/v0.52.x/x/bank/simulation/msg_factory.go#L13-L20
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/gov/simulation/operations_test.go#L406-L430
 ```
 
-## System Tests
+```go reference
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/gov/simulation/operations_test.go#L90-L132
+```
 
-System tests are at the top of the [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html).
-They test the whole application flow as black box, from the user perspective. They are located under [`/tests/systemtests`](https://github.com/cosmos/cosmos-sdk/tree/main/tests/systemtests).
+## End-to-end Tests
 
-For that, the SDK is using the `simapp` binary, but you should use your own binary.
-More details about system test can be found in [building-apps](https://docs.cosmos.network/main/build/building-apps/system-tests)
+End-to-end tests are at the top of the [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html).
+They must test the whole application flow, from the user perspective (for instance, CLI tests). They are located under [`/tests/e2e`](https://github.com/cosmos/cosmos-sdk/tree/main/tests/e2e).
 
+<!-- @julienrbrt: makes more sense to use an app wired app to have 0 simapp dependencies -->
+For that, the SDK is using `simapp` but you should use your own application (`appd`).
+Here are some examples:
+
+* SDK E2E tests: <https://github.com/cosmos/cosmos-sdk/tree/main/tests/e2e>.
+* Cosmos Hub E2E tests: <https://github.com/cosmos/gaia/tree/main/tests/e2e>.
+* Osmosis E2E tests: <https://github.com/osmosis-labs/osmosis/tree/main/tests/e2e>.
+
+:::note warning
+The SDK is in the process of creating its E2E tests, as defined in [ADR-59](https://docs.cosmos.network/main/architecture/adr-059-test-scopes.html). This page will eventually be updated with better examples.
+:::
 
 ## Learn More
 
-Learn more about testing scope in [ADR-59](https://docs.cosmos.network/main/build/architecture/adr-059-test-scopes.html).
+Learn more about testing scope in [ADR-59](https://docs.cosmos.network/main/architecture/adr-059-test-scopes.html).

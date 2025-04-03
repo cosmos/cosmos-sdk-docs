@@ -2,9 +2,9 @@
 sidebar_position: 1
 ---
 
-# Protocol buffer Annotations
+# ProtocolBuffer Annotations
 
-This document explains the various protobuf scalars that have been added to make working with protobuf easier for Cosmos SDK application developers.
+This document explains the various protobuf scalars that have been added to make working with protobuf easier for Cosmos SDK application developers
 
 ## Signer
 
@@ -38,12 +38,6 @@ Example of validator address string scalar:
 
 ```proto reference 
 https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/distribution/v1beta1/query.proto#L87
-```
-
-Example of pubkey scalar: 
-
-```proto reference 
-https://github.com/cosmos/cosmos-sdk/blob/11068bfbcd44a7db8af63b6a8aa079b1718f6040/proto/cosmos/staking/v1beta1/tx.proto#L94
 ```
 
 Example of Decimals scalar: 
@@ -85,7 +79,7 @@ option (cosmos_proto.method_added_in) = "simapp v24.0.0";
 The amino codec was removed in `v0.50+`, this means there is not a need register `legacyAminoCodec`. To replace the amino codec, Amino protobuf annotations are used to provide information to the amino codec on how to encode and decode protobuf messages. 
 
 :::note
-Amino annotations are only used for backwards compatibility with amino.
+Amino annotations are only used for backwards compatibility with amino. New modules are not required use amino annotations.
 :::
 
 The below annotations are used to provide information to the amino codec on how to encode and decode protobuf messages in a backwards compatible manner. 
@@ -137,22 +131,3 @@ Encoding instructs the amino json marshaler how to encode certain fields that ma
 ```proto reference
 https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/bank/v1beta1/genesis.proto#L23
 ```
-
-Another example is a protobuf `bytes` that contains a valid JSON document.
-The `inline_json` option tells the json marshaler to embed the JSON bytes into the wrapping document without escaping.
-
-```proto
-(amino.encoding)         = "inline_json",
-```
-
-E.g. the bytes containing `{"foo":123}` in the `envelope` field would lead to the following JSON:
-
-```json
-{
-  "envelope": {
-    "foo": 123
-  }
-}
-```
-
-If the bytes are not valid JSON, this leads to JSON broken documents. Thus a JSON validity check needs to be in place at some point of the process.

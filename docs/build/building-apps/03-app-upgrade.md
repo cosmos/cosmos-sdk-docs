@@ -22,7 +22,7 @@ This section is currently incomplete. Track the progress of this document [here]
 
 Let's assume we are running v0.38.0 of our software in our testnet and want to upgrade to v0.40.0.
 How would this look in practice? First of all, we want to finalize the v0.40.0 release candidate
-and then install a specially named upgrade handler (eg. "testnet-v2" or even "v0.40.0"). An upgrade
+and there install a specially named upgrade handler (eg. "testnet-v2" or even "v0.40.0"). An upgrade
 handler should be defined in a new version of the software to define what migrations
 to run to migrate from the older version of the software. Naturally, this is app-specific rather
 than module specific, and  must be defined in `app.go`, even if it imports logic from various
@@ -41,7 +41,7 @@ and gracefully exit.
 Generally the application binary will restart on exit, but then will execute this BeginBlocker
 again and exit, causing a restart loop. Either the operator can manually install the new software,
 or you can make use of an external watcher daemon to possibly download and then switch binaries,
-also potentially doing a backup. The SDK tool for doing such, is called [Cosmovisor](https://docs.cosmos.network/main/build/tooling/cosmovisor).
+also potentially doing a backup. The SDK tool for doing such, is called [Cosmovisor](https://docs.cosmos.network/main/tooling/cosmovisor).
 
 When the binary restarts with the upgraded version (here v0.40.0), it will detect we have registered the
 "testnet-v2" upgrade handler in the code, and realize it is the new version. It then will run the upgrade handler
@@ -63,7 +63,7 @@ keeper's PreBlocker method:
 func (app *myApp) PreBlocker(ctx sdk.Context, req req.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
       // For demonstration sake, the app PreBlocker only returns the upgrade module pre-blocker.
       // In a real app, the module manager should call all pre-blockers
-      // return app.ModuleManager.PreBlock(ctx, req)
+      // return return app.ModuleManager.PreBlock(ctx, req)
       return app.upgradeKeeper.PreBlocker(ctx, req)
 }
 ```
@@ -131,7 +131,7 @@ to lose connectivity with the exiting nodes, thus this module prefers to just ha
 
 ## Automation
 
-Read more about [Cosmovisor](https://docs.cosmos.network/main/build/tooling/cosmovisor), the tool for automating upgrades.
+Read more about [Cosmovisor](https://docs.cosmos.network/main/tooling/cosmovisor), the tool for automating upgrades.
 
 ## Canceling Upgrades
 

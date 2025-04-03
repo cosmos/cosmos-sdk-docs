@@ -132,7 +132,7 @@ When running a node (not a validator!) and not wanting to run the application me
 
 ```toml
 [mempool]
-# Setting max-txs to 0 will allow for an unbounded amount of transactions in the mempool.
+# Setting max-txs to 0 will allow for a unbounded amount of transactions in the mempool.
 # Setting max_txs to negative 1 (-1) will disable transactions from being inserted into the mempool.
 # Setting max_txs to a positive number (> 0) will limit the number of transactions in the mempool, by the specified amount.
 #
@@ -166,25 +166,15 @@ and set `rpc.laddr` in `config.toml` to the CometBFT node's RPC address.
 
 ## Logging
 
-Logging provides a way to see what is going on with a node. By default the `info` level is set. This is a global level and all info logs will be outputted to the terminal.
+Logging provides a way to see what is going on with a node. By default the info level is set. This is a global level and all info logs will be outputted to the terminal. If you would like to filter specific logs to the terminal instead of all, then setting `module:log_level` is how this can work. 
 
-If you would like to filter specific logs to the terminal instead of all, then setting `<module>:<log_level>` is how this can work. 
 Example: 
 
-In `config.toml`:
+In config.toml:
 
 ```toml
-log_level: "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*:error"
+log_level: "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*error"
 ```
-
-Or directly in the command line:
-
-```bash
-<appd> start --log_level "state:info,p2p:info,consensus:info,x/staking:info,x/ibc:info,*:error"
-```
-
-The above will show info logs for the state, p2p, consensus, staking, and ibc modules, and error logs for all other modules.
-When no log filtering is required, simply use one of the supported global log levels: `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic` or `disabled`.
 
 ## State Sync
 
@@ -198,7 +188,7 @@ Local state sync work similar to normal state sync except that it works off a lo
 
 1. As mentioned in https://docs.cometbft.com/v0.37/core/state-sync, one must set a height and hash in the config.toml along with a few rpc servers (the afromentioned link has instructions on how to do this). 
 2. Run `<appd snapshot restore <height> <format>` to restore a local snapshot (note: first load it from a file with the *load* command). 
-3. Bootstrapping Comet state in order to start the node after the snapshot has been ingested. This can be done with the bootstrap command `<app> comet bootstrap-state`
+3. Bootsrapping Comet state in order to start the node after the snapshot has been ingested. This can be done with the bootstrap command `<app> comet bootstrap-state`
 
 ### Snapshots Commands
 

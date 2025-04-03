@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -o pipefail
+set -x -e -o pipefail
 
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
@@ -41,7 +41,12 @@ for version in "${VERSIONS[@]}"; do
   cd docs && sh ./pre.sh
 
   # Copy the 'build', 'learn' and 'user' directories to the 'docs' directory
-  if [ "$version" == "0.50" ] || [ "$version" == "0.47" ] || [ "$version" == "0.53" ]; then
+  if [ "$version" == "main" ]; then
+    mkdir -p "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/user" "$WORK_DIR/docs"
+  elif [ "$version" == "0.50" ] || [ "$version" == "0.47" ] || [ "$version" == "0.53" ]; then
     mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"

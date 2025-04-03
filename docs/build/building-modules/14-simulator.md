@@ -36,9 +36,7 @@ for the key-value pairs from the stores to be decoded (_i.e_ unmarshalled)
 to their corresponding types. In particular, it matches the key to a concrete type
 and then unmarshals the value from the `KVPair` to the type provided.
 
-You can use the example [here](https://github.com/cosmos/cosmos-sdk/blob/main/x/distribution/simulation/decoder.go) from the distribution module to implement your store decoders.
-
-If the module uses the `collections` package, you can use the example [here](https://github.com/cosmos/cosmos-sdk/blob/23cf89cce1882ba9c8280e64735ae200504bfdce/x/bank/module.go#L166) from the Bank module to implement your store decoders.
+You can use the example [here](https://github.com/cosmos/cosmos-sdk/blob/v/x/distribution/simulation/decoder.go) from the distribution module to implement your store decoders.
 
 ### Randomized genesis
 
@@ -49,7 +47,13 @@ Once the module genesis parameter are generated randomly (or with the key and
 values defined in a `params` file), they are marshaled to JSON format and added
 to the app genesis JSON to use it on the simulations.
 
-You can check an example on how to create the randomized genesis [here](https://github.com/cosmos/cosmos-sdk/blob/main/x/staking/simulation/genesis.go).
+You can check an example on how to create the randomized genesis [here](https://github.com/cosmos/cosmos-sdk/blob/v/x/staking/simulation/genesis.go).
+
+### Randomized parameter changes
+
+The simulator is able to test parameter changes at random. The simulator package from each module must contain a `RandomizedParams` func that will simulate parameter changes of the module throughout the simulations lifespan.
+
+You can see how an example of what is needed to fully test parameter changes [here](https://github.com/cosmos/cosmos-sdk/blob/v/x/staking/simulation/params.go)
 
 ### Random weighted operations
 
@@ -63,33 +67,31 @@ Operations on the simulation are simulated using the full [transaction cycle](..
 Shown below is how weights are set:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/23cf89cce1882ba9c8280e64735ae200504bfdce/x/staking/depinject.go#L144-L154
+https://github.com/cosmos/cosmos-sdk/blob/release/v0.50.x/x/staking/simulation/operations.go#L19-L86
 ```
 
 As you can see, the weights are predefined in this case. Options exist to override this behavior with different weights. One option is to use `*rand.Rand` to define a random weight for the operation, or you can inject your own predefined weights.
 
-The SDK simulations can be executed like normal tests in Go from the shell or within an IDE.
-Make sure that you pass the `-tags='sims` parameter to enable them and other params that make sense for your scenario.
+Here is how one can override the above package `simappparams`.
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/23cf89cce1882ba9c8280e64735ae200504bfdce/scripts/build/simulations.mk#L19
+https://github.com/cosmos/cosmos-sdk/blob/release/v0.50.x/Makefile#L293-L299
 ```
+
+For the last test a tool called [runsim](https://github.com/cosmos/tools/tree/master/cmd/runsim) is used, this is used to parallelize go test instances, provide info to Github and slack integrations to provide information to your team on how the simulations are running.  
 
 ### Random proposal contents
 
 Randomized governance proposals are also supported on the Cosmos SDK simulator. Each
-module must register the message to be used for governance proposals.  
-
-```go reference
-https://github.com/cosmos/cosmos-sdk/blob/23cf89cce1882ba9c8280e64735ae200504bfdce/x/staking/depinject.go#L139-L142
-```
+module must define the governance proposal `Content`s that they expose and register
+them to be used on the parameters.
 
 ## Registering simulation functions
 
 Now that all the required functions are defined, we need to integrate them into the module pattern within the `module.go`:
 
 ```go reference
-https://github.com/cosmos/cosmos-sdk/blob/23cf89cce1882ba9c8280e64735ae200504bfdce/x/staking/depinject.go#L127-L154
+https://github.com/cosmos/cosmos-sdk/blob/release/v0.50.x/x/distribution/module.go#L180-L203
 ```
 
 ## App Simulator manager
@@ -119,7 +121,7 @@ func NewCustomApp(...) {
     gov.NewAppModule(app.govKeeper, app.accountKeeper, app.supplyKeeper),
     mint.NewAppModule(app.mintKeeper),
     distr.NewAppModule(app.distrKeeper, app.accountKeeper, app.supplyKeeper, app.stakingKeeper),
-    staking.NewAppModule(cdc, app.stakingKeeper),
+    staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
     slashing.NewAppModule(app.slashingKeeper, app.accountKeeper, app.stakingKeeper),
   )
 
@@ -127,13 +129,4 @@ func NewCustomApp(...) {
   app.sm.RegisterStoreDecoders()
   ...
 }
-```
-
-## Integration with the Go fuzzer framework
-
-The simulations provide deterministic behaviour already. The integration with the [Go fuzzer](https://go.dev/doc/security/fuzz/)
-can be done at a high level with the deterministic pseudo random number generator where the fuzzer provides varying numbers. 
-
-```go reference
-https://github.com/cosmos/cosmos-sdk/blob/23cf89cce1882ba9c8280e64735ae200504bfdce/scripts/build/simulations.mk#L80-L84
 ```

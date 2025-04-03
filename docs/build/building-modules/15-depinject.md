@@ -52,7 +52,7 @@ https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/api/cosmos/group/modul
 ```
 
 :::note
-Pulsar is optional. The official [`protoc-gen-go`](https://protobuf.dev/reference/go/go-generated/) can be used as well.
+Pulsar is optional. The official [`protoc-gen-go`](https://developers.google.com/protocol-buffers/docs/reference/go-generated) can be used as well.
 :::
 
 ## Dependency Definition
@@ -104,27 +104,21 @@ All methods, structs and their fields must be public for `depinject`.
 
 5. Create a function named `ProvideModule` (as called in 1.) and use the inputs for instantiating the module outputs.
 
-    ```go reference
-    https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/group/module/module.go#L220-L235
-    ```
+  ```go reference
+  https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/group/module/module.go#L220-L235
+  ```
 
-    The `ProvideModule` function should return an instance of `cosmossdk.io/core/appmodule.AppModule` which implements
-    one or more app module extension interfaces for initializing the module.
+The `ProvideModule` function should return an instance of `cosmossdk.io/core/appmodule.AppModule` which implements
+one or more app module extension interfaces for initializing the module.
 
-    Following is the complete app wiring configuration for `group`:
+Following is the complete app wiring configuration for `group`:
 
-    ```go reference
-    https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/group/module/module.go#L194-L235
-    ```
-
-6. All modules must implement `depinject.OnePerModuleType` interface. This is used in order to tell the dependency injection framework that the module can only be instantiated once. 
-
-    ```go reference
-    https://github.com/cosmos/cosmos-sdk/blob/f4bdec3433373cc4950f4680743e969495763fbb/x/group/module/module.go#L64-L65
-    ```
+```go reference
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/x/group/module/module.go#L194-L235
+```
 
 The module is now ready to be used with `depinject` by a chain developer.
 
 ## Integrate in an application
 
-The App Wiring is done in `app_config.go` / `app.yaml` and `app_di.go` and is explained in detail in the [overview of `app_di.go`](https://docs.cosmos.network/main/build/building-apps/app-go-di).
+The App Wiring is done in `app_config.go` / `app.yaml` and `app_v2.go` and is explained in detail in the [overview of `app_v2.go`](../building-apps/01-app-go-v2.md).
