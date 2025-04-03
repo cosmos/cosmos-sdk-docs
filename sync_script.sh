@@ -20,6 +20,8 @@ for version in "${VERSIONS[@]}"; do
     branch="main"  # Set the branch to 'main'
     version_directory=""  # For 'main', the version directory is empty
   else
+    # we have to handle a special case for v0.50 because docusaurus cannot handling trailing zeroes.
+    # it trims trailing zeroes off.
     if [ "$version" = "0.5" ]; then
       branch="release/v0.50.x"  # Special case for version 0.5
       version_directory="version-$version"  # Create a directory name based on the version
