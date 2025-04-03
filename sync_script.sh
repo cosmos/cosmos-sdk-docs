@@ -20,8 +20,13 @@ for version in "${VERSIONS[@]}"; do
     branch="main"  # Set the branch to 'main'
     version_directory=""  # For 'main', the version directory is empty
   else
-    branch="release/v$version.x"  # Determine the branch name
-    version_directory="version-$version"  # Create a directory name based on the version
+    if [ "$version" = "0.5" ]; then
+      branch="release/v0.50.x"  # Special case for version 0.5
+      version_directory="version-$version"  # Create a directory name based on the version
+    else
+      branch="release/v$version.x"  # Determine the branch name
+      version_directory="version-$version"  # Create a directory name based on the version
+    fi
   fi
 
   # Skip the '0.47' branch until docs backported
