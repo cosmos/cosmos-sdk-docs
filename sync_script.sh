@@ -53,7 +53,7 @@ for version in "${VERSIONS[@]}"; do
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/docs"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/docs"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/user" "$WORK_DIR/docs"
-  elif [ "$version" == "0.50" ] || [ "$version" == "0.47" ] || [ "$version" == "0.53" ]; then
+  elif [ "$version" == "0.5" ] || [ "$version" == "0.47" ] || [ "$version" == "0.53" ]; then
     mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
