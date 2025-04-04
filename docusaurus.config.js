@@ -48,14 +48,17 @@ const config = {
             0.53: {
               path: "v0.53",
               label: "v0.53",
+              banner: "none",
             },
             0.50: {
               path: "v0.50",
               label: "v0.50",
+              banner: "none",
             },
             0.47: {
               path: "v0.47",
               label: "v0.47",
+              banner: "none"
             },
           },
         },
