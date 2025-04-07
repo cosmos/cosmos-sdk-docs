@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -o pipefail
+set -x -e -o pipefail
 
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
@@ -20,8 +20,15 @@ for version in "${VERSIONS[@]}"; do
     branch="main"  # Set the branch to 'main'
     version_directory=""  # For 'main', the version directory is empty
   else
-    branch="release/v$version.x"  # Determine the branch name
-    version_directory="version-$version"  # Create a directory name based on the version
+    # we have to handle a special case for v0.50 because docusaurus cannot handling trailing zeroes.
+    # it trims trailing zeroes off.
+    if [ "$version" = "0.5" ]; then
+      branch="release/v0.50.x"  # Special case for version 0.5
+      version_directory="version-$version"  # Create a directory name based on the version
+    else
+      branch="release/v$version.x"  # Determine the branch name
+      version_directory="version-$version"  # Create a directory name based on the version
+    fi
   fi
 
   # Skip the '0.47' branch until docs backported
@@ -43,23 +50,15 @@ for version in "${VERSIONS[@]}"; do
   # Copy the 'build', 'learn' and 'user' directories to the 'docs' directory
   if [ "$version" == "main" ]; then
     mkdir -p "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/user" "$WORK_DIR/docs"
-    cp -r "$WORK_DIR/cosmos-sdk/client/docs/swagger-ui/swagger.yaml" "$WORK_DIR/openapi/"
-  elif [ "$version" == "0.50" ] || [ "$version" == "0.47" ]; then
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/docs"
+    cp -r "$WORK_DIR/cosmos-sdk/docs/docs/user" "$WORK_DIR/docs"
+  elif [ "$version" == "0.5" ] || [ "$version" == "0.47" ] || [ "$version" == "0.53" ]; then
     mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
     cp -r "$WORK_DIR/cosmos-sdk/docs/docs/user" "$WORK_DIR/versioned_docs/$version_directory"
     # add main tutorials on versioned_docs
-    cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
-  else
-    mkdir -p "$WORK_DIR/versioned_docs/$version_directory"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/build" "$WORK_DIR/versioned_docs/$version_directory"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/learn" "$WORK_DIR/versioned_docs/$version_directory"
-    cp -r "$WORK_DIR/cosmos-sdk/docs/user" "$WORK_DIR/versioned_docs/$version_directory"
-     # add main tutorials on versioned_docs
     cp -r $WORK_DIR/docs/tutorials "$WORK_DIR/versioned_docs/$version_directory"
   fi
 
