@@ -24,49 +24,54 @@ When a transaction is relayed from the underlying consensus engine to the Cosmos
 
 Defining Protobuf `Msg` services is the recommended way to handle messages. A Protobuf `Msg` service should be created for each module, typically in `tx.proto` (see more info about [conventions and naming](../../learn/advanced/05-encoding.md#faq)). It must have an RPC service method defined for each message in the module.
 
-Each `Msg` service method must have exactly one argument, which must implement the [`transaction.Msg`](https://pkg.go.dev/cosmossdk.io/core@v1.0.0-alpha.6/transaction#Msg) interface, and a Protobuf response. The naming convention is to call the RPC argument `Msg<service-rpc-name>` and the RPC response `Msg<service-rpc-name>Response`. For example:
+
+Each `Msg` service method must have exactly one argument, which must implement the `sdk.Msg` interface, and a Protobuf response. The naming convention is to call the RPC argument `Msg<service-rpc-name>` and the RPC response `Msg<service-rpc-name>Response`. For example:
 
 ```protobuf
-rpc Send(MsgSend) returns (MsgSendResponse);
+  rpc Send(MsgSend) returns (MsgSendResponse);
 ```
 
 See an example of a `Msg` service definition from `x/bank` module:
 
 ```protobuf reference
-https://github.com/cosmos/cosmos-sdk/blob/28fa3b8/x/bank/proto/cosmos/bank/v1beta1/tx.proto#L13-L41
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/proto/cosmos/bank/v1beta1/tx.proto#L13-L36
 ```
 
-### `transaction.Msg` Interface
+### `sdk.Msg` Interface
 
-`transaction.Msg` uses structural types to define the interface for a message. 
+`sdk.Msg` is a alias of `proto.Message`. 
 
-```go reference 
-https://github.com/cosmos/cosmos-sdk/blob/main/core/transaction/transaction.go#L4-L9
+To attach a `ValidateBasic()` method to a message then you must add methods to the type adhereing to the `HasValidateBasic`.
+
+```go reference
+https://github.com/cosmos/cosmos-sdk/blob/9c1e8b247cd47b5d3decda6e86fbc3bc996ee5d7/types/tx_msg.go#L84-L88
 ```
 
-Signers from the `GetSigners()` call is automated via a protobuf annotation. 
+In 0.50+ signers from the `GetSigners()` call is automated via a protobuf annotation. 
+
 Read more about the signer field [here](./05-protobuf-annotations.md).
 
 ```protobuf reference 
-https://github.com/cosmos/cosmos-sdk/blob/v0.52.0-beta.2/x/bank/proto/cosmos/bank/v1beta1/tx.proto#L45
+https://github.com/cosmos/cosmos-sdk/blob/e6848d99b55a65d014375b295bdd7f9641aac95e/proto/cosmos/bank/v1beta1/tx.proto#L40
 ```
 
 If there is a need for custom signers then there is an alternative path which can be taken. A function which returns `signing.CustomGetSigner` for a specific message can be defined. 
 
 ```go
 func ProvideBankSendTransactionGetSigners() signing.CustomGetSigner {
-	// Extract the signer from the signature.
-	signer, err := coretypes.LatestSigner(Tx).Sender(ethTx)
-    if err != nil {
-		return nil, err
-	}
 
-	// Return the signer in the required format.
-	return [][]byte{signer.Bytes()}, nil
+			// Extract the signer from the signature.
+			signer, err := coretypes.LatestSigner(Tx).Sender(ethTx)
+      if err != nil {
+				return nil, err
+			}
+
+			// Return the signer in the required format.
+			return [][]byte{signer.Bytes()}, nil
 }
 ```
 
-This can be provided to the application using depinject's `Provide` method in the application's `app.go`:
+When using dependency injection (depinject) this can be provided to the application via the provide method.
 
 ```go
 depinject.Provide(banktypes.ProvideBankSendTransactionGetSigners)
@@ -79,7 +84,7 @@ The Cosmos SDK uses Protobuf definitions to generate client and server code:
 
 A `RegisterMsgServer` method is also generated and should be used to register the module's `MsgServer` implementation in `RegisterServices` method from the [`AppModule` interface](./01-module-manager.md#appmodule).
 
-In order for clients (CLI and gRPC-gateway) to have these URLs registered, the Cosmos SDK provides the function `RegisterMsgServiceDesc(registry codectypes.InterfaceRegistry, sd *grpc.ServiceDesc)` that should be called inside module's [`RegisterInterfaces`](01-module-manager.md#hasregisterinterfaces) method, using the proto-generated `&_Msg_serviceDesc` as `*grpc.ServiceDesc` argument.
+In order for clients (CLI and grpc-gateway) to have these URLs registered, the Cosmos SDK provides the function `RegisterMsgServiceDesc(registry codectypes.InterfaceRegistry, sd *grpc.ServiceDesc)` that should be called inside module's [`RegisterInterfaces`](01-module-manager.md#appmodulebasic) method, using the proto-generated `&_Msg_serviceDesc` as `*grpc.ServiceDesc` argument.
 
 
 ## Queries
@@ -88,22 +93,42 @@ A `query` is a request for information made by end-users of applications through
 
 ### gRPC Queries
 
-Queries should be defined using [Protobuf services](https://protobuf.dev/programming-guides/proto2/). A `Query` service should be created per module in `query.proto`. This service lists endpoints starting with `rpc`.
+Queries should be defined using [Protobuf services](https://developers.google.com/protocol-buffers/docs/proto#services). A `Query` service should be created per module in `query.proto`. This service lists endpoints starting with `rpc`.
 
 Here's an example of such a `Query` service definition:
 
 ```protobuf reference
-https://github.com/cosmos/cosmos-sdk/blob/v0.52.0-beta.2/proto/cosmos/auth/v1beta1/query.proto#L15-L81
+https://github.com/cosmos/cosmos-sdk/blob/v0.50.0-alpha.0/proto/cosmos/auth/v1beta1/query.proto#L14-L89
 ```
 
 As `proto.Message`s, generated `Response` types implement by default `String()` method of [`fmt.Stringer`](https://pkg.go.dev/fmt#Stringer).
 
 A `RegisterQueryServer` method is also generated and should be used to register the module's query server in the `RegisterServices` method from the [`AppModule` interface](./01-module-manager.md#appmodule).
 
+### Legacy Queries
+
+Before the introduction of Protobuf and gRPC in the Cosmos SDK, there was usually no specific `query` object defined by module developers, contrary to `message`s. Instead, the Cosmos SDK took the simpler approach of using a simple `path` to define each `query`. The `path` contains the `query` type and all the arguments needed to process it. For most module queries, the `path` should look like the following:
+
+```text
+queryCategory/queryRoute/queryType/arg1/arg2/...
+```
+
+where:
+
+* `queryCategory` is the category of the `query`, typically `custom` for module queries. It is used to differentiate between different kinds of queries within `BaseApp`'s [`Query` method](../../learn/advanced/00-baseapp.md#query).
+* `queryRoute` is used by `BaseApp`'s [`queryRouter`](../../learn/advanced/00-baseapp.md#query-routing) to map the `query` to its module. Usually, `queryRoute` should be the name of the module.
+* `queryType` is used by the module's [`querier`](./04-query-services.md#legacy-queriers) to map the `query` to the appropriate `querier function` within the module.
+* `args` are the actual arguments needed to process the `query`. They are filled out by the end-user. Note that for bigger queries, you might prefer passing arguments in the `Data` field of the request `req` instead of the `path`.
+
+The `path` for each `query` must be defined by the module developer in the module's [command-line interface file](./09-module-interfaces.md#query-commands).Overall, there are 3 mains components module developers need to implement in order to make the subset of the state defined by their module queryable:
+
+* A [`querier`](./04-query-services.md#legacy-queriers), to process the `query` once it has been [routed to the module](../../learn/advanced/00-baseapp.md#query-routing).
+* [Query commands](./09-module-interfaces.md#query-commands) in the module's CLI file, where the `path` for each `query` is specified.
+* `query` return types. Typically defined in a file `types/querier.go`, they specify the result type of each of the module's `queries`. These custom types must implement the `String()` method of [`fmt.Stringer`](https://pkg.go.dev/fmt#Stringer).
 
 ### Store Queries
 
-Store queries query directly for store keys. They use `clientCtx.QueryABCI(req abci.QueryRequest)` to return the full `abci.QueryResponse` with inclusion Merkle proofs.
+Store queries query directly for store keys. They use `clientCtx.QueryABCI(req abci.RequestQuery)` to return the full `abci.ResponseQuery` with inclusion Merkle proofs.
 
 See following examples:
 
