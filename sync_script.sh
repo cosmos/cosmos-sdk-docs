@@ -2,6 +2,52 @@
 
 set -x -e -o pipefail
 
+
+#!/bin/bash
+
+# Wrapper script to perform multiple markdown deletions
+# Assumes delete.sh is in the same directory or in the PATH
+
+# Path to the deletion script - adjust if needed
+DELETE_SCRIPT="./delete.sh"
+
+# Check if the deletion script exists and is executable
+if [ ! -x "$DELETE_SCRIPT" ]; then
+    echo "Error: Cannot find or execute $DELETE_SCRIPT"
+fi
+
+echo "=== Starting sync ==="
+
+# Run #1: Delete all markdown files in versioned_docs/version-0.5
+echo ""
+echo "=== Run #1: Processing versioned_docs/version-0.5 ==="
+$DELETE_SCRIPT --skip "versioned_docs/version-0.5"
+if [ $? -ne 0 ]; then
+    echo "Error in Run #1"
+    exit 1
+fi
+
+# Run #2: Delete all markdown files in versioned_docs/version-0.53
+echo ""
+echo "=== Run #2: Processing versioned_docs/version-0.53 ==="
+$DELETE_SCRIPT --skip "versioned_docs/version-0.53"
+if [ $? -ne 0 ]; then
+    echo "Error in Run #2"
+    exit 1
+fi
+
+# Run #3: Delete markdown files in docs (except in tutorials)
+echo ""
+echo "=== Run #3: Processing docs (excluding tutorials) ==="
+$DELETE_SCRIPT --skip --skip-tutorials "docs"
+if [ $? -ne 0 ]; then
+    echo "Error in Run #3"
+    exit 1
+fi
+
+echo ""
+echo "=== Batch markdown deletion completed successfully ==="
+
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
 
