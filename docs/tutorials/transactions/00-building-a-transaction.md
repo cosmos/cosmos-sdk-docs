@@ -152,7 +152,7 @@ if err != nil {
 
 ```go
 // Create a broadcaster for the transaction
-	c, err := comet.NewCometBFTBroadcaster("http://127.0.0.1:26675", comet.BroadcastSync, protoCodec)
+	c, err := comet.NewCometBFTBroadcaster("http://127.0.0.1:26657", comet.BroadcastSync, protoCodec)
 	if err != nil {
 		log.Fatal("error creating comet broadcaster", err)
 	}
