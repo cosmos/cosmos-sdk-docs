@@ -2,6 +2,34 @@
 
 set -x -e -o pipefail
 
+DELETE_SCRIPT="./delete.sh"
+
+if [ ! -x "$DELETE_SCRIPT" ]; then
+    echo "Error: Cannot find or execute $DELETE_SCRIPT"
+fi
+
+echo "deleting files to prepare for syncing"
+
+$DELETE_SCRIPT --skip "versioned_docs/version-0.5"
+if [ $? -ne 0 ]; then
+    echo "error deleting files in 0.50"
+    exit 1
+fi
+
+$DELETE_SCRIPT --skip "versioned_docs/version-0.53"
+if [ $? -ne 0 ]; then
+    echo "error deleting files in 0.53"
+    exit 1
+fi
+
+$DELETE_SCRIPT --skip --skip-tutorials "docs"
+if [ $? -ne 0 ]; then
+    echo "error deleting files in /docs"
+    exit 1
+fi
+
+echo "files deleted. ready to sync."
+
 # Store the current working directory in WORK_DIR
 WORK_DIR=$(pwd)
 
