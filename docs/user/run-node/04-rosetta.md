@@ -74,7 +74,7 @@ rosetta
 
 ## Plugins - Multi chain connections
 
-Rosetta will try to reflect the node types trough reflection over the node gRPC endpoints, there may be cases were this approach is not enough. It is possible to extend or implement the required types easily through plugins.
+Rosetta will try to reflect the node types through reflection over the node gRPC endpoints, there may be cases were this approach is not enough. It is possible to extend or implement the required types easily through plugins.
 
 To use Rosetta over any chain, it is required to set up prefixes and registering zone specific interfaces through plugins.
 
