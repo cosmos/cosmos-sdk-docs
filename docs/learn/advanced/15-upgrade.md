@@ -103,7 +103,7 @@ if upgradeInfo.Name == "my-plan" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.
 When starting a new chain, the consensus version of each module MUST be saved to state during the application's genesis. To save the consensus version, add the following line to the `InitChainer` method in `app.go`:
 
 ```diff
-func (app *MyApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *MyApp) InitChainer(ctx sdk.Context, req abci.InitChainRequest) abci.InitChainResponse {
   ...
 + app.UpgradeKeeper.SetModuleVersionMap(ctx, app.mm.GetVersionMap())
   ...
@@ -159,4 +159,4 @@ You can sync a full node to an existing blockchain which has been upgraded using
 
 To successfully sync, you must start with the initial binary that the blockchain started with at genesis. If all Software Upgrade Plans contain binary instruction, then you can run Cosmovisor with auto-download option to automatically handle downloading and switching to the binaries associated with each sequential upgrade. Otherwise, you need to manually provide all binaries to Cosmovisor.
 
-To learn more about Cosmovisor, see the [Cosmovisor Quick Start](../../build/tooling/01-cosmovisor.md).
+To learn more about Cosmovisor, see the [Cosmovisor Quick Start](../../../../tools/cosmovisor/README.md).
