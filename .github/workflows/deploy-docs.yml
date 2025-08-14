@@ -12,10 +12,6 @@ permissions:
 
 jobs:
   build-and-deploy:
-    env:
-      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-      ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-      ALGOLIA_INDEX: ${{ secrets.ALGOLIA_INDEX }}
     permissions:
       contents: write # for JamesIves/github-pages-deploy-action to push changes in repo
     runs-on: ubuntu-latest
