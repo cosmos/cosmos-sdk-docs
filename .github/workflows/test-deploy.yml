@@ -5,10 +5,6 @@ on:
 
 jobs:
   test-deploy:
-    env:
-      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-      ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-      ALGOLIA_INDEX: ${{ secrets.ALGOLIA_INDEX }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -245,9 +245,9 @@ const config = {
         additionalLanguages: ["protobuf", "go-module"], // https://prismjs.com/#supported-languages
       },
       algolia: {
-        appId: process.env.ALGOLIA_APP_ID,
-        apiKey: process.env.ALGOLIA_API_KEY,
-        indexName: process.env.ALGOLIA_INDEX,
+        appId: "Y6U210CQLF",
+        apiKey: "7906f2dd2c7dc9858c50ecc788b4ea1c",
+        indexName: "docs_cosmos_network_y6u210cqlf_pages",
         contextualSearch: false,
       },
     }),
