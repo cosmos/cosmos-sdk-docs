@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkcosmos_sdk_docs=self.webpackChunkcosmos_sdk_docs||[]).push([[48768],{21294:s=>{s.exports={}}}]);
