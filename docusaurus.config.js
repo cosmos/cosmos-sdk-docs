@@ -89,6 +89,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'algolia-site-verification', content: '09177EED5BE610BB'},
+      ],
       image: "img/banner.jpg",
       docs: {
         sidebar: {
