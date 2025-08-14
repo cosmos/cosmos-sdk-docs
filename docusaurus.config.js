@@ -245,9 +245,9 @@ const config = {
         additionalLanguages: ["protobuf", "go-module"], // https://prismjs.com/#supported-languages
       },
       algolia: {
-        appId: "QLS2QSP47E",
-        apiKey: "4d9feeb481e3cfef8f91bbc63e090042",
-        indexName: "sdk_docs",
+        appId: process.env.ALGOLIA_APP_ID,
+        apiKey: process.env.ALGOLIA_API_KEY,
+        indexName: process.env.ALGOLIA_INDEX,
         contextualSearch: false,
       },
     }),
