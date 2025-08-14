@@ -90,7 +90,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       metadata: [
-        {name: 'algolia-site-verification', content: '09177EED5BE610BB'},
+        {name: 'algolia-site-verification', content: '98A89650568EAEEB'},
       ],
       image: "img/banner.jpg",
       docs: {
@@ -245,9 +245,9 @@ const config = {
         additionalLanguages: ["protobuf", "go-module"], // https://prismjs.com/#supported-languages
       },
       algolia: {
-        appId: "Y6U210CQLF",
-        apiKey: "7906f2dd2c7dc9858c50ecc788b4ea1c",
-        indexName: "docs_cosmos_network_y6u210cqlf_pages",
+        appId: "BYWD4BWSJI",
+        apiKey: "b382b0b646e72e5c78a09d87bb6b758f",
+        indexName: "sdk crawler",
         contextualSearch: false,
       },
     }),
