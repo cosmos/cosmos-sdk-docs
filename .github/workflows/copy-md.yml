@@ -20,7 +20,7 @@ jobs:
         run: echo $PR_BRANCH_NAME
 
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set Up Node.js
         uses: actions/setup-node@v3
