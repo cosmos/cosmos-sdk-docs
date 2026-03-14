@@ -1,0 +1,25 @@
+name: CI Injection Test
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      PR_BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show branch
+        run: |
+          echo "Branch value:"
+          echo $PR_BRANCH_NAME
+
+      - name: Debug context
+        run: |
+          echo "GitHub ref:"
+          echo "${{ github.ref }}"
